@@ -1,0 +1,69 @@
+{
+  "name": "camtechpro",
+  "username": "@camtechpro",
+  "promotion": {
+    "quote": "Hello My Store",
+    "images": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmTcz6g1j8dpChTLtjJobfTGWSVK5ABHhoZCXXkh3aVxdU"
+  },
+  "header": {
+    "type": true,
+    "logo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmQZDYWSqLxnqAmpP3hY9cALi6nZaR6Lky46PagW5vCWuR",
+    "name": "SOKLAY"
+  },
+  "about": {
+    "title": "About us",
+    "description": "Here our core teams",
+    "members": [
+      {
+        "name": "Thith",
+        "position": "IT",
+        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmfE2j2B1frKzzdHzdkv16aqCf3fX1SisBN8u1zR9k8253"
+      },
+      {
+        "name": "Soklay VANN",
+        "position": "CEO",
+        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmaearZ1zJWBWJCTqtGUgv3YX2XnUZ8MJwz9XZMbf7J6jW"
+      },
+      {
+        "name": "Soklay 2",
+        "position": "Full stack web developer",
+        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmaearZ1zJWBWJCTqtGUgv3YX2XnUZ8MJwz9XZMbf7J6jW"
+      },
+      {
+        "name": "Soklay3",
+        "position": "Web developer",
+        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmaearZ1zJWBWJCTqtGUgv3YX2XnUZ8MJwz9XZMbf7J6jW"
+      },
+      {
+        "name": "Soklay4",
+        "position": "Business Onwer",
+        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmaearZ1zJWBWJCTqtGUgv3YX2XnUZ8MJwz9XZMbf7J6jW"
+      },
+      {
+        "name": "Soklay5",
+        "position": "Tester",
+        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmaearZ1zJWBWJCTqtGUgv3YX2XnUZ8MJwz9XZMbf7J6jW"
+      }
+    ]
+  },
+  "footer": {
+    "socials": [
+      {
+        "name": "facebook",
+        "enable": true,
+        "link": "https://riverbase.org/@camtechpro/9ltjL1G05fMMti3STJ3BkkhD/themes/2fO7l6PC"
+      },
+      { "name": "youtube", "enable": false, "link": "" },
+      { "name": "instagram", "enable": false, "link": "" },
+      { "name": "linkedin", "enable": false, "link": "" },
+      { "name": "telegram", "enable": false, "link": "" },
+      { "name": "tiktok", "enable": false, "link": "" },
+      { "name": "twitter", "enable": false, "link": "" }
+    ],
+    "contact": {
+      "address": "2633 Robbins Rd, Washington, DC 20373, United States",
+      "email": "soklayvann@gmail.com",
+      "phone": "0924629881"
+    }
+  }
+}
