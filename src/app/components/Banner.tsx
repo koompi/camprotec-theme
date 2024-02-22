@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useTheme } from "@/context/useTheme";
 
 const Banner = () => {
-  const { addName } = useTheme();
+  const { value } = useTheme();
   
   return (
     <section className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:py-36 py-28 ">
@@ -30,7 +30,7 @@ const Banner = () => {
           <span className="relative">Camprotec</span>
         </span>
       </h1>
-      <div>{addName("name")}</div>
+      <div>{value?.name}</div>
       {/* <p className="mx-auto mt-12 max-w-xl text-lg text-slate-700 leading-7">
         {promotion()?.quote
           ? promotion()?.quote
