@@ -8,34 +8,28 @@ interface ContextProps {
 }
 
 interface ContextTheme {
-  addName: Function;
+  value: any;
 }
 
 export const ThemeContext = createContext({});
 
 const ThemeProvider: FC<ContextProps> = (props) => {
-  const [value, setValue] = useState<string | null>(null);
-  const [variable, setvariable] = useState<string>("");
+  const [value, setValue] = useState<any>();
 
   useEffect(() => {
-    const getData = async (variable: string) => {
+    const getData = async () => {
       try {
-        const data = await read(variable);
+        const data = await read();
         setValue(data);
       } catch (error) {
         console.error("Error setting JSON data:", error);
       }
     };
-    getData(variable);
-  }, [variable]);
-
-  const addName = (name: string) => {
-    setvariable(name);
-    return value;
-  };
+    getData();
+  }, []);
 
   const context = {
-    addName: addName,
+    value: value,
   };
 
   console.log("vallue", value);
