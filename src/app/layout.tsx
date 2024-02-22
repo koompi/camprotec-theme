@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "../config/site";
 import { ApolloWrapper } from "@/libs/apollo-wrapper";
+import AuthProvider from "@/context/useAuth";
+import ThemeProvider from "@/context/useTheme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,7 +51,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning={true}>
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <ApolloWrapper>
+          <AuthProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </AuthProvider>
+        </ApolloWrapper>
       </body>
     </html>
   );

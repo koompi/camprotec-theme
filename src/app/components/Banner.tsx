@@ -2,14 +2,11 @@
 
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
-import { Button } from "@nextui-org/react";
-import { read } from "@/utils/theme";
+import { useTheme } from "@/context/useTheme";
 
 const Banner = () => {
-  const name = read("username");
-
-  console.log("name", name);
-
+  const { addName } = useTheme();
+  
   return (
     <section className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 sm:py-36 py-28 ">
       <Link
@@ -33,6 +30,7 @@ const Banner = () => {
           <span className="relative">Camprotec</span>
         </span>
       </h1>
+      <div>{addName("name")}</div>
       {/* <p className="mx-auto mt-12 max-w-xl text-lg text-slate-700 leading-7">
         {promotion()?.quote
           ? promotion()?.quote
