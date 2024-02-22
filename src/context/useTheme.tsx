@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, FC, useEffect, useState } from "react";
-
 import { read } from "../../handler";
 
 interface ContextProps {
@@ -38,6 +37,8 @@ const ThemeProvider: FC<ContextProps> = (props) => {
   const context = {
     addName: addName,
   };
+
+  console.log("vallue", value);
 
   return (
     <ThemeContext.Provider value={context}>
