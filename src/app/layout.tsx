@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "../config/site";
 import { ApolloWrapper } from "@/libs/apollo-wrapper";
 import AuthProvider from "@/context/useAuth";
 import ThemeProvider from "@/context/useTheme";
+import NavbarLayout from "./components/layouts/Navbar";
+import Footer from "./components/layouts/Footer";
+import MobileNavigator from "./components/layouts/MobileNavigator";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://riverbase.org"),
@@ -50,10 +57,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body className={poppins.className} suppressHydrationWarning={true}>
         <ApolloWrapper>
           <AuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              <NavbarLayout />
+              {children}
+              <Footer />
+              <MobileNavigator />
+            </ThemeProvider>
           </AuthProvider>
         </ApolloWrapper>
       </body>

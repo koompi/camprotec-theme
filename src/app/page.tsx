@@ -1,15 +1,25 @@
 "use client";
-import { useQuery } from "@apollo/client";
 
-import { GET_ALL_PRODUCTS } from "@/graphql/product";
 import Banner from "./components/Banner";
+import LatestProducts from "./components/LatestProducts";
+import Categories from "./components/Categories";
+import About from "./components/About";
 
 export default function Home() {
-  const { data, loading } = useQuery(GET_ALL_PRODUCTS);
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Banner />
+    <main>
+      <section className="bg-gradient-to-r from-primary/10">
+        <Banner />
+      </section>
+      <section id="products" className="pt-8">
+        <LatestProducts />
+      </section>
+      <section id="categories" className="pt-8">
+        <Categories />
+      </section>
+      <section id="about" className="pt-8">
+        <About />
+      </section>
     </main>
   );
 }

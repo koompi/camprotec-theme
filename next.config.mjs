@@ -7,6 +7,14 @@ const nextConfig = {
         protocol: "http",
         hostname: "**.localhost:3000",
       },
+      {
+        protocol: "https",
+        hostname: "**.riverbase.org/*",
+      },
+      {
+        protocol: "https",
+        hostname: "ipfs.backend.riverbase.org/*",
+      },
     ],
   },
 };

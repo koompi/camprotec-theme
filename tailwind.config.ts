@@ -11,14 +11,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      aspectRatio: {
+        "4/3": "4 / 3",
       },
+      ...theme.background,
     },
   },
-  darkMode: "class",
+  // darkMode: "class",
   plugins: [
     nextui({
       prefix: "nextui", // prefix for themes variables
@@ -29,7 +28,7 @@ const config: Config = {
       themes: {
         light: {
           colors: {
-            background: "#FFFFFF", // or DEFAULT
+            background: "#ffffff", // or DEFAULT
             foreground: "#11181C", // or 50 to 900 DEFAULT
             ...theme.colors,
           },

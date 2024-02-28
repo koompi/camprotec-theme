@@ -30,6 +30,7 @@ export type ProductType = {
   quantity: number;
   variants: Variants[];
   sell: number;
+  desc: string;
 };
 
 // dynamic types

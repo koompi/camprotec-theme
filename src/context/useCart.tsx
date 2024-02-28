@@ -13,7 +13,23 @@ import { useRouter } from "next/navigation";
 import { CartContextType, CartItem } from "@/types/global";
 import { ItemProduct } from "@/types/product";
 
-const CartContext = createContext({});
+export const CartContext = createContext<CartContextType>({
+  cartItems: [],
+  addToCart: function (product: ItemProduct, variant: boolean): void {
+    throw new Error("Function not implemented.");
+  },
+  minusCart: function (product: ItemProduct, variant: boolean): void {
+    throw new Error("Function not implemented.");
+  },
+  removeFromCart: function (productId: string, variant: boolean): void {
+    throw new Error("Function not implemented.");
+  },
+  addCarts: function (cartItems: CartItem[]): void {
+    throw new Error("Function not implemented.");
+  },
+  cleanCartItems: Function,
+  logout: Function,
+});
 
 export function CartProvider(props: { children: JSX.Element }) {
   const router = useRouter();

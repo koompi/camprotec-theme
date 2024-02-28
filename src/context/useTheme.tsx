@@ -32,8 +32,6 @@ const ThemeProvider: FC<ContextProps> = (props) => {
     value: value,
   };
 
-  console.log("vallue", value);
-
   return (
     <ThemeContext.Provider value={context}>
       <div className="relative">{props.children}</div>
