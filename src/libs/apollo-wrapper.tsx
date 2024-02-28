@@ -12,8 +12,6 @@ const GRAPHQL_ENDPOINT =
   process.env.GRAPHQL_ENDPOINT ||
   `${process.env.NEXT_PUBLIC_BACKEND}/graphql/public?store_id=${process.env.NEXT_PUBLIC_ID_STORE}`;
 
-console.log("GRAPHQL_ENDPOINT", GRAPHQL_ENDPOINT);
-
 const token =
   typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 

@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import { CATEGORIES } from "@/graphql/category";
 import Link from "next/link";
 import { Category } from "@/types/category";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody, Skeleton } from "@nextui-org/react";
 
 const Categories: FC = () => {
   const { data, loading } = useQuery(CATEGORIES, {
@@ -18,8 +18,14 @@ const Categories: FC = () => {
     },
   });
 
-  if (loading) {
-    return "loading ...";
+  if (loading || !data) {
+    return (
+      <div className="flex flex-wrap gap-3 mt-3">
+        <Skeleton className="flex rounded-md w-full h-full" />
+        <Skeleton className="flex rounded-md w-full h-full" />
+        <Skeleton className="flex rounded-md w-full h-full" />
+      </div>
+    );
   }
 
   return (
@@ -35,9 +41,6 @@ const Categories: FC = () => {
             {data?.storeOwnerCategories?.map((cat: Category, idx: number) => {
               return (
                 <Link key={idx} href={`/products?search=&category=${cat.id}`}>
-                  {/* <div className="bg-primary/10 backdrop-blur-lg flex justify-center items-center px-8 py-6 font-bold rounded-box hover:border-primary transition-all hover:shadow-md hover:text-primary">
-                    {cat.title.en}
-                  </div> */}
                   <Card
                     className="bg-primary/10 px-8 py-6 font-bold w-full "
                     isHoverable

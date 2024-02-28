@@ -1,25 +1,16 @@
 "use client";
 
 import React from "react";
-import {
-  Accordion,
-  AccordionItem,
-  Button,
-  Chip,
-  Image,
-  RadioGroup,
-  ScrollShadow,
-  User,
-} from "@nextui-org/react";
+import { Button, Image, RadioGroup, ScrollShadow } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 
 import { cn } from "@/utils/cn";
 
-import ColorRadioItem from "./ColorRadioItem";
 import RatingRadioGroup from "./RatingRadioGroup";
 import TagGroupRadioItem from "./TagGroupRadioItem";
 import { ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
+import { LexicalViewer } from "@/editor/LexicalViewer";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -40,17 +31,14 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       desc,
       rating,
       variants,
+      detail,
       className,
       loading,
       ...props
     },
     ref
   ) => {
-    // const [isStarred, setIsStarred] = React.useState(false);
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
-
-    console.log("props", props);
-    console.log("se", selectedImage);
 
     return (
       <div
@@ -65,19 +53,21 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
         <div className="relative h-full w-full flex-none">
           {/* Main Image */}
 
-          <div className="bg-base-100 rounded-lg flex justify-center items-center border">
-            <Image
-              alt={title}
-              className="aspect-[4/3] object-contain object-center h-[50dvh]"
-              radius="md"
-              src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
-              isZoomed
-              isLoading={loading}
-            />
+          <div className="aspect-[4/3]">
+            <div className="bg-base-100 rounded-lg flex justify-center items-center border px-0">
+              <Image
+                alt={title}
+                className=" object-contain object-center h-[30dvh] sm:h-[30dvh] lg:h-[50dvh] cursor-pointer"
+                radius="md"
+                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
+                isZoomed
+                isLoading={loading}
+              />
+            </div>
           </div>
           {/* Image Gallery */}
           <ScrollShadow
-            className="-mx-2 -mb-4 mt-4 flex w-full max-w-full gap-4 px-2 pb-4 pt-2 hide-scroll-bar"
+            className="-mx-2 -mb-4 mt-0 flex w-full max-w-full gap-4 px-2 pb-4 pt-2 hide-scroll-bar"
             orientation="horizontal"
           >
             {previews.map((preview, index) => (
@@ -107,8 +97,11 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <h2 className="sr-only">Product information</h2>
           <div className="my-2 flex items-center gap-2">
             <RatingRadioGroup hideStarsText size="sm" value={`${rating}`} />
+            <p>Reviews</p>
           </div>
-          <p className="text-xl font-medium tracking-tight">${price}</p>
+          <p className="text-2xl text-primary font-bold tracking-tight">
+            ${price}
+          </p>
           <div className="mt-4">
             <p className="sr-only">Product desc</p>
             <p className="line-clamp-3 text-medium text-default-500">{desc}</p>
@@ -147,33 +140,11 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               </RadioGroup>
             )}
           </div>
-          {/* <Accordion
-            className="-mx-1 mt-2"
-            itemClasses={{
-              title: "text-default-400",
-              content: "pt-0 pb-6 text-base text-default-500",
-            }}
-            items={details}
-            selectionMode="multiple"
-          >
-            {details
-              ? details.map(({ title, items }) => (
-                  <AccordionItem key={title} title={title}>
-                    <ul className="list-inside list-disc">
-                      {items.map((item) => (
-                        <li key={item} className="text-default-500">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </AccordionItem>
-                ))
-              : []}
-          </Accordion> */}
+
           <div className="mt-12">
             <Button
               fullWidth
-              className="text-medium font-medium"
+              className="text-medium font-medium text-base-100"
               variant="shadow"
               color="primary"
               size="lg"
@@ -181,6 +152,13 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
             >
               Add to cart
             </Button>
+          </div>
+          <div className="mt-16">
+            <h2 className="text-xl font-semibold mb-3">Details</h2>
+            <p className="text-medium text-default-500">
+              <LexicalViewer data={detail} />
+              {/* {JSON.stringify(detail)} */}
+            </p>
           </div>
         </div>
       </div>
