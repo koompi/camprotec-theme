@@ -2,9 +2,9 @@ import { ItemProduct } from "./product";
 import { UserType } from "./user";
 
 export type ContextAuth = {
-  user: () => UserType;
+  user: UserType;
   getUser: () => void;
-  loading: () => void;
+  loading: boolean;
   login: (model: string | null) => void;
 };
 

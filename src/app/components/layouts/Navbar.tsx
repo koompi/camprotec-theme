@@ -9,6 +9,8 @@ import {
   Link,
   Button,
   Badge,
+  Skeleton,
+  Avatar,
 } from "@nextui-org/react";
 import Logo from "../Logo";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -75,15 +77,26 @@ const NavbarLayout = () => {
             </Badge>
           </Link>
         </NavbarItem>
-        <NavbarItem>
+        {/* <NavbarItem>
           <Button
             as={Link}
             color="primary"
-            href={`https://backend.riverbase.org/sso/store`}
+            href=
             variant="flat"
           >
             Login
           </Button>
+        </NavbarItem> */}
+        <NavbarItem className="hidden sm:block">
+          {loading ? (
+            <Skeleton className="flex rounded-full w-10 h-10" />
+          ) : user ? (
+            <Avatar size="md" />
+          ) : (
+            <Link as={Link} href={`https://backend.riverbase.org/sso/store`}>
+              Login
+            </Link>
+          )}
         </NavbarItem>
       </NavbarContent>
     </Navbar>
