@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Badge, Button, Link } from "@nextui-org/react";
 import React from "react";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/context/useCart";
 
 interface MobileNavigator {
   active_icon: string;
@@ -15,6 +16,7 @@ interface MobileNavigator {
 
 const MobileNavigator = () => {
   const pathname = usePathname();
+  const { cartItems } = useCart();
 
   const navigator = [
     {
@@ -27,8 +29,8 @@ const MobileNavigator = () => {
     {
       name: "Search",
       url: "/search",
-      active_icon: "ic:outline-search",
-      icon: "ic:outline-search",
+      active_icon: "lucide:search",
+      icon: "lucide:search",
       is_badge: false,
     },
     {
@@ -61,10 +63,9 @@ const MobileNavigator = () => {
                 {nav.is_badge ? (
                   <>
                     <Badge
-                      content="99+"
+                      content={cartItems?.length}
                       shape="circle"
                       color="danger"
-                      size="sm"
                     >
                       <Button variant="light" isIconOnly color="primary">
                         <Icon icon={nav.active_icon} fontSize={30} />
@@ -90,10 +91,9 @@ const MobileNavigator = () => {
                 {nav.is_badge ? (
                   <>
                     <Badge
-                      content="99+"
                       shape="circle"
                       color="danger"
-                      size="sm"
+                      content={cartItems?.length}
                     >
                       <Button variant="light" isIconOnly>
                         <Icon

@@ -38,7 +38,7 @@ const TagGroupItem = React.forwardRef<HTMLLabelElement, TagGroupItemProps>(
               "bg-primary": isSelected,
             }),
             content: cn("!text-small text-default-400", {
-              "text-primary-foreground": isSelected,
+              "text-base-100": isSelected,
               "pr-1": !!icon,
             }),
           }}
@@ -48,7 +48,7 @@ const TagGroupItem = React.forwardRef<HTMLLabelElement, TagGroupItemProps>(
             icon ? (
               <Icon
                 className={cn("text-default-400", {
-                  "text-primary-foreground": isSelected,
+                  "text-base-100": isSelected,
                 })}
                 icon={icon}
                 width={16}

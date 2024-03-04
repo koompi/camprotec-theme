@@ -40,7 +40,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
     <Link href={`/products/${props?.product?.slug}`} className="mt-3">
       <Card isPressable shadow="sm">
         <CardBody className="px-3 pb-1">
-          {!props?.loading && (
+          {/* {!props?.loading && (
             <Tooltip
               showArrow
               placement="top-end"
@@ -59,6 +59,23 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                 radius="full"
                 size="sm"
                 variant="flat"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const p: ItemProduct = {
+                    id: props?.product?.id,
+                    variantId: null,
+                    name: props?.product?.title,
+                    price: props?.product?.price,
+                    currency: props?.product?.currency,
+                    preview: props?.product?.thumbnail,
+                  };
+
+                  props?.product?.variants.length > 0
+                    ? (addCarts(items), setItems([]))
+                    : handleAddToCart(p);
+                  toast.success("The product is added into the cart!");
+                }}
               >
                 <Icon
                   className={cn("text-default-900/50", {
@@ -69,7 +86,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                 />
               </Button>
             </Tooltip>
-          )}
+          )} */}
 
           <Image
             className="aspect-[4/3] w-full h-full bg-repeat-round rounded-2xl mx-auto object-contain object-center bg-white"
@@ -113,7 +130,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                   </div>
                 )}
               </div>
-              <p className="text-base sm:text-base lg:text-large font-medium line-clamp-1">
+              <p className="text-base sm:text-base lg:text-large font-medium line-clamp-1 break-all">
                 {props?.product?.title}
               </p>
 
@@ -129,7 +146,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    setIsLiked(!isLiked);
+                    // setIsLiked(!isLiked);
                     const p: ItemProduct = {
                       id: props?.product?.id,
                       variantId: null,

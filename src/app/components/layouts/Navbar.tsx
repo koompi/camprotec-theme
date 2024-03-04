@@ -14,10 +14,16 @@ import Logo from "../Logo";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useCart } from "@/context/useCart";
 import { useAuth } from "@/context/useAuth";
+import { usePathname } from "next/navigation";
 
 const NavbarLayout = () => {
   const { cartItems, logout } = useCart();
   const { user, loading } = useAuth();
+  const pathname = usePathname();
+
+  if (pathname === "/search") {
+    return null;
+  }
 
   return (
     <Navbar shouldHideOnScroll maxWidth="2xl">

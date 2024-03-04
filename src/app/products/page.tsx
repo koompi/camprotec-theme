@@ -101,7 +101,7 @@ const ProductsPage = () => {
               <h2 className="text-large font-medium">Shoes</h2>
               <span className="text-small text-default-400">(1240)</span>
             </div>
-            <div className="flex  items-center justify-between gap-2 ">
+            <div className="flex items-center justify-between gap-2 ">
               <div className="flex flex-row gap-2">
                 <Button
                   className="flex border-default-200 sm:hidden"
@@ -123,12 +123,10 @@ const ProductsPage = () => {
                     color="primary"
                     radius="lg"
                     size="sm"
-                    isClearable
                     type="search"
                     variant="bordered"
                     placeholder="Find your product here ..."
-                    onClear={() => console.log("input cleared")}
-                    className="max-w-xl"
+                    className="max-w-xl w-full"
                     startContent={<Icon icon="fe:search" fontSize={21} />}
                   />
                 </div>
