@@ -2,10 +2,6 @@
 
 import { createContext, useContext, JSX, FC, useState, useEffect } from "react";
 import axios from "axios";
-// import toast, { Toaster } from "sonner";
-import { useSearchParams } from "next/navigation";
-import { Spinner } from "@nextui-org/react";
-import { sso_api, user_store_login } from "@/api/sso";
 import { UserType } from "@/types/user";
 import { ContextAuth } from "@/types/global";
 
