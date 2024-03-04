@@ -9,7 +9,7 @@ export interface Variants {
 export type ItemProduct = {
   thumbnail?: any;
   variantId: string | null;
-  title?: Element;
+  title?: string;
   id: string;
   name: string;
   price: number;

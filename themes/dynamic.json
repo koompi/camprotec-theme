@@ -1,24 +1,23 @@
 {
-  "name": "camtechpro",
-  "username": "@camtechpro",
-  "promotion": {
-    "quote": "It's time to indulge! Dive into a sea of savings on all your favorite items. Snag incredible deals you won't believe (...your eyes ). Don't miss out, this sale's hotter than sunshine! ☀️",
-    "images": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmTcz6g1j8dpChTLtjJobfTGWSVK5ABHhoZCXXkh3aVxdU"
+  "globals": {
+    "name": "Soklay",
+    "handle": "soklay",
+    "officialName": "SOKLAY VENSRENG Co;. LTD"
+  },
+  "banner": {
+    "message": "The most popular products is available here.",
+    "title": "Deep Savings on Your Favorite Items!",
+    "desc": "It's time to indulge! Dive into a sea of savings on all your favorite items. Snag incredible deals you won't believe (...your eyes ). Don't miss out, this sale's hotter than sunshine! ☀️"
   },
   "header": {
-    "type": true,
+    "enable": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmQZDYWSqLxnqAmpP3hY9cALi6nZaR6Lky46PagW5vCWuR",
     "logo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmQZDYWSqLxnqAmpP3hY9cALi6nZaR6Lky46PagW5vCWuR",
-    "name": "SOKLAY"
+    "name": "Soklay"
   },
   "about": {
     "title": "About us",
     "description": "Here our core teams",
     "members": [
-      {
-        "name": "Thith",
-        "position": "IT",
-        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmfE2j2B1frKzzdHzdkv16aqCf3fX1SisBN8u1zR9k8253"
-      },
       {
         "name": "Soklay VANN",
         "position": "CEO",
@@ -53,9 +52,21 @@
         "enable": true,
         "link": "https://riverbase.org/@camtechpro/9ltjL1G05fMMti3STJ3BkkhD/themes/2fO7l6PC"
       },
-      { "name": "youtube", "enable": false, "link": "" },
-      { "name": "instagram", "enable": false, "link": "" },
-      { "name": "linkedin", "enable": false, "link": "" },
+      {
+        "name": "youtube",
+        "enable": true,
+        "link": "https://riverbase.org/@camtechpro/9ltjL1G05fMMti3STJ3BkkhD/themes/2fO7l6PC"
+      },
+      {
+        "name": "instagram",
+        "enable": true,
+        "link": "https://riverbase.org/@camtechpro/9ltjL1G05fMMti3STJ3BkkhD/themes/2fO7l6PC"
+      },
+      {
+        "name": "linkedin",
+        "enable": true,
+        "link": "https://riverbase.org/@camtechpro/9ltjL1G05fMMti3STJ3BkkhD/themes/2fO7l6PC"
+      },
       { "name": "telegram", "enable": false, "link": "" },
       { "name": "tiktok", "enable": false, "link": "" },
       { "name": "twitter", "enable": false, "link": "" }

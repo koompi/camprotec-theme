@@ -12,8 +12,13 @@ import {
 } from "@nextui-org/react";
 import Logo from "../Logo";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useCart } from "@/context/useCart";
+import { useAuth } from "@/context/useAuth";
 
 const NavbarLayout = () => {
+  const { cartItems, logout } = useCart();
+  const { user, loading } = useAuth();
+
   return (
     <Navbar shouldHideOnScroll maxWidth="2xl">
       <NavbarBrand>
@@ -23,33 +28,45 @@ const NavbarLayout = () => {
         className="hidden h-11 gap-6 rounded-full border-small border-default-200/20 bg-background/60 px-4 shadow-sm backdrop-blur-md backdrop-saturate-150 md:flex"
         justify="center"
       >
-        <NavbarItem isActive>
-          <Link color="primary" href="#" size="sm">
+        <NavbarItem>
+          <Link className="text-default-500 font-semibold" href="#" size="sm">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="text-default-500" href="#products" size="sm">
+          <Link
+            className="text-default-500 font-semibold"
+            href="#products"
+            size="sm"
+          >
             Products
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="text-default-500" href="#categories" size="sm">
+          <Link
+            className="text-default-500 font-semibold"
+            href="#categories"
+            size="sm"
+          >
             Categories
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="text-default-500" href="#about" size="sm">
+          <Link
+            className="text-default-500 font-semibold"
+            href="#about"
+            size="sm"
+          >
             About
           </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end" className="gap-9">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#" color="foreground">
+          <Link href="/cart" color="foreground">
             <Badge
               color="danger"
-              content={19}
+              content={cartItems?.length}
               shape="circle"
               size="md"
               variant="shadow"
@@ -59,7 +76,12 @@ const NavbarLayout = () => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
+          <Button
+            as={Link}
+            color="primary"
+            href={`https://backend.riverbase.org/sso/store`}
+            variant="flat"
+          >
             Login
           </Button>
         </NavbarItem>

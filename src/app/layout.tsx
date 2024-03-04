@@ -3,11 +3,12 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "../config/site";
 import { ApolloWrapper } from "@/libs/apollo-wrapper";
-import AuthProvider from "@/context/useAuth";
 import ThemeProvider from "@/context/useTheme";
 import NavbarLayout from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
 import MobileNavigator from "./components/layouts/MobileNavigator";
+import { CartProvider } from "@/context/useCart";
+import { AppProvider } from "@/context/useAuth";
 
 // const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -59,14 +60,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={poppins.className} suppressHydrationWarning={true}>
         <ApolloWrapper>
-          <AuthProvider>
-            <ThemeProvider>
-              <NavbarLayout />
-              {children}
-              <Footer />
-              <MobileNavigator />
-            </ThemeProvider>
-          </AuthProvider>
+          <AppProvider>
+            <CartProvider>
+              <ThemeProvider>
+                <NavbarLayout />
+                {children}
+                <Footer />
+                <MobileNavigator />
+              </ThemeProvider>
+            </CartProvider>
+          </AppProvider>
         </ApolloWrapper>
       </body>
     </html>

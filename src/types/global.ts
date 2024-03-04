@@ -21,6 +21,7 @@ export type CartContextType = {
   addCarts: (cartItems: CartItem[]) => void;
   cleanCartItems: Function;
   logout: Function;
+  loading: boolean;
 };
 
 export type LoginForm = {

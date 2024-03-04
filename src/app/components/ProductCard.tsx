@@ -16,25 +16,25 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 import { toast } from "sonner";
-import { CartContextType, CartItem } from "@/types/global";
+import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
 
 const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
   const [isLiked, setIsLiked] = useState(false);
   const [items, setItems] = useState<CartItem[]>([]);
-  const { addToCart, addCarts } = useCart() as CartContextType;
+  const { addToCart, addCarts } = useCart();
 
-  // const handleAddToCart = (product: ItemProduct) => {
-  //   let p: ItemProduct = {
-  //     id: product.id,
-  //     variantId: null,
-  //     name: product.name,
-  //     price: product.price,
-  //     currency: product.currency,
-  //     preview: product.preview,
-  //   };
-  //   addToCart(p, false);
-  // };
+  const handleAddToCart = (product: ItemProduct) => {
+    let p: ItemProduct = {
+      id: product?.id,
+      variantId: null,
+      name: product?.name,
+      price: product?.price,
+      currency: product?.currency,
+      preview: product?.preview,
+    };
+    addToCart(p, false);
+  };
 
   return (
     <Link href={`/products/${props?.product?.slug}`} className="mt-3">
@@ -59,23 +59,6 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                 radius="full"
                 size="sm"
                 variant="flat"
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   e.stopPropagation();
-                //   setIsLiked(!isLiked);
-                //   const p: ItemProduct = {
-                //     id: props?.product?.id,
-                //     variantId: null,
-                //     name: props?.product?.title,
-                //     price: props?.product?.price,
-                //     currency: props?.product?.currency,
-                //     preview: props?.product?.thumbnail,
-                //   };
-                //   props?.product?.variants.length > 0
-                //     ? (addCarts(items), setItems([]))
-                //     : handleAddToCart(p);
-                //   toast.success("The product is added into the cart!");
-                // }}
               >
                 <Icon
                   className={cn("text-default-900/50", {
@@ -138,7 +121,30 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                 <span className="text-primary lg:text-xl text-sm font-bold">
                   {formatToUSD(parseInt(props.product.price.toString()))}
                 </span>
-                <Button variant="flat" size="sm" color="primary" radius="full">
+                <Button
+                  variant="flat"
+                  size="sm"
+                  color="primary"
+                  radius="full"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsLiked(!isLiked);
+                    const p: ItemProduct = {
+                      id: props?.product?.id,
+                      variantId: null,
+                      name: props?.product?.title,
+                      price: props?.product?.price,
+                      currency: props?.product?.currency,
+                      preview: props?.product?.thumbnail,
+                    };
+
+                    props?.product?.variants.length > 0
+                      ? (addCarts(items), setItems([]))
+                      : handleAddToCart(p);
+                    toast.success("The product is added into the cart!");
+                  }}
+                >
                   Add to Cart
                 </Button>
               </div>

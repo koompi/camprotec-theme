@@ -13,38 +13,37 @@ import { useRouter } from "next/navigation";
 import { CartContextType, CartItem } from "@/types/global";
 import { ItemProduct } from "@/types/product";
 
-export const CartContext = createContext<CartContextType>({
-  cartItems: [],
-  addToCart: function (product: ItemProduct, variant: boolean): void {
-    throw new Error("Function not implemented.");
-  },
-  minusCart: function (product: ItemProduct, variant: boolean): void {
-    throw new Error("Function not implemented.");
-  },
-  removeFromCart: function (productId: string, variant: boolean): void {
-    throw new Error("Function not implemented.");
-  },
-  addCarts: function (cartItems: CartItem[]): void {
-    throw new Error("Function not implemented.");
-  },
-  cleanCartItems: Function,
-  logout: Function,
-});
+export const CartContext = createContext({});
 
 export function CartProvider(props: { children: JSX.Element }) {
   const router = useRouter();
   const { getUser } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[] | []>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const storedCartItems: any = localStorage.getItem("cartItems");
-    if (storedCartItems) {
-      setCartItems(JSON.parse(storedCartItems));
+    const carts = localStorage.getItem("cartItems");
+    setLoading(true);
+    if (carts) {
+      if (carts.length > 0) {
+        setCartItems(JSON.parse(carts));
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
+        return;
+      }
     }
+    setTimeout(() => {
+      setLoading(false);
+      return;
+    }, 500);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    if (cartItems.length > 0) {
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+      return;
+    }
   }, [cartItems]);
 
   const updateLocalStorage = () => {
@@ -105,6 +104,10 @@ export function CartProvider(props: { children: JSX.Element }) {
   };
 
   const removeFromCart = (productId: string, variant: boolean) => {
+    if (cartItems.length == 1) {
+      cleanCartItems();
+      return;
+    }
     setCartItems((prevItems) => {
       const updatedItems = prevItems?.filter(
         (item) => item.product.id !== productId
@@ -114,6 +117,7 @@ export function CartProvider(props: { children: JSX.Element }) {
       );
       return variant ? updatedVariant : updatedItems;
     });
+
     updateLocalStorage();
   };
 
@@ -128,9 +132,7 @@ export function CartProvider(props: { children: JSX.Element }) {
   };
 
   const logout = () => {
-    localStorage.removeItem("cartItems");
     localStorage.removeItem("access_token");
-    setCartItems([]);
     getUser();
     addCarts(cartItems);
     router.push("/");
@@ -139,13 +141,14 @@ export function CartProvider(props: { children: JSX.Element }) {
   return (
     <CartContext.Provider
       value={{
-        cartItems,
-        addToCart,
-        addCarts,
-        removeFromCart,
-        minusCart,
-        cleanCartItems,
-        logout,
+        loading: loading,
+        cartItems: cartItems,
+        addToCart: addToCart,
+        addCarts: addCarts,
+        removeFromCart: removeFromCart,
+        minusCart: minusCart,
+        cleanCartItems: cleanCartItems,
+        logout: logout,
       }}
     >
       {props.children}
