@@ -23,11 +23,13 @@ const getUser = async () => {
     .then(({ status, data }) => {
       if (status === 200) {
         const user = data.data.user;
+
         return {
           first_name: user.first_name,
           last_name: user.last_name,
           email: user.email,
           avatar: user.avatar,
+          fullname: user?.fullname,
         };
       }
       return;
@@ -61,12 +63,8 @@ export const AppProvider: FC<Props> = (props) => {
     return;
   }, []);
 
-  if (loading) {
-    return null;
-  }
-
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user: user, loading: loading }}>
       {props.children}
     </AuthContext.Provider>
   );

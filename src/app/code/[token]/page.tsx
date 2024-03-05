@@ -13,7 +13,8 @@ export default function Token() {
     if (param.token) {
       user_store_login(param.token).then((_) => {
         localStorage.setItem("access_token", param.token);
-        router.back();
+        // router.back();
+        global && window.location.replace("/");
       });
     }
     return;

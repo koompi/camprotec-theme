@@ -10,11 +10,11 @@ import MobileNavigator from "./components/layouts/MobileNavigator";
 import { CartProvider } from "@/context/useCart";
 import { AppProvider } from "@/context/useAuth";
 
-// const inter = Inter({ subsets: ["latin"] });
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-});
+const inter = Inter({ subsets: ["latin"] });
+// const poppins = Poppins({
+//   subsets: ["latin"],
+//   weight: ["400", "600"],
+// });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://riverbase.org"),
@@ -58,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className} suppressHydrationWarning={true}>
+      <body className={inter.className} suppressHydrationWarning={true}>
         <ApolloWrapper>
           <AppProvider>
             <CartProvider>

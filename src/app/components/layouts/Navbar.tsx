@@ -9,8 +9,12 @@ import {
   Link,
   Button,
   Badge,
-  Skeleton,
   Avatar,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Skeleton,
 } from "@nextui-org/react";
 import Logo from "../Logo";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -26,6 +30,8 @@ const NavbarLayout = () => {
   if (pathname === "/search") {
     return null;
   }
+
+  if (loading) return null;
 
   return (
     <Navbar shouldHideOnScroll maxWidth="2xl">
@@ -83,25 +89,50 @@ const NavbarLayout = () => {
             </Badge>
           </Link>
         </NavbarItem>
-        {/* <NavbarItem>
-          <Button
-            as={Link}
-            color="primary"
-            href=
-            variant="flat"
-          >
-            Login
-          </Button>
-        </NavbarItem> */}
-        <NavbarItem className="hidden sm:block">
-          {loading ? (
-            <Skeleton className="flex rounded-full w-10 h-10" />
-          ) : user ? (
-            <Avatar size="md" />
+
+        <NavbarItem>
+          {user ? (
+            <Dropdown placement="bottom-end">
+              {loading ? (
+                <Skeleton className="flex rounded-full w-12 h-12" />
+              ) : (
+                <DropdownTrigger>
+                  <Avatar
+                    isBordered
+                    as="button"
+                    className="transition-transform"
+                    src={user?.avatar}
+                  />
+                </DropdownTrigger>
+              )}
+              <DropdownMenu aria-label="User Actions" variant="flat">
+                <DropdownItem key="profile" className="h-14 gap-2">
+                  <p className="font-bold">Signed in as</p>
+                  <p className="font-bold">{user?.email}</p>
+                </DropdownItem>
+                <DropdownItem key="settings">Settings</DropdownItem>
+                <DropdownItem key="address">Address</DropdownItem>
+                <DropdownItem key="orders">Orders</DropdownItem>
+                <DropdownItem key="wallet">Wallet</DropdownItem>
+
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  onPress={() => logout()}
+                >
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           ) : (
-            <Link as={Link} href={`https://backend.riverbase.org/sso/store`}>
+            <Button
+              as={Link}
+              color="primary"
+              href={`https://backend.riverbase.org/sso/store`}
+              variant="flat"
+            >
               Login
-            </Link>
+            </Button>
           )}
         </NavbarItem>
       </NavbarContent>

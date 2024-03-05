@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -8,6 +8,7 @@ import {
   Checkbox,
   CheckboxGroup,
   Divider,
+  Radio,
   RadioGroup,
   ScrollShadow,
   Switch,
@@ -15,6 +16,7 @@ import {
   Tabs,
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@/utils/cn";
 
@@ -23,6 +25,10 @@ import PriceSlider from "./PriceSlider";
 import RatingRadioGroup from "./RatingRadioGroup";
 import TagGroupItem from "./TagGroupItem";
 import { Filter, FilterTypeEnum } from "@/types/filterTypes";
+import { CATEGORIES } from "@/graphql/category";
+import { useQuery } from "@apollo/client";
+import { Category, SubCategory } from "@/types/category";
+import { useSearchParams } from "next/navigation";
 
 export type FiltersWrapperProps = React.HTMLAttributes<HTMLDivElement> & {
   items: Filter[];
@@ -45,6 +51,14 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
     },
     ref
   ) => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const search = searchParams.get("search") || null;
+    const cats = searchParams.get("category") || null;
+    const sub = searchParams.get("sub_category") || null;
+
+    const [selected, setSelected] = useState(sub);
+
     const renderFilter = React.useCallback((filter: Filter) => {
       switch (filter.type) {
         case FilterTypeEnum.Tabs:
@@ -151,6 +165,10 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
       }
     }, []);
 
+    const { data, loading } = useQuery(CATEGORIES);
+
+    if (loading) return null;
+
     return (
       <div
         ref={ref}
@@ -193,28 +211,67 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
           </div>
         </ScrollShadow>
 
-        {showActions && (
+        {data?.storeOwnerCategories && (
           <>
-            <Divider className="my-6 bg-default-100" />
-            <div className="mt-auto flex flex-col gap-2">
-              <Button
-                color="primary"
-                startContent={
-                  <Icon
-                    className="text-primary-foreground [&>g]:stroke-[3px]"
-                    icon="solar:magnifer-linear"
-                    width={16}
-                  />
-                }
-              >
-                Show 300+ stays
-              </Button>
-              <Button className="text-default-500" variant="flat">
-                Clear all filters
-              </Button>
-            </div>
+            <h3 className="text-medium font-medium leading-8 text-default-600">
+              Categories
+            </h3>
+            <Accordion>
+              {data?.storeOwnerCategories?.map((cat: Category) => {
+                return (
+                  <AccordionItem
+                    key={cat?.id}
+                    aria-label={cat?.title?.en}
+                    title={<span className="text-sm">{cat?.title?.en}</span>}
+                    onPress={() => {
+                      router.push(
+                        `?search${search ? search : null}=&category=${
+                          cat?.id ? cat?.id : null
+                        }`
+                      );
+                    }}
+                  >
+                    <RadioGroup
+                      aria-label={cat?.title?.en}
+                      orientation="vertical"
+                      color="primary"
+                      value={selected as string}
+                      defaultValue={selected as string}
+                      onValueChange={(value) => {
+                        setSelected(value),
+                          router.push(
+                            `?search${search ? search : null}=&category=${
+                              cat?.id ? cat?.id : null
+                            }&sub_category${value ? value : null}`
+                          );
+                      }}
+                    >
+                      {cat?.children?.map((sub: SubCategory, idx: number) => (
+                        <Radio key={idx} value={sub?.id}>
+                          {sub?.title?.en}
+                        </Radio>
+                      ))}
+                    </RadioGroup>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
           </>
         )}
+
+        <>
+          <Divider className="my-6 bg-default-100" />
+          <Button
+            className="text-default-500"
+            variant="flat"
+            fullWidth
+            onPress={() => {
+              router.push("/products");
+            }}
+          >
+            Clear all filters
+          </Button>
+        </>
       </div>
     );
   }

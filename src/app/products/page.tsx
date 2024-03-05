@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import ProductCard from "../components/ProductCard";
 import { ProductType } from "@/types/product";
-import { useSearchParams, useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { GLOBAL_PRODUCT_FILTERING } from "@/graphql/product";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Button, Select, SelectItem, Input } from "@nextui-org/react";
 import ecommerceItems from "./components/EcommerceItems";
 import FiltersWrapper from "./components/FiltersWrapper";
 import SidebarDrawer from "./components/SidebarDrawer";
+import { useRouter } from "next/navigation";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Range {
   end: number;
@@ -28,12 +30,25 @@ interface ProductFilter {
   range?: Range | null;
 }
 
-const ProductsPage = () => {
-  const ps = useParams();
-  const searchParams = useSearchParams();
-  const search = searchParams.get("search");
+interface FormSearch {
+  search: string;
+}
 
-  // const [paginationProps] = createPagination({ pages: 10 });
+const ProductsPage = () => {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || null;
+  const cat = searchParams.get("category") || null;
+  const sub = searchParams.get("sub_category") || null;
+  const page = searchParams.get("page") || null;
+  const size = searchParams.get("size") || null;
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<FormSearch>();
+
+  const [value, setValue] = useState<string | null>(search);
+
+  const onSubmit: SubmitHandler<FormSearch> = () => {
+    router.push(`?search=${value ? value : ""}&category=${cat ? cat : null}`);
+  };
 
   const [limit, setLimit] = useState(10);
   const [pageSize, setPageSize] = useState<{ skip: number; size: number }>({
@@ -51,37 +66,42 @@ const ProductsPage = () => {
 
   const { data, loading, refetch } = useQuery(GLOBAL_PRODUCT_FILTERING, {
     variables: {
-      tagId: ps.category
-        ? ps.sub_category
-          ? [ps.sub_category]
-          : [ps.category]
-        : ps.search
-        ? []
-        : null,
-      keyword: ps.search ? ps.search : filtering?.keyword,
+      tagId: cat ? (sub ? [sub] : [cat]) : search ? [] : null,
+      keyword: search ? search : filtering?.keyword,
       status: filtering?.status === "price" ? "price" : null,
       range: filtering?.range,
-      // filter: {
-      //   skip: ps.page
-      //     ? parseInt(ps.page) > 1
-      //       ? parseInt(ps.page) * parseInt(ps.size)
-      //       : 0
-      //     : pageSize.skip,
-      //   limit: ps.size ? parseInt(ps.size) : pageSize.size,
-      //   sort: filtering?.filter?.sort,
-      // },
+      filter: {
+        skip: page
+          ? parseInt(page) > 1
+            ? parseInt(page) * parseInt(size as string)
+            : 0
+          : pageSize.skip,
+        limit: size ? parseInt(size) : pageSize.size,
+        sort: filtering?.filter?.sort,
+      },
     },
   });
+
+  useEffect(() => {
+    if (search || cat || sub) {
+      refetch();
+    }
+  }, [cat, refetch, search, sub]);
 
   // const defaultSort = () =>
   //   storeGlobalFilterProducts()?.storeGlobalFilterProducts?.sort(
   //     (a: ProductType, b: ProductType) => (a.brand > b.brand ? 1 : -1)
   //   );
 
-  // const mostPopularSort = () =>
-  //   storeGlobalFilterProducts()?.storeGlobalFilterProducts?.sort(
-  //     (a: ProductType, b: ProductType) => (a.sell > b.sell ? -1 : 1)
-  //   );
+  const mostPopularSort = (): ProductType[] => {
+    if (!data?.storeGlobalFilterProducts) {
+      return [];
+    }
+
+    return [...data.storeGlobalFilterProducts].sort(
+      (a: ProductType, b: ProductType) => (a.sell > b.sell ? -1 : 1)
+    );
+  };
 
   return (
     <section className="container mx-auto px-6 py-9">
@@ -119,16 +139,30 @@ const ProductsPage = () => {
                   Filters
                 </Button>
                 <div className="hidden items-center gap-1 md:flex">
-                  <Input
-                    color="primary"
-                    radius="lg"
-                    size="sm"
-                    type="search"
-                    variant="bordered"
-                    placeholder="Find your product here ..."
-                    className="max-w-xl w-full"
-                    startContent={<Icon icon="fe:search" fontSize={21} />}
-                  />
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <Input
+                      color="primary"
+                      {...(register("search"), { required: true })}
+                      radius="lg"
+                      size="sm"
+                      type="search"
+                      variant="bordered"
+                      placeholder="Find your product here ..."
+                      className="max-w-xl w-full"
+                      startContent={<Icon icon="fe:search" fontSize={21} />}
+                      onClear={() => {
+                        setValue(""),
+                          router.push(`?search=&category=${cat ? cat : null}`);
+                      }}
+                      isClearable
+                      isRequired
+                      value={value as string}
+                      onValueChange={(value) => {
+                        setValue(value);
+                      }}
+                    />
+                    <input type="submit" className="hidden" />
+                  </form>
                 </div>
               </div>
               <Select
@@ -165,15 +199,11 @@ const ProductsPage = () => {
           </header>
           <main className="mt-4 h-full w-full overflow-visible px-1">
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-              {data?.storeGlobalFilterProducts.map(
-                (res: ProductType, idx: number) => {
-                  return (
-                    <React.Fragment key={idx}>
-                      <ProductCard product={res} loading={loading} />
-                    </React.Fragment>
-                  );
-                }
-              )}
+              {mostPopularSort().map((res: ProductType, idx: number) => {
+                return (
+                  <ProductCard key={idx} product={res} loading={loading} />
+                );
+              })}
             </div>
           </main>
         </div>

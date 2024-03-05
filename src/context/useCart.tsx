@@ -133,10 +133,13 @@ export function CartProvider(props: { children: JSX.Element }) {
 
   const logout = () => {
     localStorage.removeItem("access_token");
-    getUser();
-    addCarts(cartItems);
-    router.push("/");
+    // router.replace("/");
+    global && window.location.reload();
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <CartContext.Provider

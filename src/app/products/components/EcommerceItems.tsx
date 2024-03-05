@@ -106,100 +106,100 @@ const ecommerceItems: Filter[] = [
   //     },
   //   ],
   // },
-  {
-    type: FilterTypeEnum.CheckboxGroup,
-    title: "Category",
-    options: [
-      {
-        title: "Sneakers",
-        value: "sneakers",
-      },
-      {
-        title: "Boots",
-        value: "boots",
-      },
-      {
-        title: "Sandals",
-        value: "sandals",
-      },
-      {
-        title: "Slippers",
-        value: "slippers",
-      },
-      {
-        title: "Basketball",
-        value: "basketball",
-      },
-      {
-        title: "Running",
-        value: "running",
-      },
-      {
-        title: "Football",
-        value: "football",
-      },
-      {
-        title: "Paddle",
-        value: "paddle",
-      },
-      {
-        title: "Tennis",
-        value: "tennis",
-      },
-      {
-        title: "Golf",
-        value: "golf",
-      },
-    ],
-  },
+  // {
+  //   type: FilterTypeEnum.CheckboxGroup,
+  //   title: "Category",
+  //   options: [
+  //     {
+  //       title: "Sneakers",
+  //       value: "sneakers",
+  //     },
+  //     {
+  //       title: "Boots",
+  //       value: "boots",
+  //     },
+  //     {
+  //       title: "Sandals",
+  //       value: "sandals",
+  //     },
+  //     {
+  //       title: "Slippers",
+  //       value: "slippers",
+  //     },
+  //     {
+  //       title: "Basketball",
+  //       value: "basketball",
+  //     },
+  //     {
+  //       title: "Running",
+  //       value: "running",
+  //     },
+  //     {
+  //       title: "Football",
+  //       value: "football",
+  //     },
+  //     {
+  //       title: "Paddle",
+  //       value: "paddle",
+  //     },
+  //     {
+  //       title: "Tennis",
+  //       value: "tennis",
+  //     },
+  //     {
+  //       title: "Golf",
+  //       value: "golf",
+  //     },
+  //   ],
+  // },
 
-  {
-    type: FilterTypeEnum.CheckboxGroup,
-    title: "Brand",
-    defaultOpen: true,
-    options: [
-      {
-        title: "Nike",
-        value: "nike",
-      },
-      {
-        title: "Adidas",
-        value: "adidas",
-      },
-      {
-        title: "Puma",
-        value: "puma",
-      },
-      {
-        title: "Reebok",
-        value: "reebok",
-      },
-      {
-        title: "Vans",
-        value: "vans",
-      },
-      {
-        title: "New Balance",
-        value: "new_balance",
-      },
-      {
-        title: "Converse",
-        value: "converse",
-      },
-      {
-        title: "Asics",
-        value: "asics",
-      },
-      {
-        title: "Under Armour",
-        value: "under_armour",
-      },
-      {
-        title: "Jordan",
-        value: "jordan",
-      },
-    ],
-  },
+  // {
+  //   type: FilterTypeEnum.CheckboxGroup,
+  //   title: "Brand",
+  //   defaultOpen: true,
+  //   options: [
+  //     {
+  //       title: "Nike",
+  //       value: "nike",
+  //     },
+  //     {
+  //       title: "Adidas",
+  //       value: "adidas",
+  //     },
+  //     {
+  //       title: "Puma",
+  //       value: "puma",
+  //     },
+  //     {
+  //       title: "Reebok",
+  //       value: "reebok",
+  //     },
+  //     {
+  //       title: "Vans",
+  //       value: "vans",
+  //     },
+  //     {
+  //       title: "New Balance",
+  //       value: "new_balance",
+  //     },
+  //     {
+  //       title: "Converse",
+  //       value: "converse",
+  //     },
+  //     {
+  //       title: "Asics",
+  //       value: "asics",
+  //     },
+  //     {
+  //       title: "Under Armour",
+  //       value: "under_armour",
+  //     },
+  //     {
+  //       title: "Jordan",
+  //       value: "jordan",
+  //     },
+  //   ],
+  // },
 ];
 
 export default ecommerceItems;

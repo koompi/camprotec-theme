@@ -44,9 +44,7 @@ const LatestProducts = () => {
               )
               .map((res: ProductType, idx: number) => {
                 return (
-                  <React.Fragment key={idx}>
-                    <ProductCard product={res} loading={loading} />
-                  </React.Fragment>
+                  <ProductCard key={idx} product={res} loading={loading} />
                 );
               })}
           </div>
