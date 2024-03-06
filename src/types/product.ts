@@ -32,6 +32,7 @@ export type ProductType = {
   sell: number;
   desc: string;
   detail: string;
+  createdAt: string;
 };
 
 // dynamic types

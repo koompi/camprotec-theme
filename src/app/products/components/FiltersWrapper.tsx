@@ -15,7 +15,6 @@ import {
   Tab,
   Tabs,
 } from "@nextui-org/react";
-import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 
 import { cn } from "@/utils/cn";
@@ -56,6 +55,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
     const search = searchParams.get("search") || null;
     const cats = searchParams.get("category") || null;
     const sub = searchParams.get("sub_category") || null;
+    const sortParam = searchParams.get("sort") || null;
 
     const [selected, setSelected] = useState(sub);
 
@@ -225,9 +225,9 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                     title={<span className="text-sm">{cat?.title?.en}</span>}
                     onPress={() => {
                       router.push(
-                        `?search${search ? search : null}=&category=${
-                          cat?.id ? cat?.id : null
-                        }`
+                        `?search${search ? search : ""}=&category=${
+                          cat?.id ? cat?.id : ""
+                        }&sort=${sortParam ? sortParam : ""}`
                       );
                     }}
                   >
@@ -240,9 +240,11 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                       onValueChange={(value) => {
                         setSelected(value),
                           router.push(
-                            `?search${search ? search : null}=&category=${
-                              cat?.id ? cat?.id : null
-                            }&sub_category${value ? value : null}`
+                            `?search${search ? search : ""}=&category=${
+                              cat?.id ? cat?.id : ""
+                            }&sub_category=${value ? value : ""}&sort=${
+                              sortParam ? sortParam : ""
+                            }`
                           );
                       }}
                     >

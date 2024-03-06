@@ -40,6 +40,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
     <Link href={`/products/${props?.product?.slug}`} className="mt-3">
       <Card isPressable shadow="sm">
         <CardBody className="px-3 pb-1">
+          {/* <p>{props.product?.createdAt}</p> */}
           {/* {!props?.loading && (
             <Tooltip
               showArrow

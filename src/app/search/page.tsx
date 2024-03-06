@@ -5,11 +5,12 @@ import { Button, Input, Link } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { GLOBAL_PRODUCT_FILTERING } from "@/graphql/product";
 import { useQuery } from "@apollo/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CATEGORIES } from "@/graphql/category";
 import { ProductType } from "@/types/product";
 import { Category } from "@/types/category";
 import ProductCard from "../components/ProductCard";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Range {
   end: number;
@@ -27,9 +28,18 @@ interface ProductFilter {
   range?: Range | null;
 }
 
+interface FormSearch {
+  search: string;
+}
+
 const SearchPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || null;
+  const cat = searchParams.get("category") || null;
+  const sub = searchParams.get("sub_category") || null;
 
+  const { register, handleSubmit } = useForm<FormSearch>();
   const [value, setValue] = useState("");
 
   const [filtering, setFiltering] = useState<ProductFilter>({
@@ -65,22 +75,34 @@ const SearchPage = () => {
     return null;
   }
 
+  const onSubmit: SubmitHandler<FormSearch> = () => {
+    router.push(`/products?search=${value ? value : ""}&category=`);
+  };
+
   return (
     <section className="container mx-auto px-2 sm:px-2 lg:px-6 py-2">
-      <div className="flex gap-2 items-center">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex gap-2 items-center"
+      >
         <Input
-          radius="lg"
-          variant="bordered"
           color="primary"
+          {...(register("search"), { required: true })}
+          radius="lg"
           size="sm"
-          placeholder="Find your product ..."
-          startContent={<Icon icon="lucide:search" />}
-          isRequired
           type="search"
-          value={value}
+          variant="bordered"
+          placeholder="Find your product here ..."
+          className="max-w-xl w-full"
+          startContent={<Icon icon="fe:search" fontSize={21} />}
+          onClear={() => {
+            setValue(""), router.push(`?search=&category=`);
+          }}
+          isClearable
+          isRequired
+          value={value as string}
           onValueChange={(value) => {
-            setValue(value),
-              router.push(`/products?search=${value ? value : ""}`);
+            setValue(value);
           }}
         />
         <Button
@@ -93,7 +115,7 @@ const SearchPage = () => {
         >
           <Icon icon="lucide:search" />
         </Button>
-      </div>
+      </form>
       {limitCats?.length > 0 && (
         <div className="my-auto flex max-w-lg flex-col gap-2">
           <h3 className="text-lg font-bold leading-8 mt-3">Popular Search</h3>

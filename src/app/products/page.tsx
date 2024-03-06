@@ -13,6 +13,7 @@ import FiltersWrapper from "./components/FiltersWrapper";
 import SidebarDrawer from "./components/SidebarDrawer";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { SearchProduct } from "./components/Search";
 
 interface Range {
   end: number;
@@ -41,14 +42,11 @@ const ProductsPage = () => {
   const sub = searchParams.get("sub_category") || null;
   const page = searchParams.get("page") || null;
   const size = searchParams.get("size") || null;
+  const sortParam = searchParams.get("sort") || null;
   const router = useRouter();
-  const { register, handleSubmit } = useForm<FormSearch>();
-
+  const { register, handleSubmit, watch } = useForm<FormSearch>();
   const [value, setValue] = useState<string | null>(search);
-
-  const onSubmit: SubmitHandler<FormSearch> = () => {
-    router.push(`?search=${value ? value : ""}&category=${cat ? cat : null}`);
-  };
+  const [sortType, setSortType] = useState<string>("brand");
 
   const [limit, setLimit] = useState(10);
   const [pageSize, setPageSize] = useState<{ skip: number; size: number }>({
@@ -82,16 +80,20 @@ const ProductsPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (search || cat || sub) {
-      refetch();
-    }
-  }, [cat, refetch, search, sub]);
+  const onSubmit: SubmitHandler<FormSearch> = () => {
+    // setValue(watch("search"));
+    router.push(
+      `?search=${watch("search") ? watch("search") : ""}&category=${
+        cat ? cat : ""
+      }&sub_category=${sub ? sub : ""}&sort=${sortParam ? sortParam : ""}`
+    );
+  };
 
-  // const defaultSort = () =>
-  //   storeGlobalFilterProducts()?.storeGlobalFilterProducts?.sort(
-  //     (a: ProductType, b: ProductType) => (a.brand > b.brand ? 1 : -1)
-  //   );
+  // useEffect(() => {
+  //   if (cat || sub) {
+  //     refetch();
+  //   }
+  // }, [cat, refetch, sub]);
 
   const mostPopularSort = (): ProductType[] => {
     if (!data?.storeGlobalFilterProducts) {
@@ -101,6 +103,85 @@ const ProductsPage = () => {
     return [...data.storeGlobalFilterProducts].sort(
       (a: ProductType, b: ProductType) => (a.sell > b.sell ? -1 : 1)
     );
+  };
+
+  const brandSort = (): ProductType[] => {
+    if (!data?.storeGlobalFilterProducts) {
+      return [];
+    }
+    return [...data.storeGlobalFilterProducts].sort(
+      (a: ProductType, b: ProductType) => (a.brand > b.brand ? -1 : 1)
+    );
+  };
+
+  const topRated = (): ProductType[] => {
+    if (!data?.storeGlobalFilterProducts) {
+      return [];
+    }
+    return [...data.storeGlobalFilterProducts].sort(
+      (a: ProductType, b: ProductType) => (a.rating > b.rating ? -1 : 1)
+    );
+  };
+
+  const newestSort = (): ProductType[] => {
+    if (!data?.storeGlobalFilterProducts) {
+      return [];
+    }
+    return [...data.storeGlobalFilterProducts].sort(
+      (a: ProductType, b: ProductType) => (a.createdAt > b.createdAt ? -1 : 1)
+    );
+  };
+
+  const ProductSortCompoent = () => {
+    if (sortParam === "most_popular") {
+      return (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
+          {mostPopularSort().map((res: ProductType, idx: number) => {
+            return <ProductCard key={idx} product={res} loading={loading} />;
+          })}
+        </div>
+      );
+    }
+    if (sortParam === "newest") {
+      return (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
+          {newestSort().map((res: ProductType, idx: number) => {
+            return <ProductCard key={idx} product={res} loading={false} />;
+          })}
+        </div>
+      );
+    }
+    if (sortParam === "top_rated") {
+      return (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
+          {topRated().map((res: ProductType, idx: number) => {
+            return <ProductCard key={idx} product={res} loading={false} />;
+          })}
+        </div>
+      );
+    }
+    if (
+      sortParam === "price_low_to_high" ||
+      sortParam === "price_high_to_low"
+    ) {
+      return (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
+          {data?.storeGlobalFilterProducts?.map(
+            (res: ProductType, idx: number) => {
+              return <ProductCard key={idx} product={res} loading={false} />;
+            }
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
+          {brandSort().map((res: ProductType, idx: number) => {
+            return <ProductCard key={idx} product={res} loading={false} />;
+          })}
+        </div>
+      );
+    }
   };
 
   return (
@@ -139,33 +220,17 @@ const ProductsPage = () => {
                   Filters
                 </Button>
                 <div className="hidden items-center gap-1 md:flex">
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <Input
-                      color="primary"
-                      {...(register("search"), { required: true })}
-                      radius="lg"
-                      size="sm"
-                      type="search"
-                      variant="bordered"
-                      placeholder="Find your product here ..."
-                      className="max-w-xl w-full"
-                      startContent={<Icon icon="fe:search" fontSize={21} />}
-                      onClear={() => {
-                        setValue(""),
-                          router.push(`?search=&category=${cat ? cat : null}`);
-                      }}
-                      isClearable
-                      isRequired
-                      value={value as string}
-                      onValueChange={(value) => {
-                        setValue(value);
-                      }}
-                    />
-                    <input type="submit" className="hidden" />
-                  </form>
+                  <SearchProduct
+                    routeBack={`?search=&category=${
+                      cat ? cat : ""
+                    }&sub_category=${sub ? sub : ""}&sort=${
+                      sortParam ? sortParam : ""
+                    }`}
+                  />
                 </div>
               </div>
               <Select
+                selectionMode="single"
                 aria-label="Sort by"
                 classNames={{
                   base: "items-center justify-end",
@@ -173,12 +238,40 @@ const ProductsPage = () => {
                     "hidden lg:block text-tiny whitespace-nowrap md:text-small text-default-400",
                   mainWrapper: "max-w-xs",
                 }}
-                defaultSelectedKeys={["most_popular"]}
                 label="Sort by"
                 labelPlacement="outside-left"
                 placeholder="Select an option"
                 variant="bordered"
+                selectedKeys={[sortParam as string]}
+                onChange={(e) => {
+                  // setSortType(e.target.value),
+                  router.push(
+                    `?search=${search ? search : ""}&category=${
+                      cat ? cat : ""
+                    }&sub_category=${sub ? sub : ""}&sort=${
+                      e.target.value ? e.target.value : ""
+                    }`
+                  );
+
+                  if (e.target.value === "price_low_to_high") {
+                    setFiltering({
+                      ...filtering,
+                      status: "price",
+                      filter: { sort: 1 },
+                    });
+                  }
+                  if (e.target.value === "price_high_to_low") {
+                    setFiltering({
+                      ...filtering,
+                      status: "price",
+                      filter: { sort: -1 },
+                    });
+                  }
+                }}
               >
+                <SelectItem key="brand" value="brand">
+                  Brand
+                </SelectItem>
                 <SelectItem key="newest" value="newest">
                   Newest
                 </SelectItem>
@@ -198,13 +291,7 @@ const ProductsPage = () => {
             </div>
           </header>
           <main className="mt-4 h-full w-full overflow-visible px-1">
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-              {mostPopularSort().map((res: ProductType, idx: number) => {
-                return (
-                  <ProductCard key={idx} product={res} loading={loading} />
-                );
-              })}
-            </div>
+            <ProductSortCompoent />
           </main>
         </div>
       </div>

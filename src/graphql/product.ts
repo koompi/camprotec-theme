@@ -104,6 +104,7 @@ export const GLOBAL_PRODUCT_FILTERING = gql`
       filter: $filter
     ) {
       id
+      createdAt
       thumbnail
       title
       brand
