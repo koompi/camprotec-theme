@@ -4,6 +4,7 @@ import Banner from "./components/Banner";
 import LatestProducts from "./components/LatestProducts";
 import Categories from "./components/Categories";
 import About from "./components/About";
+// import { Toaster } from "sonner";
 
 export default function Home() {
   return (

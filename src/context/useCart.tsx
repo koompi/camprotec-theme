@@ -7,17 +7,18 @@ import React, {
   createContext,
   JSX,
 } from "react";
+import { Toaster, toast } from "sonner";
 
-import { useAuth } from "./useAuth";
-import { useRouter } from "next/navigation";
+// import { useAuth } from "./useAuth";
+// import { useRouter } from "next/navigation";
 import { CartContextType, CartItem } from "@/types/global";
 import { ItemProduct } from "@/types/product";
 
 export const CartContext = createContext({});
 
 export function CartProvider(props: { children: JSX.Element }) {
-  const router = useRouter();
-  const { getUser } = useAuth();
+  // const router = useRouter();
+  // const { getUser } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -127,6 +128,8 @@ export function CartProvider(props: { children: JSX.Element }) {
   };
 
   const addCarts = (items: CartItem[]) => {
+    toast.success("The product is added into the cart!");
+
     setCartItems(items.concat(cartItems));
     updateLocalStorage();
   };
@@ -154,6 +157,7 @@ export function CartProvider(props: { children: JSX.Element }) {
         logout: logout,
       }}
     >
+      <Toaster position="bottom-right" closeButton />
       {props.children}
     </CartContext.Provider>
   );

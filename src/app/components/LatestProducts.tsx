@@ -5,7 +5,6 @@ import ProductCard from "./ProductCard";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_PRODUCTS } from "@/graphql/product";
 import { ProductType } from "@/types/product";
-import { Toaster } from "sonner";
 
 import ProductSkeleton from "./ProductSkeleton";
 import { Button } from "@nextui-org/react";
@@ -31,7 +30,6 @@ const LatestProducts = () => {
 
   return (
     <>
-      <Toaster position="bottom-right" closeButton />
       {items.length > 0 && (
         <div className="container mx-auto">
           <h1 className="text-primary font-extrabold text-lg sm:text-lg lg:text-4xl text-center md:py-12 py-8">

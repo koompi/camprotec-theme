@@ -209,9 +209,9 @@ const CheckoutPage = () => {
   }
 
   return (
-    <section className="container mx-auto px-6 py-9 flex min-h-[calc(100vh_-_60px)]  w-full gap-8">
+    <section className="container mx-auto px-6 py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh_-_60px)]  w-full gap-8">
       {/* Left */}
-      <div className="w-full flex-none py-4 lg:w-[44%]">
+      <div className="col-span-1 w-full flex-none">
         <div className="flex h-full flex-1 flex-col p-4">
           <div>
             <Button
@@ -225,7 +225,6 @@ const CheckoutPage = () => {
               Go back
             </Button>
           </div>
-
           <AnimatePresence custom={direction} initial={false} mode="wait">
             <motion.form
               key={page}
@@ -253,7 +252,6 @@ const CheckoutPage = () => {
               </Button>
             </motion.form>
           </AnimatePresence>
-
           <div className="mt-auto flex w-full justify-between gap-8 pb-8 pt-4">
             <div className="flex w-full flex-col items-start gap-2">
               <p className="text-small font-medium">Review</p>
@@ -286,15 +284,14 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      {/* Right */}
-      <div className="relative hidden w-full overflow-hidden rounded-medium shadow-small lg:block">
+      <div className="col-span-1 h-[80dvh] sticky hidden top-28 w-full overflow-hidden rounded-medium shadow-small lg:block">
         {/* Top Shadow */}
         <div className="absolute top-0 z-10 h-32 w-full rounded-medium bg-gradient-to-b from-black/80 to-transparent" />
         {/* Bottom Shadow */}
         <div className="absolute bottom-0 z-10 h-32 w-full rounded-medium bg-gradient-to-b from-transparent to-black/80" />
 
         {/* Content */}
-        <div className="absolute top-10 flex w-full items-start justify-between px-10">
+        <div className="absolute top-10 z-10 flex w-full items-start justify-between px-10">
           <h2 className="text-2xl font-medium text-white/70 [text-shadow:_0_2px_10px_rgb(0_0_0_/_20%)]">
             The future of footwear is here.
           </h2>
