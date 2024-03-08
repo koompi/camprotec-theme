@@ -19,3 +19,15 @@
     text-wrap: balance;
   }
 }
+
+.swiper {
+  width: 100%;
+  height: 80dvh;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}

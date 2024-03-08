@@ -10,6 +10,10 @@ import MobileNavigator from "./components/layouts/MobileNavigator";
 import { CartProvider } from "@/context/useCart";
 import { AppProvider } from "@/context/useAuth";
 
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-creative";
+
 const inter = Inter({ subsets: ["latin"] });
 // const poppins = Poppins({
 //   subsets: ["latin"],

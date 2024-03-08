@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { AnimatePresence, motion } from "framer-motion";
-
+import RecommendProducts from "./components/RecommendProducts";
 import { VisaIcon, MasterCardIcon, PayPalIcon } from "./components/Providers";
 
 import ShippingForm from "./components/ShippingForm";
@@ -21,8 +21,11 @@ import OrderSummary from "./components/OrderSummary";
 import PaymentForm from "./components/PaymentForm";
 import PaymentMethodRadio from "./components/PaymentMethodRadio";
 import { useCart } from "@/context/useCart";
+import { useAuth } from "@/context/useAuth";
 
 const CheckoutPage = () => {
+  const { user } = useAuth();
+
   const { cartItems, loading } = useCart();
 
   const [[page, direction], setPage] = React.useState([0, 0]);
@@ -242,14 +245,26 @@ const CheckoutPage = () => {
             >
               <h1 className="text-2xl font-medium">{stepTitle}</h1>
               {stepsContent}
-              <Button
-                fullWidth
-                className="mt-8 bg-foreground text-background"
-                size="lg"
-                onPress={() => paginate(1)}
-              >
-                {ctaLabel}
-              </Button>
+              {user ? (
+                <Button
+                  fullWidth
+                  className="mt-8 bg-foreground text-background"
+                  size="lg"
+                  onPress={() => paginate(1)}
+                >
+                  {ctaLabel}
+                </Button>
+              ) : (
+                <Button
+                  as={Link}
+                  href="https://backend.riverbase.org/sso/store"
+                  fullWidth
+                  className="mt-8 bg-foreground text-background"
+                  size="lg"
+                >
+                  Login
+                </Button>
+              )}
             </motion.form>
           </AnimatePresence>
           <div className="mt-auto flex w-full justify-between gap-8 pb-8 pt-4">
@@ -284,61 +299,7 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      <div className="col-span-1 h-[80dvh] sticky hidden top-28 w-full overflow-hidden rounded-medium shadow-small lg:block">
-        {/* Top Shadow */}
-        <div className="absolute top-0 z-10 h-32 w-full rounded-medium bg-gradient-to-b from-black/80 to-transparent" />
-        {/* Bottom Shadow */}
-        <div className="absolute bottom-0 z-10 h-32 w-full rounded-medium bg-gradient-to-b from-transparent to-black/80" />
-
-        {/* Content */}
-        <div className="absolute top-10 z-10 flex w-full items-start justify-between px-10">
-          <h2 className="text-2xl font-medium text-white/70 [text-shadow:_0_2px_10px_rgb(0_0_0_/_20%)]">
-            The future of footwear is here.
-          </h2>
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Icon
-                  key={i}
-                  className="text-white/80"
-                  icon="solar:star-bold"
-                  width={16}
-                />
-              ))}
-            </div>
-            <Link
-              className="text-white/60"
-              href="#"
-              size="sm"
-              underline="always"
-            >
-              120 reviews
-            </Link>
-          </div>
-        </div>
-        <Image
-          removeWrapper
-          alt="Nike Adapt BB 2.0"
-          className="absolute inset-0 z-0 h-full w-full rounded-none object-cover"
-          height="100%"
-          src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/shoes.jpg"
-        />
-        <div className="absolute inset-x-4 bottom-4 z-10 flex items-center justify-between rounded-medium bg-background/10 p-8 backdrop-blur-md backdrop-saturate-150 dark:bg-default-100/50 ">
-          <div className="flex flex-col gap-1">
-            <h2 className="left-10 z-10 text-2xl font-medium text-white/90">
-              Nike Adapt BB 2.0
-            </h2>
-            <p className="left-10 z-10 text-white/80">$399.99</p>
-          </div>
-          <Button
-            className="border-white/40 pl-3 text-white"
-            startContent={<Icon icon="lucide:plus" width={24} />}
-            variant="bordered"
-          >
-            Add to cart
-          </Button>
-        </div>
-      </div>
+      <RecommendProducts />
     </section>
   );
 };

@@ -14,7 +14,7 @@ export default function Token() {
       user_store_login(param.token).then((_) => {
         localStorage.setItem("access_token", param.token);
         // router.back();
-        global && window.location.replace("/");
+        global && window.location.replace("/cart");
       });
     }
     return;

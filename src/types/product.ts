@@ -15,6 +15,7 @@ export type ItemProduct = {
   price: number;
   currency: "KHR" | "USD";
   preview: string;
+  slug?: string;
 };
 export type ProductType = {
   id: string;

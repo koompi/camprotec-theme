@@ -7,6 +7,7 @@ import { Divider, Input, Slider } from "@nextui-org/react";
 
 import { cn } from "@/utils/cn";
 import { RangeFilter, RangeValue } from "@/types/filterTypes";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export type PriceSliderAnimation = "opacity" | "height";
 
@@ -22,7 +23,7 @@ function clampValue(value: number, min: number, max: number) {
 function scaleValue(
   value: number,
   fromRange: RangeValue,
-  toRange: RangeValue = [0, 100]
+  toRange: RangeValue = [0, 1000]
 ) {
   const [fromMin, fromMax] = fromRange;
   const [toMin, toMax] = toRange;
@@ -78,8 +79,17 @@ const PriceSliderPip: React.FC<PriceSliderPipProps> = ({
 
 const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
   ({ range, animation, className, ...props }, ref) => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const search = searchParams.get("search") || null;
+    const cat = searchParams.get("category") || null;
+    const sub = searchParams.get("sub_category") || null;
+    const sortParam = searchParams.get("sort") || null;
+    const min = searchParams.get("min_price") || null;
+    const max = searchParams.get("max_price") || null;
+
     const defaultValue = React.useMemo<RangeValue>(
-      () => range?.defaultValue || [0, 1000],
+      () => range?.defaultValue || [0, 5000],
       [range?.defaultValue]
     );
 
@@ -122,11 +132,29 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
 
         if (!isNaN(newValue)) {
           const clampedValue = clampValue(newValue, minValue, value[1]);
-
-          setValue([clampedValue, value[1]]);
+          setValue([clampedValue, value[1]]),
+            router.push(
+              `?search=${search ? search : ""}&category=${
+                cat ? cat : ""
+              }&sub_category=${sub ? sub : ""}&sort=${
+                sortParam ? sortParam : ""
+              }&min_price=${clampedValue ? clampedValue : ""}&max_price=${
+                max ? max : ""
+              }`
+            );
         }
       },
-      [value, range?.min, defaultValue]
+      [
+        range?.min,
+        defaultValue,
+        value,
+        router,
+        search,
+        cat,
+        sub,
+        sortParam,
+        max,
+      ]
     );
 
     const onMaxInputValueChange = React.useCallback(
@@ -135,10 +163,29 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
         const maxValue = range?.max ?? defaultValue[1];
 
         if (!isNaN(newValue) && newValue <= maxValue) {
-          setValue([value[0], newValue]);
+          setValue([value[0], newValue]),
+            router.push(
+              `?search=${search ? search : ""}&category=${
+                cat ? cat : ""
+              }&sub_category=${sub ? sub : ""}&sort=${
+                sortParam ? sortParam : ""
+              }&min_price=${min ? min : ""}&max_price=${
+                newValue ? newValue : ""
+              }`
+            );
         }
       },
-      [value, range?.max, defaultValue]
+      [
+        range?.max,
+        defaultValue,
+        value,
+        router,
+        search,
+        cat,
+        sub,
+        sortParam,
+        min,
+      ]
     );
 
     return (
@@ -157,7 +204,18 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
             step={range?.step}
             value={value}
             onChange={(value) => {
-              setValue(value as RangeValue);
+              let price = value as number[];
+
+              setValue(value as RangeValue),
+                router.push(
+                  `?search=${search ? search : ""}&category=${
+                    cat ? cat : ""
+                  }&sub_category=${sub ? sub : ""}&sort=${
+                    sub ? sub : ""
+                  }&min_price=${price[0] ? price[0] : ""}&max_price=${
+                    price[1] ? price[1] : ""
+                  }`
+                );
             }}
           />
         </div>
@@ -167,8 +225,9 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
             labelPlacement="outside"
             startContent={<p className="text-default-400">$</p>}
             type="number"
-            value={`${value[0]}`}
+            value={min as string}
             onValueChange={onMinInputValueChange}
+            step={100}
           />
           <Divider className="mx-2 w-2" />
           <Input
@@ -176,8 +235,9 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
             labelPlacement="outside"
             startContent={<p className="text-default-400">$</p>}
             type="number"
-            value={`${value[1]}`}
+            value={max as string}
             onValueChange={onMaxInputValueChange}
+            step={100}
           />
         </div>
       </div>

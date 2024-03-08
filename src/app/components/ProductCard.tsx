@@ -138,7 +138,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
 
                 <div className="mt-1 flex justify-between items-center">
                   <span className="text-primary lg:text-xl text-sm font-bold">
-                    {formatToUSD(parseInt(props.product.price.toString()))}
+                    {formatToUSD(props.product.price)}
                   </span>
                   <Button
                     variant="flat"
