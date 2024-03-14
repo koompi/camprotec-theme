@@ -5,5 +5,5 @@ export type UserType = {
   email?: string;
   phone_number: string;
   avatar?: string;
-  _id: string;
+  id: string;
 };

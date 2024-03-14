@@ -298,7 +298,6 @@ const CheckoutPage = () => {
           </div>
         </div>
       </div>
-
       <RecommendProducts />
     </section>
   );

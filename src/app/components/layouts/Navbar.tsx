@@ -110,15 +110,51 @@ const NavbarLayout = () => {
                   <p className="font-bold">Signed in as</p>
                   <p className="font-bold">{user?.email}</p>
                 </DropdownItem>
-                <DropdownItem key="settings">Settings</DropdownItem>
-                <DropdownItem key="address">Address</DropdownItem>
-                <DropdownItem key="orders">Orders</DropdownItem>
-                <DropdownItem key="wallet">Wallet</DropdownItem>
+                <DropdownItem
+                  key="settings"
+                  href="/settings"
+                  startContent={
+                    <Icon icon="solar:settings-outline" fontSize={21} />
+                  }
+                >
+                  Settings
+                </DropdownItem>
+                <DropdownItem
+                  key="settings"
+                  href="/locations"
+                  startContent={
+                    <Icon icon="solar:streets-map-point-broken" fontSize={21} />
+                  }
+                >
+                  My Location
+                </DropdownItem>
+                <DropdownItem
+                  key="orders"
+                  startContent={
+                    <Icon
+                      icon="solar:cart-large-minimalistic-linear"
+                      fontSize={21}
+                    />
+                  }
+                >
+                  Orders
+                </DropdownItem>
+                <DropdownItem
+                  key="wallet"
+                  startContent={
+                    <Icon icon="solar:wallet-linear" fontSize={21} />
+                  }
+                >
+                  Wallet
+                </DropdownItem>
 
                 <DropdownItem
                   key="logout"
                   color="danger"
                   onPress={() => logout()}
+                  startContent={
+                    <Icon icon="solar:logout-outline" fontSize={21} />
+                  }
                 >
                   Log Out
                 </DropdownItem>

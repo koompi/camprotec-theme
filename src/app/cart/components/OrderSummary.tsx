@@ -42,21 +42,7 @@ const OrderSummary = React.forwardRef<HTMLDivElement, OrderSummaryProps>(
             <OrderSummaryItem key={item.product?.id} {...item} />
           ))}
         </ul>
-        <div>
-          {/* <div className="mb-4 mt-6 flex items-end gap-2">
-            <Input
-              classNames={{
-                label: "text-default-700",
-                inputWrapper: "bg-background",
-              }}
-              color="primary"
-              label="Coupon code"
-              labelPlacement="outside"
-              placeholder="Enter coupon code"
-              variant="bordered"
-            />
-            <Button variant="flat">Apply</Button>
-          </div> */}
+        {/* <div>
           <dl className="flex flex-col gap-4 py-4">
             <div className="flex justify-between">
               <dt className="text-small text-default-500">Subtotal</dt>
@@ -76,13 +62,7 @@ const OrderSummary = React.forwardRef<HTMLDivElement, OrderSummaryProps>(
                 $0.00
               </dd>
             </div>
-            {/* <div className="flex justify-between">
-              <dt className="text-small text-default-500">Discount</dt>
-              <dd className="text-small font-semibold text-success">
-                {" "}
-                - $10.99
-              </dd>
-            </div> */}
+
             <Divider />
             <div className="flex justify-between">
               <dt className="text-small font-semibold text-default-500">
@@ -93,7 +73,7 @@ const OrderSummary = React.forwardRef<HTMLDivElement, OrderSummaryProps>(
               </dd>
             </div>
           </dl>
-        </div>
+        </div> */}
       </div>
     );
   }

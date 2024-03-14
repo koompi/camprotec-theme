@@ -1,11 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const CREATE_DELIVERY = gql`
-  mutation ($input: InputDelivery!) {
-    storeCreateDelivery(input: $input)
-  }
-`;
-
 export const DELIVERIES = gql`
   query {
     deliveries {
@@ -36,6 +30,22 @@ export const DELIVERIES_EXPRESS = gql`
       currency
       express
       phoneNumber
+    }
+  }
+`;
+
+export const CUSTOMER_ADDRESS = gql`
+  query {
+    storeAddress {
+      addressName
+      firstName
+      id
+      lastName
+      lat
+      lng
+      ownerId
+      phoneNumber
+      photos
     }
   }
 `;
