@@ -40,8 +40,6 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
     const min = searchParams.get("min_price") || null;
     const max = searchParams.get("max_price") || null;
 
-    console.log(min, max);
-
     const [selected, setSelected] = useState(sub);
 
     const { data, loading } = useQuery(CATEGORIES);

@@ -51,16 +51,16 @@ const MyLocation = () => {
         </DropdownMenu>
       </Dropdown>
       <CardBody className="px-4">
-        <div className="grid grid-cols-4 space-x-6 items-center justify-center">
+        <div className="grid grid-cols-3 space-x-6 items-center justify-center">
           <div className="relative col-span-1">
             <Image
               alt="Album cover"
               className="object-cover w-full h-full"
               shadow="none"
-              src="/images/empty-cart.svg"
+              src="/images/banner.avif"
             />
           </div>
-          <div className="flex flex-col col-span-3">
+          <div className="flex flex-col col-span-2">
             <div className="flex justify-between items-start">
               <div className="flex flex-col gap-0">
                 <Chip color="primary" variant="flat" size="sm">

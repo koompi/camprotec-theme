@@ -17,6 +17,8 @@ import { useAuth } from "@/context/useAuth";
 export default function Component() {
   const { user } = useAuth();
 
+  console.log("user", user);
+
   return (
     <div className="flex items-center justify-center py-12">
       <Card
@@ -68,6 +70,7 @@ export default function Component() {
             label="Email"
             labelPlacement="outside"
             placeholder="Enter email"
+            defaultValue={user?.email}
           />
           {/* Phone Number */}
           <Input
@@ -80,12 +83,14 @@ export default function Component() {
             label="First Name"
             labelPlacement="outside"
             placeholder="Enter first name"
+            defaultValue={user?.first_name}
           />
           {/* Last Name */}
           <Input
             label="Last Name"
             labelPlacement="outside"
             placeholder="Enter last name"
+            defaultValue={user?.last_name}
           />
         </CardBody>
 

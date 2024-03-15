@@ -4,7 +4,7 @@ import React, { FC, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCreative, Autoplay } from "swiper/modules";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Button, Image, Link } from "@nextui-org/react";
+import { Button, Image } from "@nextui-org/react";
 import { ItemProduct, ProductType } from "@/types/product";
 import { useQuery } from "@apollo/client";
 import { GLOBAL_PRODUCT_FILTERING } from "@/graphql/product";
@@ -52,7 +52,8 @@ const RecommendProducts = () => {
           disableOnInteraction: false,
         }}
         modules={[Autoplay, EffectCreative]}
-        className="mySwiper3"
+        className="mySwiper3 rounded-xl"
+        loop={true}
       >
         {data?.storeGlobalFilterProducts
           ?.slice(0, 10)

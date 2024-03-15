@@ -1,16 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button, Image, RadioGroup, ScrollShadow } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
-
 import { cn } from "@/utils/cn";
 
 import RatingRadioGroup from "./RatingRadioGroup";
 import TagGroupRadioItem from "./TagGroupRadioItem";
-import { ProductType, Variants } from "@/types/product";
+import { ItemProduct, ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
 import { LexicalViewer } from "@/editor/LexicalViewer";
+import { useCart } from "@/context/useCart";
+import { toast } from "sonner";
+import { CartItem } from "@/types/global";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -39,6 +41,20 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     ref
   ) => {
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
+    const { addToCart, addCarts } = useCart();
+    const [items, setItems] = useState<CartItem[]>([]);
+
+    const handleAddToCart = (product: ItemProduct) => {
+      let p: ItemProduct = {
+        id: product?.id,
+        variantId: null,
+        name: product?.name,
+        price: product?.price,
+        currency: product?.currency,
+        preview: product?.preview,
+      };
+      addToCart(p, false);
+    };
 
     return (
       <div
@@ -149,6 +165,23 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               color="primary"
               size="lg"
               startContent={<Icon icon="solar:cart-large-2-bold" width={24} />}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const p: ItemProduct = {
+                  id: props?.id,
+                  variantId: null,
+                  name: title,
+                  price: price,
+                  currency: props?.currency,
+                  preview: props?.thumbnail,
+                };
+
+                variants.length > 0
+                  ? (addCarts(items), setItems([]))
+                  : handleAddToCart(p);
+                toast.success("The product is added into the cart!");
+              }}
             >
               Add to cart
             </Button>
@@ -157,7 +190,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
               <LexicalViewer data={detail} />
-              {/* {JSON.stringify(detail)} */}
             </p>
           </div>
         </div>

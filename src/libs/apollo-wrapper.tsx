@@ -14,7 +14,6 @@ const GRAPHQL_ENDPOINT =
 
 const token =
   typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-console.log("token-1", token);
 
 function makeClient() {
   const httpLink = new HttpLink({
