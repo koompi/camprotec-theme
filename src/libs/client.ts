@@ -2,7 +2,7 @@
 
 const GRAPHQL_ENDPOINT =
   process.env.GRAPHQL_ENDPOINT ||
-  `${process.env.NEXT_PUBLIC_RVB_BACKEND}/graphql/private?store_id=${process.env.NEXT_PUBLIC_ID_STORE}`;
+  `${process.env.NEXT_PUBLIC_BACKEND}/graphql/public?store_id=${process.env.NEXT_PUBLIC_ID_STORE}`;
 
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";

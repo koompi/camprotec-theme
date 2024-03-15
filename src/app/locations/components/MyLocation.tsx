@@ -15,6 +15,8 @@ import React from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 const MyLocation = () => {
+
+  
   return (
     <Card
       isBlurred

@@ -8,13 +8,12 @@ import {
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 
-const GRAPHQL_ENDPOINT =
-  process.env.GRAPHQL_ENDPOINT ||
-  `${process.env.NEXT_PUBLIC_BACKEND}/graphql/public?store_id=${process.env.NEXT_PUBLIC_ID_STORE}`;
-
 const token =
   typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-console.log("token-1", token);
+
+const GRAPHQL_ENDPOINT =
+  process.env.GRAPHQL_ENDPOINT ||
+  `${process.env.NEXT_PUBLIC_BACKEND}/graphql/private?store_id=${process.env.NEXT_PUBLIC_ID_STORE}`;
 
 function makeClient() {
   const httpLink = new HttpLink({
@@ -22,12 +21,12 @@ function makeClient() {
   });
 
   const authMiddleware = new ApolloLink((operation, forward) => {
-    // operation.setContext(({ headers = {} }) => ({
-    //   headers: {
-    //     ...headers,
-    //     authorization: `Bearer ${token}` || null,
-    //   },
-    // }));
+    operation.setContext(({ headers = {} }) => ({
+      headers: {
+        ...headers,
+        authorization: `Bearer ${token}` || null,
+      },
+    }));
 
     return forward(operation);
   });

@@ -1,24 +1,24 @@
 import { gql } from "@apollo/client";
 
+// export const DELIVERIES = gql`
+//   query {
+//     deliveries {
+//       id
+//       firstName
+//       lastName
+//       email
+//       address
+//       phoneNumber
+//       createdAt
+//       updatedAt
+//       photos
+//     }
+//   }
+// `;
+
 export const DELIVERIES = gql`
   query {
-    deliveries {
-      id
-      firstName
-      lastName
-      email
-      address
-      phoneNumber
-      createdAt
-      updatedAt
-      photos
-    }
-  }
-`;
-
-export const DELIVERIES_EXPRESS = gql`
-  query {
-    storeDeliveriesExpress {
+    storeDeliveries {
       city
       name
       logo
