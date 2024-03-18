@@ -11,38 +11,38 @@ import { Button } from "@nextui-org/react";
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
 
-const LatestProducts = () => {
-  const { data, loading } = useQuery(GET_ALL_PRODUCTS, {
-    variables: {
-      filter: {
-        limit: 10,
-        skip: 0,
-        sort: -1,
-      },
-    },
-  });
+const LatestProducts = ({products}: {products: ProductType[]} ) => {
+  // const { data, loading } = useQuery(GET_ALL_PRODUCTS, {
+  //   variables: {
+  //     filter: {
+  //       limit: 10,
+  //       skip: 0,
+  //       sort: -1,
+  //     },
+  //   },
+  // });
 
-  if (loading) {
-    return <ProductSkeleton />;
-  }
+  // if (loading) {
+  //   return <ProductSkeleton />;
+  // }
 
-  const items = [...data?.storeProducts];
+  // const items = [...data?.storeProducts];
 
   return (
     <>
-      {items.length > 0 && (
+      {products.length > 0 && (
         <div className="container mx-auto">
           <h1 className="text-primary font-extrabold text-lg sm:text-lg lg:text-4xl text-center md:py-12 py-8">
             CHECK THE CORE PRODUCT
           </h1>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 px-2 border border-base-100">
-            {items
+            {products
               ?.sort((a: ProductType, b: ProductType) =>
                 a?.brand > b?.brand ? 1 : -1
               )
               .map((res: ProductType, idx: number) => {
                 return (
-                  <ProductCard key={idx} product={res} loading={loading} />
+                  <ProductCard key={idx} product={res} loading={false} />
                 );
               })}
           </div>
