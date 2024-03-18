@@ -14,6 +14,7 @@ import {
   Popup,
   useMapEvents,
 } from "react-leaflet";
+import * as L from "leaflet";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";

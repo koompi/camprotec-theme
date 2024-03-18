@@ -137,7 +137,9 @@ export function CartProvider(props: { children: JSX.Element }) {
   const logout = () => {
     localStorage.removeItem("access_token");
     // router.replace("/");
-    global && window.location.reload();
+    if (typeof window !== "undefined") {
+      global && window.location.reload();
+    }
   };
 
   if (loading) {

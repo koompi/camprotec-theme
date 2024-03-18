@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Map from "../components/Map";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import {
@@ -25,6 +25,11 @@ import { toast } from "sonner";
 import { useMutation } from "@apollo/client";
 import { CREATE_CUSTOMER_LOCATION } from "@/graphql/mutation/delivery";
 import { useAuth } from "@/context/useAuth";
+import dynamic from "next/dynamic";
+
+const DynamicMap = dynamic(() => import("../components/Map"), {
+  ssr: false,
+});
 
 const initialNewPhone = {
   phoneNumber: "",
@@ -46,7 +51,7 @@ interface FormCreateLocation {
   label?: string;
 }
 
-const CreateNewLocationPage = () => {
+export default function PageLocation() {
   const [position, setPosition] = useState<L.LatLngExpression | any>([
     11.562108, 104.888535,
   ]);
@@ -217,7 +222,7 @@ const CreateNewLocationPage = () => {
               </ModalHeader>
               <ModalBody>
                 <div className="min-h-[60dvh] sm:h-[60dvh] lg:min-h-[80dvh]">
-                  <Map
+                  <DynamicMap
                     zoom={13}
                     position={position}
                     setPosition={setPosition}
@@ -286,7 +291,7 @@ const CreateNewLocationPage = () => {
               <div className="text-center mt-2 font-medium text-gray-900 w-full">
                 <label className="relative cursor-pointer flex flex-col justify-center items-center border border-dashed rounded-xl h-72">
                   <Icon icon="solar:streets-map-point-broken" fontSize={70} />
-                  <span>Browse to upload your place</span>
+                  <span>Location picture</span>
                   <input
                     id="file-upload"
                     name="file-upload"
@@ -428,6 +433,4 @@ const CreateNewLocationPage = () => {
       </div>
     </>
   );
-};
-
-export default CreateNewLocationPage;
+}
