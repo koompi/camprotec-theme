@@ -11,12 +11,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import React from "react";
+import React, { FC } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { CustomerAdressType } from "@/types/checkout";
 
-const MyLocation = () => {
-
-  
+const MyLocation: FC<CustomerAdressType> = (props) => {
   return (
     <Card
       isBlurred
@@ -56,25 +55,30 @@ const MyLocation = () => {
         <div className="grid grid-cols-3 space-x-6 items-center justify-center">
           <div className="relative col-span-1">
             <Image
-              alt="Album cover"
+              alt={props?.addressName}
               className="object-cover w-full h-full"
               shadow="none"
-              src="/images/banner.avif"
+              src={
+                props.photos.length > 0 ? props.photos[0] : "/images/shop.png"
+              }
             />
           </div>
           <div className="flex flex-col col-span-2">
             <div className="flex justify-between items-start">
               <div className="flex flex-col gap-0">
-                <Chip color="primary" variant="flat" size="sm">
-                  Home
-                </Chip>
+                {props.label && (
+                  <Chip color="primary" variant="flat" size="sm">
+                    {props.label}
+                  </Chip>
+                )}
                 <h3 className="font-semibold text-foreground/90 mt-2 line-clamp-3">
-                  Phum Ou Baek K`om, Sangkat Ou Baek K`am, Khan Sen Sok, Phnom
-                  Penh, 120805, Cambodia
+                  {props?.addressName}
                 </h3>
                 <div className="flex gap-3 mt-2">
-                  <p className=" text-sm font-light">Van soklay</p>
-                  <p className=" text-sm font-light">096124365</p>
+                  <p className=" text-sm font-light">
+                    {props?.firstName} {props?.lastName}
+                  </p>
+                  <p className="text-sm font-light">{props?.phoneNumber}</p>
                 </div>
               </div>
             </div>

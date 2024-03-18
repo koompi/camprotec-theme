@@ -1,5 +1,3 @@
-// "use client";
-
 import Banner from "./components/Banner";
 import LatestProducts from "./components/LatestProducts";
 import Categories from "./components/Categories";

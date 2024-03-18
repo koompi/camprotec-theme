@@ -89,7 +89,7 @@ const SearchPage = () => {
           color="primary"
           {...(register("search"), { required: true })}
           radius="lg"
-          size="sm"
+          size="lg"
           type="search"
           variant="bordered"
           placeholder="Find your product here ..."

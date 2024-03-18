@@ -43,6 +43,7 @@ interface FormCreateLocation {
   lng: number;
   phoneNumber: string;
   photos?: string[] | null;
+  label?: string;
 }
 
 const CreateNewLocationPage = () => {
@@ -63,6 +64,7 @@ const CreateNewLocationPage = () => {
   const [photo, setPhoto] = useState<string>("");
   const [email, setEmail] = useState("");
   // const [files, setFiles] = useState();
+  const [addressLabel, setAddressLabel] = useState<string>("");
 
   const router = useRouter();
 
@@ -84,6 +86,7 @@ const CreateNewLocationPage = () => {
         lat: position?.lat,
         lng: position?.lng,
         photos: photo ? [photo] : null,
+        label: addressLabel,
       },
     };
 
@@ -258,10 +261,7 @@ const CreateNewLocationPage = () => {
             </p>
           </div>
         </div>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className=" flex flex-col gap-6"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <RadioGroup
             aria-label="Color"
             label="Label"
@@ -270,6 +270,9 @@ const CreateNewLocationPage = () => {
               wrapper: "gap-2",
             }}
             orientation="horizontal"
+            {...register("label")}
+            value={addressLabel}
+            onValueChange={setAddressLabel}
           >
             <LocationLabel value="Home" />
             <LocationLabel value="School" />

@@ -1,24 +1,44 @@
 "use client";
 
 import React from "react";
+import { Link, Button } from "@nextui-org/react";
+import { Icon } from "@iconify/react";
 import MyLocation from "./components/MyLocation";
-import { Icon } from "@iconify/react/dist/iconify.js";
-import { Button, Link } from "@nextui-org/react";
-// import { Address } from "./components/Address";
+import { CUSTOMER_ADDRESS } from "@/graphql/delivery";
+import { useQuery } from "@apollo/client";
+import { CustomerAdressType } from "@/types/checkout";
 
-const PageLocations = () => {
+export default function Page() {
+  const { data, loading } = useQuery(CUSTOMER_ADDRESS);
+
+  if (loading || !data) {
+    return null;
+  }
+
   return (
     <section className="container mx-auto px-6 py-12">
       <h1 className="text-xl font-medium">My Locations</h1>
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-3 mt-3">
-        {/* <Address /> */}
-        <MyLocation />
-        <MyLocation />
-        <MyLocation />
-        <MyLocation />
+        {data?.storeAddress?.map((ad: CustomerAdressType, idx: number) => {
+          return (
+            <MyLocation
+              key={idx}
+              id={ad?.id}
+              lat={ad?.lat}
+              lng={ad.lng}
+              firstName={ad.firstName}
+              lastName={ad.lastName}
+              addressName={ad.addressName}
+              phoneNumber={ad.phoneNumber}
+              photos={ad.photos}
+              storeId={ad.storeId}
+              label={ad.label}
+            />
+          );
+        })}
         <Link
           href="/locations/create"
-          className="w-full border border-dashed rounded-xl items-center justify-center hidden sm:hidden lg:flex"
+          className="w-full h-40 border border-dashed rounded-xl items-center justify-center hidden sm:hidden lg:flex"
           underline="hover"
         >
           <div className="flex gap-3">
@@ -43,6 +63,4 @@ const PageLocations = () => {
       </div>
     </section>
   );
-};
-
-export default PageLocations;
+}

@@ -3,20 +3,17 @@ import { gql } from "@apollo/client";
 export const CATEGORIES = gql`
   query ($filter: OrderBy) {
     storeOwnerCategories(filter: $filter) {
-      children {
-        id
-        logo
-        title {
-          en
-        }
-      }
-      createdAt
       id
       logo
       title {
         en
       }
-      updatedAt
+      children {
+        id
+        title {
+          en
+        }
+      }
     }
   }
 `;

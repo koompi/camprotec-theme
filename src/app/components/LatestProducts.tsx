@@ -2,31 +2,16 @@
 
 import React from "react";
 import ProductCard from "./ProductCard";
-import { useQuery } from "@apollo/client";
-import { GET_ALL_PRODUCTS } from "@/graphql/product";
 import { ProductType } from "@/types/product";
-
 import ProductSkeleton from "./ProductSkeleton";
 import { Button } from "@nextui-org/react";
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
 
-const LatestProducts = ({products}: {products: ProductType[]} ) => {
-  // const { data, loading } = useQuery(GET_ALL_PRODUCTS, {
-  //   variables: {
-  //     filter: {
-  //       limit: 10,
-  //       skip: 0,
-  //       sort: -1,
-  //     },
-  //   },
-  // });
-
-  // if (loading) {
-  //   return <ProductSkeleton />;
-  // }
-
-  // const items = [...data?.storeProducts];
+const LatestProducts = ({ products }: { products: ProductType[] }) => {
+  if (!products) {
+    return <ProductSkeleton />;
+  }
 
   return (
     <>
@@ -41,9 +26,7 @@ const LatestProducts = ({products}: {products: ProductType[]} ) => {
                 a?.brand > b?.brand ? 1 : -1
               )
               .map((res: ProductType, idx: number) => {
-                return (
-                  <ProductCard key={idx} product={res} loading={false} />
-                );
+                return <ProductCard key={idx} product={res} loading={false} />;
               })}
           </div>
           <Button

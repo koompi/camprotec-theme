@@ -1,14 +1,14 @@
-import { GET_ALL_PRODUCTS } from "@/graphql/product";
+import { CATEGORIES } from "@/graphql/category";
 import { getClient } from "@/libs/client";
 
-const client = getClient();
+export async function categories() {
+  const client = getClient();
 
-export async function getLatestProducts() {
   const { data } = await client.query({
-    query: GET_ALL_PRODUCTS,
+    query: CATEGORIES,
     variables: {
       filter: {
-        limit: 11,
+        limit: 10,
         skip: 0,
         sort: -1,
       },
@@ -17,7 +17,7 @@ export async function getLatestProducts() {
 
   return {
     props: {
-      products: data.storeProducts,
+      categories: data?.storeOwnerCategories,
     },
   };
 }

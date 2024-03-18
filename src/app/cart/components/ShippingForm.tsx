@@ -1,25 +1,19 @@
 "use client";
 
 import type { InputProps } from "@nextui-org/react";
-
 import React from "react";
 import {
   Accordion,
   AccordionItem,
-  Autocomplete,
-  AutocompleteItem,
-  Avatar,
   Image,
-  Input,
   Link,
   RadioGroup,
   ScrollShadow,
 } from "@nextui-org/react";
-
-import { cn } from "@/utils/cn";
-import countries from "@/utils/countries";
-import PaymentMethodRadio from "./PaymentMethodRadio";
-import { VisaIcon, MasterCardIcon, PayPalIcon } from "./Providers";
+import { useQuery } from "@apollo/client";
+import { CUSTOMER_ADDRESS, DELIVERIES } from "@/graphql/delivery";
+import { CustomerAdressType, DeliveryType } from "@/types/checkout";
+import CustomRadio from "./CustomRadio";
 
 export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
   variant?: InputProps["variant"];
@@ -34,55 +28,15 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
       control: "bg-foreground",
     };
 
+    const { data, loading } = useQuery(DELIVERIES);
+    const { data: address, loading: loadingAddress } =
+      useQuery(CUSTOMER_ADDRESS);
+
+    if (loading || !data || !address || loadingAddress) {
+      return null;
+    }
+
     return (
-      // <Accordion>
-      //   <AccordionItem
-      //     key="1"
-      //     aria-label="Add new delivery location"
-      //     title="Add new delivery location"
-      //   >
-      //     <div ref={ref} className={cn("flex flex-col gap-4", className)}>
-      //       {!hideTitle && (
-      //         <span className="relative text-foreground-500">
-      //           Shipping Information
-      //         </span>
-      //       )}
-      //       <Input
-      //         isRequired
-      //         label="Email address"
-      //         labelPlacement="outside"
-      //         placeholder="Enter your email"
-      //         type="email"
-      //         variant={variant}
-      //       />
-      //       <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
-      //         <Input
-      //           isRequired
-      //           label="First name"
-      //           labelPlacement="outside"
-      //           placeholder="Enter your first name"
-      //           variant={variant}
-      //         />
-      //         <Input
-      //           isRequired
-      //           label="Last name"
-      //           labelPlacement="outside"
-      //           placeholder="Enter your last name"
-      //           variant={variant}
-      //         />
-      //       </div>
-      //       <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
-      //         <Input
-      //           isRequired
-      //           label="Phone number"
-      //           labelPlacement="outside"
-      //           placeholder="## ### ###"
-      //           variant={variant}
-      //         />
-      //       </div>
-      //     </div>
-      //   </AccordionItem>
-      // </Accordion>
       <>
         <Accordion
           defaultExpandedKeys={["1", "2"]}
@@ -96,35 +50,36 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                 classNames={{ wrapper: "gap-3" }}
                 defaultValue="4229"
               >
-                <PaymentMethodRadio
-                  classNames={deliveryRadioClasses}
-                  description="$2.00 In Phnom Penh"
-                  icon={
-                    <Image
-                      alt="shop"
-                      src="/images/shop.png"
-                      radius="none"
-                      className="w-12"
-                    />
+                {data?.storeDeliveries?.map(
+                  (del: DeliveryType, idx: number) => {
+                    return (
+                      <CustomRadio
+                        key={idx}
+                        isRecommended={del?.express !== "PERSONAL"}
+                        classNames={deliveryRadioClasses}
+                        description={del?.instruction}
+                        icon={
+                          <Image
+                            alt="delivery logo"
+                            src={
+                              del?.logo
+                                ? `${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${del?.logo}`
+                                : "/images/shop.png"
+                            }
+                            radius="none"
+                            className="w-12"
+                          />
+                        }
+                        label={
+                          del?.express === "PERSONAL"
+                            ? "Shop Delivery"
+                            : "L192 Delivery"
+                        }
+                        value={del?.id}
+                      />
+                    );
                   }
-                  label="Shop Delivery"
-                  value="shop"
-                />
-                <PaymentMethodRadio
-                  isRecommended
-                  classNames={deliveryRadioClasses}
-                  description="Price is base on current location"
-                  icon={
-                    <Image
-                      alt="shop"
-                      src="/images/l192.png"
-                      radius="none"
-                      className="w-12"
-                    />
-                  }
-                  label="L192 Delivery"
-                  value="l192"
-                />
+                )}
               </RadioGroup>
             </ScrollShadow>
           </AccordionItem>
@@ -139,63 +94,32 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                 classNames={{ wrapper: "gap-3" }}
                 defaultValue="4229"
               >
-                <PaymentMethodRadio
-                  isRecommended
-                  classNames={deliveryRadioClasses}
-                  description="soklay van, 0961234567"
-                  icon={
-                    <Image
-                      alt="shop"
-                      src="/images/shop.png"
-                      radius="none"
-                      className="w-12"
-                    />
+                {address?.storeAddress?.map(
+                  (ad: CustomerAdressType, idx: number) => {
+                    return (
+                      <CustomRadio
+                        key={idx}
+                        classNames={deliveryRadioClasses}
+                        description={`${ad.firstName} ${ad.lastName}, ${ad.phoneNumber}`}
+                        chip={ad.label}
+                        icon={
+                          <Image
+                            alt="shop"
+                            src={
+                              ad.photos.length > 0
+                                ? ad.photos[0]
+                                : "/images/shop.png"
+                            }
+                            radius="none"
+                            className="w-12"
+                          />
+                        }
+                        label={ad.addressName}
+                        value={ad.id}
+                      />
+                    );
                   }
-                  label="Phum Ou Baek K`om, Sangkat Ou Baek K`am, Khan Sen Sok, Phnom Penh, 120805, Cambodia"
-                  value="home"
-                />
-                <PaymentMethodRadio
-                  classNames={deliveryRadioClasses}
-                  description="soklay van, 0961234567"
-                  icon={
-                    <Image
-                      alt="shop"
-                      src="/images/shop.png"
-                      radius="none"
-                      className="w-12"
-                    />
-                  }
-                  label="Phum Ou Baek K`om, Sangkat Ou Baek K`am, Khan Sen Sok, Phnom Penh, 120805, Cambodia"
-                  value="school"
-                />
-                <PaymentMethodRadio
-                  classNames={deliveryRadioClasses}
-                  description="soklay van, 0961234567"
-                  icon={
-                    <Image
-                      alt="shop"
-                      src="/images/shop.png"
-                      radius="none"
-                      className="w-12"
-                    />
-                  }
-                  label="Phum Ou Baek K`om, Sangkat Ou Baek K`am, Khan Sen Sok, Phnom Penh, 120805, Cambodia"
-                  value="office"
-                />
-                <PaymentMethodRadio
-                  classNames={deliveryRadioClasses}
-                  description="soklay van, 0961234567"
-                  icon={
-                    <Image
-                      alt="shop"
-                      src="/images/shop.png"
-                      radius="none"
-                      className="w-12"
-                    />
-                  }
-                  label="Phum Ou Baek K`om, Sangkat Ou Baek K`am, Khan Sen Sok, Phnom Penh, 120805, Cambodia"
-                  value="others"
-                />
+                )}
               </RadioGroup>
             </ScrollShadow>
           </AccordionItem>

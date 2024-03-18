@@ -91,7 +91,7 @@ const CheckoutPage = () => {
         return <OrderSummary hideTitle />;
       case 1:
         return (
-          <div className="mt-4 flex flex-col gap-6">
+          <div className="mt-0 sm:mt-0 lg:mt-4 flex flex-col gap-6">
             <ShippingForm hideTitle variant="bordered" />
           </div>
         );
@@ -212,13 +212,13 @@ const CheckoutPage = () => {
   }
 
   return (
-    <section className="container mx-auto px-6 py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh_-_60px)]  w-full gap-8">
+    <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-4 sm:py-4 lg:py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh_-_60px)]  w-full gap-8">
       {/* Left */}
       <div className="col-span-1 w-full flex-none">
-        <div className="flex h-full flex-1 flex-col p-4">
+        <div className="flex h-full flex-1 flex-col p-0">
           <div>
             <Button
-              className="-ml-2 text-default-700"
+              className="text-default-700 flex"
               isDisabled={page === 0}
               radius="full"
               variant="flat"
@@ -232,7 +232,7 @@ const CheckoutPage = () => {
             <motion.form
               key={page}
               animate="center"
-              className="mt-8 flex flex-col gap-3"
+              className="mt-3 sm:mt-3 lg:mt-8 flex flex-col gap-3"
               custom={direction}
               exit="exit"
               initial="enter"

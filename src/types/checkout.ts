@@ -2,9 +2,15 @@ export type DeliveryType = {
   photos: string;
   firstName: string;
   lastName: string;
-  address: string;
+  address: string[];
   email: string;
   phoneNumber: string;
+  instruction?: string;
+  express: string;
+  id: string;
+  logo: string;
+  addressName: string;
+  customerName: string;
 };
 
 export type PaymentType = {
@@ -17,4 +23,17 @@ export type CheckoutType = {
   delivery_option: string;
   // delivery_express: string;
   payment: "CASH";
+};
+
+export type CustomerAdressType = {
+  id: string;
+  lat: number;
+  lng: number;
+  firstName: string;
+  lastName: string;
+  addressName: string;
+  phoneNumber: string;
+  photos: string[];
+  storeId: string;
+  label: string;
 };
