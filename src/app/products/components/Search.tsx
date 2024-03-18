@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useState } from "react";
 import { Input } from "@nextui-org/react";
 import { useRouter, useSearchParams } from "next/navigation";

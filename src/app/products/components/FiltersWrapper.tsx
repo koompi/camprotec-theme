@@ -23,6 +23,7 @@ import { useSearchParams } from "next/navigation";
 
 export type FiltersWrapperProps = React.HTMLAttributes<HTMLDivElement> & {
   items: Filter[];
+  categories: Category[];
   title?: string;
   showTitle?: boolean;
   showActions?: boolean;
@@ -31,7 +32,7 @@ export type FiltersWrapperProps = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
-  ({ title = "Filters", showTitle = true, className }, ref) => {
+  ({ title = "Filters", showTitle = true, className, categories }, ref) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get("search") || null;
@@ -42,9 +43,9 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
 
     const [selected, setSelected] = useState(sub);
 
-    const { data, loading } = useQuery(CATEGORIES);
+    // const { data, loading } = useQuery(CATEGORIES);
 
-    if (loading) return null;
+    // if (loading) return null;
 
     return (
       <div
@@ -73,13 +74,13 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
         />
 
         {/* Categories */}
-        {data?.storeOwnerCategories && (
+        {categories && (
           <>
             <h3 className="text-medium font-medium leading-8 text-default-600">
               Categories
             </h3>
             <Accordion>
-              {data?.storeOwnerCategories?.map((cat: Category) => {
+              {categories?.map((cat: Category) => {
                 return (
                   <AccordionItem
                     key={cat?.id}

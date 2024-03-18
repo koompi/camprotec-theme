@@ -35,7 +35,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       variants,
       detail,
       className,
-      loading,
       ...props
     },
     ref
@@ -77,7 +76,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 radius="md"
                 src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
                 isZoomed
-                isLoading={loading}
               />
             </div>
           </div>

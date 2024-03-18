@@ -6,7 +6,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Button,
   Badge,
   Avatar,
@@ -21,6 +20,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useCart } from "@/context/useCart";
 import { useAuth } from "@/context/useAuth";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const NavbarLayout = () => {
   const { cartItems, logout } = useCart();
@@ -43,36 +43,36 @@ const NavbarLayout = () => {
         justify="center"
       >
         <NavbarItem>
-          <Link className="text-default-500 font-semibold" href="#" size="sm">
+          <Link className="text-default-500 font-semibold" href="#">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link
+          <a
             className="text-default-500 font-semibold"
             href="#products"
-            size="sm"
+            // size="sm"
           >
             Products
-          </Link>
+          </a>
         </NavbarItem>
         <NavbarItem>
-          <Link
+          <a
             className="text-default-500 font-semibold"
             href="#categories"
-            size="sm"
+            // size="sm"
           >
             Categories
-          </Link>
+          </a>
         </NavbarItem>
         <NavbarItem>
-          <Link
+          <a
             className="text-default-500 font-semibold"
             href="#about"
-            size="sm"
+            // size="sm"
           >
             About
-          </Link>
+          </a>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end" className="gap-9">
