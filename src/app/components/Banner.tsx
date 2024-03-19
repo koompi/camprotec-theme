@@ -80,7 +80,7 @@ const Banner = () => {
           >
             {value?.banner?.message
               ? value?.banner?.message
-              : " The most popular products is available in"}
+              : " The most popular products is available in"}{" "}
             <span className="font-semibold text-primary">
               {value?.globals?.officialName
                 ? value?.globals?.officialName
