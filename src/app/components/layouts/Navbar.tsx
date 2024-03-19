@@ -43,36 +43,39 @@ const NavbarLayout = () => {
         justify="center"
       >
         <NavbarItem>
-          <Link className="text-default-500 font-semibold" href="#">
-            Home
+          <Link
+            className="text-default-500 font-semibold"
+            href={pathname == "/" ? "#" : "/"}
+          >
+            <p>Home</p>
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <a
+          <Link
             className="text-default-500 font-semibold"
-            href="#products"
+            href={pathname == "/" ? "#products" : "/#products" }
             // size="sm"
           >
-            Products
-          </a>
+            <p>Products</p>
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <a
+          <Link
             className="text-default-500 font-semibold"
-            href="#categories"
+            href={pathname == "/" ? "#categories" : "/#categories"}
             // size="sm"
           >
-            Categories
-          </a>
+            <p>Categories</p>
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <a
+          <Link
             className="text-default-500 font-semibold"
-            href="#about"
+            href={pathname == "/" ? "#about" : "/#about"}
             // size="sm"
           >
-            About
-          </a>
+            <p>About</p>
+          </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end" className="gap-9">
@@ -111,6 +114,7 @@ const NavbarLayout = () => {
                   <p className="font-bold">{user?.email}</p>
                 </DropdownItem>
                 <DropdownItem
+                  as={Link}
                   key="settings"
                   href="/settings"
                   startContent={
@@ -120,6 +124,7 @@ const NavbarLayout = () => {
                   Settings
                 </DropdownItem>
                 <DropdownItem
+                  as={Link}
                   key="settings"
                   href="/locations"
                   startContent={
