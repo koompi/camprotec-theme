@@ -3,13 +3,7 @@
 // import { useSearchParams } from "next/navigation";
 import { filterProducts } from "../api/product";
 import { categories } from "../api/categories";
-import SidebarDrawer from "./components/SidebarDrawer";
-import FiltersWrapper from "./components/FiltersWrapper";
-import ecommerceItems from "./components/EcommerceItems";
-import { useDisclosure } from "@nextui-org/react";
-import MenuBar from "./components/MenuBar";
-import { ProductType } from "@/types/product";
-import ProductCard from "../components/ProductCard";
+import ComponentProducts from "./components/ComponentProducts";
 
 // import React, { useState } from "react";
 // import { useQuery } from "@apollo/client";
@@ -302,112 +296,10 @@ export default async function ProductsPage({
   const { props: data_products } = await filterProducts(searchParams);
   const { props: data_categories } = await categories(0);
 
-  const mostPopularSort = (): ProductType[] => {
-    if (!data_products?.products) {
-      return [];
-    }
-
-    return [...data_products?.products].sort((a: ProductType, b: ProductType) =>
-      a.sell > b.sell ? -1 : 1
-    );
-  };
-
-  const brandSort = (): ProductType[] => {
-    if (!data_products?.products) {
-      return [];
-    }
-    return [...data_products?.products].sort((a: ProductType, b: ProductType) =>
-      a.brand > b.brand ? -1 : 1
-    );
-  };
-
-  const topRated = (): ProductType[] => {
-    if (!data_products?.products) {
-      return [];
-    }
-    return [...data_products?.products].sort((a: ProductType, b: ProductType) =>
-      a.rating > b.rating ? -1 : 1
-    );
-  };
-
-  const newestSort = (): ProductType[] => {
-    if (!data_products?.products) {
-      return [];
-    }
-    return [...data_products?.products].sort((a: ProductType, b: ProductType) =>
-      a.createdAt > b.createdAt ? -1 : 1
-    );
-  };
-
-  const ProductSortCompoent = () => {
-    if (searchParams?.sortParam === "most_popular") {
-      return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {mostPopularSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
-          })}
-        </div>
-      );
-    }
-    if (searchParams?.sortParam === "newest") {
-      return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {newestSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
-          })}
-        </div>
-      );
-    }
-    if (searchParams?.sortParam === "top_rated") {
-      return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {topRated().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
-          })}
-        </div>
-      );
-    }
-    if (
-      searchParams?.sort === "price_low_to_high" ||
-      searchParams?.sort === "price_high_to_low"
-    ) {      
-      return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {data_products?.products.map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
-          })}
-        </div>
-      );
-    } else {
-      return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {brandSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
-          })}
-        </div>
-      );
-    }
-  };
-
   return (
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-3 sm:py-3 lg:py-9">
       <div className="flex gap-x-6">
-        <SidebarDrawer>
-          <FiltersWrapper
-            className="bg-default-50 hide-scroll-bar"
-            items={ecommerceItems}
-            categories={data_categories.categories}
-            scrollShadowClassName="pb-12"
-            showActions={false}
-            title="Filter by"
-          />
-        </SidebarDrawer>
-        <div className="w-full flex-1 flex-col">
-          <MenuBar searchParams={searchParams} />
-          <main className="mt-4 h-full w-full overflow-visible px-1">
-            <ProductSortCompoent />
-          </main>
-        </div>
+        <ComponentProducts categories={data_categories.categories} products={data_products.products} searchParams={searchParams}/>
       </div>
     </section>
   );
