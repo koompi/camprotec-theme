@@ -14,6 +14,9 @@ import { AppProvider } from "@/context/useAuth";
 import "swiper/css";
 import "swiper/css/effect-creative";
 
+//  zoom img
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+
 const inter = Inter({ subsets: ["latin"] });
 // const poppins = Poppins({
 //   subsets: ["latin"],

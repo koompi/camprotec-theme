@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Image, RadioGroup, ScrollShadow } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { cn } from "@/utils/cn";
@@ -13,6 +13,7 @@ import { LexicalViewer } from "@/editor/LexicalViewer";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 import { CartItem } from "@/types/global";
+import InnerImageZoom from "react-inner-image-zoom";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -43,8 +44,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     const { addToCart, addCarts } = useCart();
     const [items, setItems] = useState<CartItem[]>([]);
 
-    console.log("var", variants);
-
     const handleAddToCart = (product: ItemProduct) => {
       let p: ItemProduct = {
         id: product?.id,
@@ -56,6 +55,23 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       };
       addToCart(p, false);
     };
+
+    // function to group items by date
+    const groupItemsByVariant = useCallback(() => {
+      const groups = [] as any;
+      variants?.forEach((item) => {
+        if (!groups[item.attribute.split(" ")[0]]) {
+          groups[item.attribute.split(" ")[0]] = [];
+        }
+        groups[item.attribute.split(" ")[0]].push(item);
+      });
+
+      return groups;
+    }, [variants]);
+
+    const groups = useMemo(() => {
+      return groupItemsByVariant();
+    }, [groupItemsByVariant]);
 
     return (
       <div
@@ -72,12 +88,15 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
 
           <div className="aspect-[4/3]">
             <div className="bg-base-100 rounded-lg flex justify-center items-center border px-0">
-              <Image
+              {/* <Image
                 alt={title}
-                className=" object-contain object-center h-[30dvh] sm:h-[30dvh] lg:h-[50dvh] cursor-pointer"
                 radius="md"
                 src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
                 isZoomed
+              /> */}
+              <InnerImageZoom
+                className=" object-contain object-center h-[30dvh] sm:h-[30dvh] lg:h-[50dvh] cursor-pointer"
+                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
               />
             </div>
           </div>
@@ -106,6 +125,13 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               </button>
             ))}
           </ScrollShadow>
+
+          <div className="mt-16 hidden sm:hidden lg:block">
+            <h2 className="text-xl font-semibold mb-3">Details</h2>
+            <p className="text-medium text-default-500">
+              <LexicalViewer data={detail} />
+            </p>
+          </div>
         </div>
 
         {/* Product Info */}
@@ -129,35 +155,46 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               <Icon icon="carbon:delivery" width={24} />
               <p className="text-small font-medium">30 days return</p>
             </div>
-            {variants.length > 0 && (
-              <RadioGroup
-                aria-label="Select varaints"
-                orientation="horizontal"
-                label="Varaints"
-                className="gap-3"
-              >
-                {variants?.map((res: Variants, idx: number) => {
+            <>
+              {variants.length > 0 &&
+                Object.keys(groups).map((item: string, idx: number) => {
                   return (
-                    <TagGroupRadioItem
-                      size="lg"
+                    <RadioGroup
+                      aria-label="Select varaints"
+                      orientation="horizontal"
+                      label={`Variants: (${item})`}
                       key={idx}
-                      value={res?.id}
-                      // className="flex flex-wrap"
+                      className="mt-3 grid-cols-2"
                     >
-                      <div className="flex items-center gap-3 p-3">
-                        <Image
-                          alt="varaints"
-                          src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
-                          className="h-12"
-                          radius="md"
-                        />
-                        {formatToUSD(parseInt(res?.price.toString()))}
-                      </div>
-                    </TagGroupRadioItem>
+                      {groups[item]?.map((res: Variants, idx: number) => {
+                        return (
+                          <TagGroupRadioItem
+                            size="lg"
+                            key={idx}
+                            value={res?.id}
+                            className="col-span-1"
+                          >
+                            <div className="flex items-center gap-3 p-3">
+                              <Image
+                                alt="varaints"
+                                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
+                                className="h-12"
+                                radius="md"
+                              />
+                              <div>
+                                <p className="line-clamp-2">{res.label}</p>
+                                <p className="text-base font-medium text-primary">
+                                  {formatToUSD(parseInt(res?.price.toString()))}
+                                </p>
+                              </div>
+                            </div>
+                          </TagGroupRadioItem>
+                        );
+                      })}
+                    </RadioGroup>
                   );
                 })}
-              </RadioGroup>
-            )}
+            </>
           </div>
 
           <div className="mt-12">
@@ -189,7 +226,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               Add to cart
             </Button>
           </div>
-          <div className="mt-16">
+          <div className="mt-16 block sm:block lg:hidden">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
               <LexicalViewer data={detail} />
