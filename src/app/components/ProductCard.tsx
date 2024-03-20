@@ -148,10 +148,10 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                   size="sm"
                   color="primary"
                   radius="full"
+                  className="hidden sm:hidden lg:flex"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    // setIsLiked(!isLiked);
                     const p: ItemProduct = {
                       id: props?.product?.id,
                       variantId: null,

@@ -12,7 +12,7 @@ const Logo = () => {
     <Link href="/">
       {value?.header?.logo ? (
         <Image
-          width={60}
+          width={100}
           alt={value?.name}
           src={value?.header?.logo}
           fallbackSrc={value?.name}

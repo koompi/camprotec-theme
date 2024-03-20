@@ -23,7 +23,7 @@ function clampValue(value: number, min: number, max: number) {
 function scaleValue(
   value: number,
   fromRange: RangeValue,
-  toRange: RangeValue = [0, 1000]
+  toRange: RangeValue = [0, 100]
 ) {
   const [fromMin, fromMax] = fromRange;
   const [toMin, toMax] = toRange;
@@ -202,7 +202,7 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
             minValue={range?.min}
             size="sm"
             step={range?.step}
-            value={value}
+            value={value ? value : defaultValue}
             onChange={(value) => {
               let price = value as number[];
 
@@ -225,9 +225,12 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
             labelPlacement="outside"
             startContent={<p className="text-default-400">$</p>}
             type="number"
-            value={min as string}
+            value={min ? (min as string) : defaultValue[0].toString()}
             onValueChange={onMinInputValueChange}
             step={100}
+            min={0}
+            max={max as string}
+            isDisabled={!max || parseInt(max) <= 0}
           />
           <Divider className="mx-2 w-2" />
           <Input
@@ -235,9 +238,11 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
             labelPlacement="outside"
             startContent={<p className="text-default-400">$</p>}
             type="number"
-            value={max as string}
+            value={max ? (max as string) : defaultValue[1].toString()}
             onValueChange={onMaxInputValueChange}
             step={100}
+            max={max as string}
+            min={0}
           />
         </div>
       </div>
