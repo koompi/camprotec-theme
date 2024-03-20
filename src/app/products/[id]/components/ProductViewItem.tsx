@@ -43,6 +43,8 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     const { addToCart, addCarts } = useCart();
     const [items, setItems] = useState<CartItem[]>([]);
 
+    console.log("var", variants);
+
     const handleAddToCart = (product: ItemProduct) => {
       let p: ItemProduct = {
         id: product?.id,
@@ -99,6 +101,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                   }}
                   radius="lg"
                   src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${preview}`}
+                  className="object-contain object-center"
                 />
               </button>
             ))}
@@ -133,24 +136,26 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 label="Varaints"
                 className="gap-3"
               >
-                {variants?.map((res: Variants, idx: number) => (
-                  <TagGroupRadioItem
-                    size="lg"
-                    key={idx}
-                    value={res?.id}
-                    className="flex flex-wrap"
-                  >
-                    <div className="flex items-center gap-3 p-1">
-                      <Image
-                        alt="varaints"
-                        src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.preview}`}
-                        className="h-12"
-                        radius="md"
-                      />
-                      {formatToUSD(parseInt(res?.price.toString()))}
-                    </div>
-                  </TagGroupRadioItem>
-                ))}
+                {variants?.map((res: Variants, idx: number) => {
+                  return (
+                    <TagGroupRadioItem
+                      size="lg"
+                      key={idx}
+                      value={res?.id}
+                      // className="flex flex-wrap"
+                    >
+                      <div className="flex items-center gap-3 p-3">
+                        <Image
+                          alt="varaints"
+                          src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
+                          className="h-12"
+                          radius="md"
+                        />
+                        {formatToUSD(parseInt(res?.price.toString()))}
+                      </div>
+                    </TagGroupRadioItem>
+                  );
+                })}
               </RadioGroup>
             )}
           </div>

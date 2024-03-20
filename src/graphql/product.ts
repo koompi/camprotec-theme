@@ -18,11 +18,12 @@ export const GET_PRODUCT = gql`
       detail
       currency
       variants {
+        attribute
         id
-        price
-        previews
-        option
         label
+        option
+        previews
+        price
       }
       createdAt
       updatedAt

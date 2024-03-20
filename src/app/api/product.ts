@@ -59,7 +59,7 @@ export async function filterProducts(searchParams?: {
             ? parseInt(page) * parseInt(size as string)
             : 0
           : 0,
-        limit: size ? parseInt(size) : 16,
+        limit: size ? parseInt(size) : 32,
         sort: price ? (sortParam == "price_low_to_high" ? 1 : -1) : -1,
       },
     },

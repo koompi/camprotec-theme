@@ -1,9 +1,10 @@
 export interface Variants {
   id: string;
   label: string;
-  option: "SIZE" | "COLOR";
-  preview: string;
+  option: string;
+  previews: string;
   price: string;
+  attribute: string;
 }
 
 export type ItemProduct = {
