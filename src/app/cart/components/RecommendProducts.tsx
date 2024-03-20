@@ -13,25 +13,26 @@ import { useCart } from "@/context/useCart";
 import { CartItem } from "@/types/global";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import FilterProduct from "./CheckoutComponent";
 
-const RecommendProducts = () => {
-  const { data, loading } = useQuery(GLOBAL_PRODUCT_FILTERING, {
-    variables: {
-      tagId: null,
-      keyword: null,
-      status: null,
-      range: null,
-      filter: {
-        skip: 0,
-        limit: 10,
-        sort: -1,
-      },
-    },
-  });
+const RecommendProducts = ({ products }: { products: ProductType[] }) => {
+  // const { data, loading } = useQuery(GLOBAL_PRODUCT_FILTERING, {
+  //   variables: {
+  //     tagId: null,
+  //     keyword: null,
+  //     status: null,
+  //     range: null,
+  //     filter: {
+  //       skip: 0,
+  //       limit: 10,
+  //       sort: -1,
+  //     },
+  //   },
+  // });
 
-  if (loading || !data) {
-    return null;
-  }
+  // if (loading || !data) {
+  //   return null;
+  // }
 
   return (
     <div className="h-[80dvh] sticky top-28 hidden sm:hidden lg:block">
@@ -55,15 +56,13 @@ const RecommendProducts = () => {
         className="mySwiper3 rounded-xl"
         loop={true}
       >
-        {data?.storeGlobalFilterProducts
-          ?.slice(0, 10)
-          ?.map((res: ProductType, idx: number) => {
-            return (
-              <SwiperSlide key={idx}>
-                <RecommendCard props={res} />
-              </SwiperSlide>
-            );
-          })}
+        {products?.slice(0, 10)?.map((res: ProductType, idx: number) => {
+          return (
+            <SwiperSlide key={idx}>
+              <RecommendCard props={res} />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </div>
   );
