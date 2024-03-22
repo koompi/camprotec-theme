@@ -7,13 +7,14 @@ import { cn } from "@/utils/cn";
 
 import RatingRadioGroup from "./RatingRadioGroup";
 import TagGroupRadioItem from "./TagGroupRadioItem";
-import { ItemProduct, ProductType, Variants } from "@/types/product";
+import { Attribute, ItemProduct, ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
 import { LexicalViewer } from "@/editor/LexicalViewer";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 import { CartItem } from "@/types/global";
 import InnerImageZoom from "react-inner-image-zoom";
+import { VariantRadio } from "./VariantRadio";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -57,21 +58,21 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     };
 
     // function to group items by date
-    const groupItemsByVariant = useCallback(() => {
-      const groups = [] as any;
-      variants?.forEach((item) => {
-        if (!groups[item.attribute.split(" ")[0]]) {
-          groups[item.attribute.split(" ")[0]] = [];
-        }
-        groups[item.attribute.split(" ")[0]].push(item);
-      });
+    // const groupItemsByVariant = useCallback(() => {
+    //   const groups = [] as any;
+    //   variants?.forEach((item) => {
+    //     if (!groups[item.attribute.split(" ")[0]]) {
+    //       groups[item.attribute.split(" ")[0]] = [];
+    //     }
+    //     groups[item.attribute.split(" ")[0]].push(item);
+    //   });
 
-      return groups;
-    }, [variants]);
+    //   return groups;
+    // }, [variants]);
 
-    const groups = useMemo(() => {
-      return groupItemsByVariant();
-    }, [groupItemsByVariant]);
+    // const groups = useMemo(() => {
+    //   return groupItemsByVariant();
+    // }, [groupItemsByVariant]);
 
     return (
       <div
@@ -155,46 +156,133 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               <Icon icon="carbon:delivery" width={24} />
               <p className="text-small font-medium">30 days return</p>
             </div>
-            <>
-              {variants.length > 0 &&
-                Object.keys(groups).map((item: string, idx: number) => {
-                  return (
-                    <RadioGroup
-                      aria-label="Select varaints"
-                      orientation="horizontal"
-                      label={`Variants: (${item})`}
-                      key={idx}
-                      className="mt-3 grid-cols-2"
-                    >
-                      {groups[item]?.map((res: Variants, idx: number) => {
-                        return (
-                          <TagGroupRadioItem
-                            size="lg"
-                            key={idx}
-                            value={res?.id}
-                            className="col-span-1"
-                          >
-                            <div className="flex items-center gap-3 p-3">
-                              <Image
-                                alt="varaints"
-                                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
-                                className="h-12"
-                                radius="md"
-                              />
-                              <div>
-                                <p className="line-clamp-2">{res.label}</p>
-                                <p className="text-base font-medium text-primary">
-                                  {formatToUSD(parseInt(res?.price.toString()))}
-                                </p>
-                              </div>
+            {/* <>
+              {
+                variants.length > 0 &&
+                  variants.map((item: any, idx: number) => {
+                    return (
+                      <RadioGroup
+                        aria-label="Select varaints"
+                        orientation="horizontal"
+                        label={`Variants`}
+                        key={idx}
+                        className="mt-3 grid-cols-2"
+                      >
+                        <TagGroupRadioItem
+                          size="lg"
+                          key={idx}
+                          value={item?.id}
+                          className="col-span-1"
+                        >
+                          <div className="flex items-center gap-3 p-3">
+                            <Image
+                              alt="varaints"
+                              src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                              className="h-12"
+                              radius="md"
+                            />
+                            <div>
+                              <p className="line-clamp-2">{item.label}</p>
+                              {item.attributes.map(
+                                (atb: Attribute, idx: number) => {
+                                  return <p key={idx}>{atb.option}</p>;
+                                }
+                              )}
+                              <p className="text-base font-medium text-primary">
+                                {formatToUSD(parseInt(item?.price.toString()))}
+                              </p>
                             </div>
-                          </TagGroupRadioItem>
-                        );
-                      })}
-                    </RadioGroup>
+                          </div>
+                        </TagGroupRadioItem>
+                      </RadioGroup>
+                    );
+                  })
+                // Object.keys(groups).map((item: string, idx: number) => {
+                //   return (
+                // <RadioGroup
+                //   aria-label="Select varaints"
+                //   orientation="horizontal"
+                //   label={`Variants: (${item})`}
+                //   key={idx}
+                //   className="mt-3 grid-cols-2"
+                // >
+                // {groups[item]?.map((res: Variants, idx: number) => {
+                //   return (
+                //     <TagGroupRadioItem
+                //       size="lg"
+                //       key={idx}
+                //       value={res?.id}
+                //       className="col-span-1"
+                //     >
+                //       <div className="flex items-center gap-3 p-3">
+                // <Image
+                //   alt="varaints"
+                //   src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
+                //   className="h-12"
+                //   radius="md"
+                // />
+                //         <div>
+                //           <p className="line-clamp-2">{res.label}</p>
+                // <p className="text-base font-medium text-primary">
+                //   {formatToUSD(parseInt(res?.price.toString()))}
+                // </p>
+                //         </div>
+                //       </div>
+                //     </TagGroupRadioItem>
+                //     );
+                //   })}
+                // </RadioGroup>
+                //   );
+                // }
+              }
+            </> */}
+
+            <RadioGroup label="Variants">
+              {variants.length > 0 &&
+                variants.map((item: any, idx: number) => {
+                  return (
+                    <VariantRadio key={idx} value={item.id}>
+                      <div className="flex items-center space-x-4">
+                        <Image
+                          alt="variants"
+                          src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                          className="h-12"
+                          radius="md"
+                        />
+                        <div>
+                          <span className="text-lg font-bold">{item.label}</span>
+                          {item.attributes.map(
+                            (item: Attribute, idx: number) => (
+                              <div key={idx} className="text-xs flex">
+                                <span>{item.type}: </span>
+                                <span>{item.option}</span>
+                              </div>
+                            )
+                          )}
+                          <p className="text-lg font-bold text-primary">
+                            {formatToUSD(parseInt(item?.price.toString()))}
+                          </p>
+                        </div>
+                      </div>
+                    </VariantRadio>
                   );
                 })}
-            </>
+              {/* <VariantRadio description="Up to 20 items" value="free">
+                Free
+              </VariantRadio>
+              <VariantRadio
+                description="Unlimited items. $10 per month."
+                value="pro"
+              >
+                Pro
+              </VariantRadio>
+              <VariantRadio
+                description="24/7 support. Contact us for pricing."
+                value="enterprise"
+              >
+                Enterprise
+              </VariantRadio> */}
+            </RadioGroup>
           </div>
 
           <div className="mt-12">
