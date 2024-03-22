@@ -119,7 +119,8 @@ const TagGroupRadioItem = React.forwardRef<
       >
         {children}
       </Chip> */}
-      <div>{children && <span {...getLabelProps()}>{children}</span>}</div>
+      {/* <div>{children && <span {...getLabelProps()}>{children}</span>}</div> */}
+      <div>{children}</div>
     </Component>
   );
 });

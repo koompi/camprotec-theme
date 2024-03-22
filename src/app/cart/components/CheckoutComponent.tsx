@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import {
   Accordion,
@@ -23,7 +24,7 @@ import { useCart } from "@/context/useCart";
 import { useAuth } from "@/context/useAuth";
 import { ProductType } from "@/types/product";
 
-const CheckoutComponet = ({ products }: { products: ProductType[] }) => {
+const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   const { user } = useAuth();
 
   const { cartItems, loading } = useCart();
@@ -303,4 +304,4 @@ const CheckoutComponet = ({ products }: { products: ProductType[] }) => {
   );
 };
 
-export default CheckoutComponet;
+export default CheckoutComponent;

@@ -90,7 +90,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
                   product.variantId ? product.variantId : product.id,
                   product.variantId ? true : false
                 );
-                toast.info("The product is added into the cart!");
+                // toast.info("The product is added into the cart!");
               }}
             >
               <Icon icon="lucide:x" width={14} />

@@ -13,7 +13,6 @@ import { LexicalViewer } from "@/editor/LexicalViewer";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 import { CartItem } from "@/types/global";
-import InnerImageZoom from "react-inner-image-zoom";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -43,6 +42,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
     const { addToCart, addCarts } = useCart();
     const [items, setItems] = useState<CartItem[]>([]);
+    const [selections, setSelections] = useState();
 
     const handleAddToCart = (product: ItemProduct) => {
       let p: ItemProduct = {
@@ -73,30 +73,56 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       return groupItemsByVariant();
     }, [groupItemsByVariant]);
 
+    // console.log("groups", JSON.stringify(variants, null, 4));
+    // const variantObjet = useMemo(() => {
+    //   let result = {};
+    //   variants.forEach((v) => {
+    //     if (typeof result[v.attribute] === "undefined") {
+    //       result[v.attribute] = { [v.label]: parseInt(v.price) };
+    //     } else {
+    //       result[v.attribute] = {
+    //         ...result[v.attribute],
+    //         [v.label]: parseInt(v.price),
+    //       };
+    //     }
+    //   });
+
+    //   return result;
+    // }, [variants]);
+
+    const totalPrice = useMemo(() => {
+      if (typeof selections !== "undefined") {
+        let total = Object.entries<number>(selections)
+          .map((e: [string, number]) => e[1])
+          .reduce((a, b) => a + b);
+
+        return total;
+      }
+
+      return 0;
+    }, [selections]);
+
     return (
       <div
         ref={ref}
         className={cn(
-          "relative flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8",
+          "relative flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:items-start lg:gap-x-8",
           className
         )}
         {...props}
       >
         {/* Product Gallery */}
-        <div className="relative h-full w-full flex-none">
+        <div className="relative col-span-2 h-full w-full flex-none">
           {/* Main Image */}
 
-          <div className="aspect-[4/3]">
+          <div className="aspect-3/4">
             <div className="bg-base-100 rounded-lg flex justify-center items-center border px-0">
-              {/* <Image
+              <Image
                 alt={title}
                 radius="md"
                 src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
                 isZoomed
-              /> */}
-              <InnerImageZoom
-                className=" object-contain object-center h-[30dvh] sm:h-[30dvh] lg:h-[50dvh] cursor-pointer"
-                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
+                className="object-contain object-center h-[30dvh] sm:h-[30dvh] lg:h-[50dvh] cursor-pointer"
               />
             </div>
           </div>
@@ -135,7 +161,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
         </div>
 
         {/* Product Info */}
-        <div className="flex flex-col">
+        <div className="sticky top-28 col-span-1 flex flex-col">
           <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
           <h2 className="sr-only">Product information</h2>
           <div className="my-2 flex items-center gap-2">
@@ -155,46 +181,63 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               <Icon icon="carbon:delivery" width={24} />
               <p className="text-small font-medium">30 days return</p>
             </div>
-            <>
+            <div>
               {variants.length > 0 &&
                 Object.keys(groups).map((item: string, idx: number) => {
                   return (
                     <RadioGroup
                       aria-label="Select varaints"
-                      orientation="horizontal"
+                      // orientation="horizontal"
                       label={`Variants: (${item})`}
                       key={idx}
-                      className="mt-3 grid-cols-2"
+                      className="mt-3"
+                      onValueChange={(value) => {
+                        console.log("hello", value);
+                        // setSelections({})
+                        if (typeof selections === "undefined") {
+                          setSelections({
+                            [value.attribute]: parseInt(value.price),
+                          });
+                        } else {
+                          setSelections({
+                            ...selections,
+                            [value.attribute]: parseInt(value.price),
+                          });
+                        }
+                      }}
                     >
-                      {groups[item]?.map((res: Variants, idx: number) => {
-                        return (
-                          <TagGroupRadioItem
-                            size="lg"
-                            key={idx}
-                            value={res?.id}
-                            className="col-span-1"
-                          >
-                            <div className="flex items-center gap-3 p-3">
-                              <Image
-                                alt="varaints"
-                                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
-                                className="h-12"
-                                radius="md"
-                              />
-                              <div>
-                                <p className="line-clamp-2">{res.label}</p>
-                                <p className="text-base font-medium text-primary">
-                                  {formatToUSD(parseInt(res?.price.toString()))}
-                                </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-1 items-center">
+                        {groups[item]?.map((res: Variants, idx: number) => {
+                          return (
+                            <TagGroupRadioItem
+                              size="sm"
+                              key={idx}
+                              value={res as any}
+                            >
+                              <div className="grid grid-cols-4 items-center gap-3 p-3">
+                                <Image
+                                  alt="varaints"
+                                  src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
+                                  className="col-span-1 w-full h-full"
+                                  radius="md"
+                                />
+                                <div className="col-span-3">
+                                  <p className="line-clamp-2">{res.label}</p>
+                                  <p className="text-base font-medium text-primary">
+                                    {formatToUSD(
+                                      parseInt(res?.price.toString())
+                                    )}
+                                  </p>
+                                </div>
                               </div>
-                            </div>
-                          </TagGroupRadioItem>
-                        );
-                      })}
+                            </TagGroupRadioItem>
+                          );
+                        })}
+                      </div>
                     </RadioGroup>
                   );
                 })}
-            </>
+            </div>
           </div>
 
           <div className="mt-12">
@@ -217,13 +260,11 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                   preview: props?.thumbnail,
                 };
 
-                variants.length > 0
-                  ? (addCarts(items), setItems([]))
-                  : handleAddToCart(p);
+                variants.length > 0 ? addCarts(items) : handleAddToCart(p);
                 toast.success("The product is added into the cart!");
               }}
             >
-              Add to cart
+              Add to cart {totalPrice}
             </Button>
           </div>
           <div className="mt-16 block sm:block lg:hidden">
