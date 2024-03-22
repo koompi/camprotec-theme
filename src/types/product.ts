@@ -1,10 +1,14 @@
+export interface Attribute {
+  type: string,
+  option: string
+}
 export interface Variants {
   id: string;
   label: string;
   option: string;
   previews: string;
   price: string;
-  attribute: string;
+  attributes: Attribute[];
 }
 
 export type ItemProduct = {
@@ -18,6 +22,7 @@ export type ItemProduct = {
   preview: string;
   slug?: string;
 };
+
 export type ProductType = {
   id: string;
   title: string;
