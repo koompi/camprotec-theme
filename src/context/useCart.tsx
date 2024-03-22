@@ -128,15 +128,13 @@ export function CartProvider(props: { children: JSX.Element }) {
   };
 
   const addCarts = (items: CartItem[]) => {
-    // toast.success("The product is added into the cart!");
-
     setCartItems(items.concat(cartItems));
+    toast.success("The product is added into the cart!");
     updateLocalStorage();
   };
 
   const logout = () => {
     localStorage.removeItem("access_token");
-    // router.replace("/");
     if (typeof window !== "undefined") {
       global && window.location.reload();
     }
@@ -159,7 +157,6 @@ export function CartProvider(props: { children: JSX.Element }) {
         logout: logout,
       }}
     >
-      {/* <Toaster position="bottom-right" closeButton /> */}
       {props.children}
     </CartContext.Provider>
   );

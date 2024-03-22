@@ -14,6 +14,7 @@ import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 import { CartItem } from "@/types/global";
 import { VariantRadio } from "./VariantRadio";
+import { useForm } from "react-hook-form";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -41,21 +42,25 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     ref
   ) => {
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
-    const { addToCart, addCarts } = useCart();
-    const [items, setItems] = useState<CartItem[]>([]);
-    const [selections, setSelections] = useState();
+    const { addToCart } = useCart();
+    const defaultValue = variants.find(
+      (item) => item.default && item
+    ) as Variants;
+    const [varaint, setVariant] = useState<Variants>(defaultValue);
+    // const [items, setItems] = useState<CartItem[]>([]);
+    // const [selections, setSelections] = useState();
 
-    const handleAddToCart = (product: ItemProduct) => {
-      let p: ItemProduct = {
-        id: product?.id,
-        variantId: null,
-        name: product?.name,
-        price: product?.price,
-        currency: product?.currency,
-        preview: product?.preview,
-      };
-      addToCart(p, false);
-    };
+    // const handleAddToCart = (product: ItemProduct) => {
+    //   let p: ItemProduct = {
+    //     id: product?.id,
+    //     variantId: null,
+    //     name: product?.name,
+    //     price: product?.price,
+    //     currency: product?.currency,
+    //     preview: product?.preview,
+    //   };
+    //   addToCart(p, false);
+    // };
 
     // function to group items by date
     // const groupItemsByVariant = useCallback(() => {
@@ -91,17 +96,17 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     //   return result;
     // }, [variants]);
 
-    const totalPrice = useMemo(() => {
-      if (typeof selections !== "undefined") {
-        let total = Object.entries<number>(selections)
-          .map((e: [string, number]) => e[1])
-          .reduce((a, b) => a + b);
+    // const totalPrice = useMemo(() => {
+    //   if (typeof selections !== "undefined") {
+    //     let total = Object.entries<number>(selections)
+    //       .map((e: [string, number]) => e[1])
+    //       .reduce((a, b) => a + b);
 
-        return total;
-      }
+    //     return total;
+    //   }
 
-      return 0;
-    }, [selections]);
+    //   return 0;
+    // }, [selections]);
 
     return (
       <div
@@ -263,51 +268,47 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               }
             </> */}
 
-            <RadioGroup label="Variants">
-              {variants.length > 0 &&
-                variants.map((item: any, idx: number) => {
-                  return (
-                    <VariantRadio key={idx} value={item.id}>
-                      <div className="flex items-center space-x-4">
-                        <Image
-                          alt="variants"
-                          src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
-                          className="h-12"
-                          radius="md"
-                        />
-                        <div>
-                          <span className="text-lg font-bold">{item.label}</span>
-                          {item.attributes.map(
-                            (item: Attribute, idx: number) => (
-                              <div key={idx} className="text-xs flex">
-                                <span>{item.type}: </span>
-                                <span>{item.option}</span>
-                              </div>
-                            )
-                          )}
-                          <p className="text-lg font-bold text-primary">
-                            {formatToUSD(parseInt(item?.price.toString()))}
-                          </p>
+            <RadioGroup
+              label="Variants"
+              defaultValue={variants.find((item) => item.default === true)?.id}
+            >
+              <div className="grid grid-cols-2 gap-2">
+                {variants.length > 0 &&
+                  variants.map((item: Variants, idx: number) => {
+                    return (
+                      <VariantRadio
+                        key={idx}
+                        value={item?.id}
+                        onChange={(_) => setVariant(item)}
+                      >
+                        <div className="flex items-center space-x-4">
+                          <Image
+                            alt="variants"
+                            src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                            className="h-12"
+                            radius="md"
+                          />
+                          <div>
+                            <span className="text-md font-bold">
+                              {item.label}
+                            </span>
+                            <p className="text-base font-medium font-bold text-primary">
+                              {formatToUSD(parseInt(item?.price.toString()))}
+                            </p>
+                            {item.attributes.map(
+                              (item: Attribute, idx: number) => (
+                                <div key={idx} className="text-xs flex">
+                                  {/* <span>{item.type}: </span> */}
+                                  <span>{item.option}</span>
+                                </div>
+                              )
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </VariantRadio>
-                  );
-                })}
-              {/* <VariantRadio description="Up to 20 items" value="free">
-                Free
-              </VariantRadio>
-              <VariantRadio
-                description="Unlimited items. $10 per month."
-                value="pro"
-              >
-                Pro
-              </VariantRadio>
-              <VariantRadio
-                description="24/7 support. Contact us for pricing."
-                value="enterprise"
-              >
-                Enterprise
-              </VariantRadio> */}
+                      </VariantRadio>
+                    );
+                  })}
+              </div>
             </RadioGroup>
           </div>
 
@@ -322,20 +323,19 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                const p: ItemProduct = {
+                const product: ItemProduct = {
                   id: props?.id,
-                  variantId: null,
                   name: title,
-                  price: price,
-                  currency: props?.currency,
-                  preview: props?.thumbnail,
+                  variantId: varaint ? varaint.id : null,
+                  price: varaint ? varaint.price : price,
+                  currency: "USD",
+                  preview: varaint ? varaint.previews : props?.thumbnail,
                 };
 
-                variants.length > 0 ? addCarts(items) : handleAddToCart(p);
-                toast.success("The product is added into the cart!");
+                addToCart(product, variants.length > 0 ? true : false);
               }}
             >
-              Add to cart {totalPrice}
+              Add to cart
             </Button>
           </div>
           <div className="mt-16 block sm:block lg:hidden">

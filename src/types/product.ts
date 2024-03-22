@@ -5,9 +5,9 @@ export interface Attribute {
 export interface Variants {
   id: string;
   label: string;
-  option: string;
+  default: boolean;
   previews: string;
-  price: string;
+  price: number;
   attributes: Attribute[];
 }
 

@@ -20,16 +20,16 @@ export const VariantRadio = (props: RadioProps) => {
       {...getBaseProps()}
       className={cn(
         "group inline-flex items-center justify-between hover:bg-content2 flex-row-reverse",
-        "max-w-[300px] cursor-pointer border-2 border-default rounded-lg gap-4 p-4",
+        "max-w-full cursor-pointer border-2 border-default rounded-lg gap-4 p-4",
         "data-[selected=true]:border-primary",
       )}
     >
       <VisuallyHidden>
         <input {...getInputProps()} />
       </VisuallyHidden>
-      <span {...getWrapperProps()}>
+      {/* <span {...getWrapperProps()}>
         <span {...getControlProps()} />
-      </span>
+      </span> */}
       <div {...getLabelWrapperProps()}>
         {children && <span {...getLabelProps()}>{children}</span>}
         {description && (
