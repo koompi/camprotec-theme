@@ -43,10 +43,23 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
   ) => {
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
     const { addToCart } = useCart();
-    const defaultValue = variants.find(
-      (item) => item.default && item
+
+    const cartVaraints = [
+      {
+        id: "1",
+        label: "Default",
+        default: true,
+        previews: previews[0],
+        price: price,
+        attributes: [],
+      },
+    ].concat(variants as never[]);
+
+    const defaultValue = cartVaraints.find(
+      (item) => item.id == "1" && item
     ) as Variants;
-    const [varaint, setVariant] = useState<Variants>(defaultValue);
+
+    const [variant, setVariant] = useState<Variants>(defaultValue);
     // const [items, setItems] = useState<CartItem[]>([]);
     // const [selections, setSelections] = useState();
 
@@ -120,7 +133,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
         {/* Product Gallery */}
         <div className="relative col-span-2 h-full w-full flex-none">
           {/* Main Image */}
-
           <div className="aspect-3/4">
             <div className="bg-base-100 rounded-lg flex justify-center items-center border px-0">
               <Image
@@ -175,7 +187,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
             <p>Reviews</p>
           </div>
           <p className="text-2xl text-primary font-bold tracking-tight">
-            ${price}
+            {formatToUSD(parseInt(variant.price.toString()))}
           </p>
           <div className="mt-4">
             <p className="sr-only">Product desc</p>
@@ -268,13 +280,10 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               }
             </> */}
 
-            <RadioGroup
-              label="Variants"
-              defaultValue={variants.find((item) => item.default === true)?.id}
-            >
+            <RadioGroup label="Variants" defaultValue="1">
               <div className="grid grid-cols-2 gap-2">
                 {variants.length > 0 &&
-                  variants.map((item: Variants, idx: number) => {
+                  cartVaraints.map((item: Variants, idx: number) => {
                     return (
                       <VariantRadio
                         key={idx}
@@ -326,13 +335,13 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 const product: ItemProduct = {
                   id: props?.id,
                   name: title,
-                  variantId: varaint ? varaint.id : null,
-                  price: varaint ? varaint.price : price,
+                  variant: variant,
+                  price: variant ? variant.price : price,
                   currency: "USD",
-                  preview: varaint ? varaint.previews : props?.thumbnail,
+                  preview: variant ? variant.previews : props?.thumbnail,
                 };
 
-                addToCart(product, variants.length > 0 ? true : false);
+                addToCart(product, variant.id != "1" ? true : false);
               }}
             >
               Add to cart

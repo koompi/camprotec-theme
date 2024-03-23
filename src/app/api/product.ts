@@ -14,11 +14,12 @@ export async function getLatestProducts() {
       filter: {
         limit: 11,
         skip: 0,
-        sort: -1,
+        sort: 1,
       },
     },
   });
-
+  console.log("data", data);
+  
   return {
     props: {
       products: data.storeProducts,

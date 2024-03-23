@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Image, Link, Tooltip } from "@nextui-org/react";
+import { Button, Chip, Image, Link, Tooltip } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { cn } from "@/utils/cn";
 import { CartItem } from "@/types/global";
@@ -48,6 +48,20 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
             </span>
             <span className="text-small text-default-500">x {quantity}</span>
           </div>
+          {product.variant?.id == "1" && (
+            <Chip radius="sm" size="sm" variant="flat" color="secondary">
+              Default
+            </Chip>
+          )}
+          <div className="flex space-x-2 mt-2">
+            {product?.variant?.attributes.map((atr) => {
+              return (
+                <Chip radius="sm" size="sm" variant="flat" color="secondary">
+                  {atr.option}
+                </Chip>
+              );
+            })}
+          </div>
         </div>
         <div className="flex gap-3">
           <Tooltip content="Minus" placement="top">
@@ -58,7 +72,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
               variant="flat"
               isDisabled={quantity <= 1}
               onPress={() =>
-                minusCart(product, product.variantId ? true : false)
+                minusCart(product, product.variant?.id != "1" ? true : false)
               }
             >
               <Icon icon="lucide:minus" width={14} />
@@ -72,7 +86,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
               variant="flat"
               color="success"
               onPress={() =>
-                addToCart(product, product.variantId ? true : false)
+                addToCart(product, product.variant?.id ? true : false)
               }
             >
               <Icon icon="lucide:plus" width={14} />
@@ -87,8 +101,8 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
               color="danger"
               onPress={() => {
                 removeFromCart(
-                  product.variantId ? product.variantId : product.id,
-                  product.variantId ? true : false
+                  product.variant?.id ? product.variant?.id : product.id,
+                  product.variant?.id ? true : false
                 );
                 // toast.info("The product is added into the cart!");
               }}

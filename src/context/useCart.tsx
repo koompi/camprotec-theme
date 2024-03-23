@@ -55,7 +55,7 @@ export function CartProvider(props: { children: JSX.Element }) {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) =>
         variant
-          ? item.product?.variantId === product?.variantId
+          ? item.product?.variant?.id === product?.variant?.id
           : item.product?.id === product?.id
       );
       if (existingItem) {
@@ -64,7 +64,7 @@ export function CartProvider(props: { children: JSX.Element }) {
             ? res.product?.id === product?.id
               ? { ...res, quantity: res.quantity + 1 }
               : res
-            : res.product?.variantId === product?.variantId
+            : res.product?.variant?.id=== product?.variant?.id
             ? { ...res, quantity: res.quantity + 1 }
             : res
         );
@@ -80,7 +80,7 @@ export function CartProvider(props: { children: JSX.Element }) {
     setCartItems((prevItems) => {
       const existingItem = prevItems?.find((item) =>
         variant
-          ? item.product?.variantId === product?.variantId
+          ? item.product?.variant?.id === product?.variant?.id
           : item.product?.id === product?.id
       );
       if (existingItem) {
@@ -89,14 +89,14 @@ export function CartProvider(props: { children: JSX.Element }) {
             ? res.product?.id === product?.id
               ? { ...res, quantity: res.quantity - 1 }
               : res
-            : res.product?.variantId === product?.variantId
+            : res.product?.variant?.id === product?.variant?.id
             ? { ...res, quantity: res.quantity - 1 }
             : res
         );
       }
       const updatedItems = prevItems?.filter((item: CartItem) =>
         variant
-          ? item.product?.variantId === product?.variantId
+          ? item.product?.variant?.id === product?.variant?.id
           : item.product?.id === product?.id
       );
       return updatedItems;
@@ -114,7 +114,7 @@ export function CartProvider(props: { children: JSX.Element }) {
         (item) => item.product.id !== productId
       );
       const updatedVariant = prevItems?.filter(
-        (item) => item.product.variantId !== productId
+        (item) => item.product.variant?.id !== productId
       );
       return variant ? updatedVariant : updatedItems;
     });
