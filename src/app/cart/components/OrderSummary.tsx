@@ -25,8 +25,8 @@ const OrderSummary = React.forwardRef<HTMLDivElement, OrderSummaryProps>(
         )}
         <h3 className="sr-only">Items in your cart</h3>
         <ul>
-          {cartItems?.map((item) => (
-            <OrderSummaryItem key={item.product?.id} {...item} />
+          {cartItems?.map((item, idx: number) => (
+            <OrderSummaryItem key={idx} {...item} />
           ))}
         </ul>
       </div>

@@ -44,9 +44,9 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
     const { addToCart } = useCart();
 
-    const cartVaraints = [
+    const cartVariants = [
       {
-        id: "1",
+        id: null,
         label: "Default",
         default: true,
         previews: previews[0],
@@ -55,11 +55,15 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       },
     ].concat(variants as never[]);
 
-    const defaultValue = cartVaraints.find(
-      (item) => item.id == "1" && item
-    ) as Variants;
+    const [variant, setVariant] = useState<Variants>({
+      id: null,
+      label: "Default",
+      default: true,
+      previews: previews[0],
+      price: price,
+      attributes: [],
+    });
 
-    const [variant, setVariant] = useState<Variants>(defaultValue);
     // const [items, setItems] = useState<CartItem[]>([]);
     // const [selections, setSelections] = useState();
 
@@ -279,46 +283,49 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 // }
               }
             </> */}
-
-            <RadioGroup label="Variants" defaultValue="1">
-              <div className="grid grid-cols-2 gap-2">
-                {variants.length > 0 &&
-                  cartVaraints.map((item: Variants, idx: number) => {
-                    return (
-                      <VariantRadio
-                        key={idx}
-                        value={item?.id}
-                        onChange={(_) => setVariant(item)}
-                      >
-                        <div className="flex items-center space-x-4">
-                          <Image
-                            alt="variants"
-                            src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
-                            className="h-12"
-                            radius="md"
-                          />
-                          <div>
-                            <span className="text-md font-bold">
-                              {item.label}
-                            </span>
-                            <p className="text-base font-medium text-primary">
-                              {formatToUSD(parseInt(item?.price.toString()))}
-                            </p>
-                            {item.attributes.map(
-                              (item: Attribute, idx: number) => (
-                                <div key={idx} className="text-xs flex">
-                                  {/* <span>{item.type}: </span> */}
-                                  <span>{item.option}</span>
-                                </div>
-                              )
-                            )}
+            {variants.length > 0 && (
+              <RadioGroup label="Variants" defaultValue="1">
+                <div className="grid grid-cols-2 gap-2">
+                  {variants.length > 0 &&
+                    cartVariants.map((item: Variants, idx: number) => {
+                      console.log("item", item);
+                      
+                      return (
+                        <VariantRadio
+                          key={idx}
+                          value={item.id ? "0" : "1"}
+                          onChange={(_) => setVariant({...item, "default": item.id ? false : true})}
+                        >
+                          <div className="flex items-center space-x-4">
+                            <Image
+                              alt="variants"
+                              src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                              className="h-12"
+                              radius="md"
+                            />
+                            <div>
+                              <span className="text-md font-bold">
+                                {item.label}
+                              </span>
+                              <p className="text-base font-medium text-primary">
+                                {formatToUSD(parseInt(item?.price.toString()))}
+                              </p>
+                              {item.attributes.map(
+                                (item: Attribute, idx: number) => (
+                                  <div key={idx} className="text-xs flex">
+                                    {/* <span>{item.type}: </span> */}
+                                    <span>{item.option}</span>
+                                  </div>
+                                )
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      </VariantRadio>
-                    );
-                  })}
-              </div>
-            </RadioGroup>
+                        </VariantRadio>
+                      );
+                    })}
+                </div>
+              </RadioGroup>
+            )}
           </div>
 
           <div className="mt-12">
@@ -333,15 +340,16 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 e.preventDefault();
                 e.stopPropagation();
                 const product: ItemProduct = {
-                  id: props?.id,
+                  id: variant.id ? variant.id : props.id,
                   name: title,
                   variant: variant,
                   price: variant ? variant.price : price,
                   currency: "USD",
                   preview: variant ? variant.previews : props?.thumbnail,
+                  productId: props?.id,
                 };
 
-                addToCart(product, variant.id != "1" ? true : false);
+                addToCart(product);
               }}
             >
               Add to cart

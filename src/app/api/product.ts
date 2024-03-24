@@ -17,9 +17,7 @@ export async function getLatestProducts() {
         sort: 1,
       },
     },
-  });
-  console.log("data", data);
-  
+  });  
   return {
     props: {
       products: data.storeProducts,

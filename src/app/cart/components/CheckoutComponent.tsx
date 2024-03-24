@@ -63,32 +63,32 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
 
   //  function checkout
 
-  const onSubmitChekcout = () => {
+  const onSubmitCheckout = () => {
     const totalPrice = (
       price + es_price?.estimatePrice?.data?.data?.price
     ).toFixed(2);
 
     const newCart = cartItems?.map((item) => {
       return {
-        productId: item?.product?.id,
+        productId: item?.product.productId,
         qty: item?.quantity,
-        unitPrice: item?.product?.price,
-        variantId: item?.product?.variantId,
+        unitPrice: parseFloat(item?.product?.price.toString()),
+        variantId: item?.product?.variant?.id,
       };
     });
 
-    const body = {
+    const variables = {
       input: {
         carts: newCart,
         currency: "USD",
-        totalPrice: totalPrice,
+        totalPrice: parseFloat(totalPrice.toString()),
       },
       deliveryId: ship,
       addressId: toDelivery?.id,
       payment: "CASH",
     };
 
-    storeCreateCheckouts({ variables: body })
+    storeCreateCheckouts({ variables: variables })
       .then((_) => {
         toast.success(
           "Congratulation! you've been order the product(s) successfully!"
@@ -96,7 +96,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
         router.push("/orders");
       })
       .catch((err) => {
-        toast.error("Your transaction is failed!");
+        toast.error("Your transaction order is failed!");
         console.log(err);
       });
   };
@@ -380,7 +380,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   size="lg"
                   onPress={() => {
                     if (page === 2) {
-                      onSubmitChekcout();
+                      onSubmitCheckout();
                     }
                     paginate(1);
                   }}

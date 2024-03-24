@@ -7,7 +7,8 @@
   "banner": {
     "message": "The most popular products is available here.",
     "title": "Deep Savings on Your Favorite Items!",
-    "desc": "It's time to indulge! Dive into a sea of savings on all your favorite items. Snag incredible deals you won't believe (...your eyes ). Don't miss out, this sale's hotter than sunshine! ☀️"
+    "desc": "It's time to indulge! Dive into a sea of savings on all your favorite items. Snag incredible deals you won't believe (...your eyes ). Don't miss out, this sale's hotter than sunshine! ☀️",
+    "promotes": ["https://img.freepik.com/premium-photo/shocked-beautiful-asian-woman-showing-red-sale-sign_8087-4000.jpg?w=2000", "https://img.freepik.com/premium-photo/young-smiling-asian-woman-hands-showing-sale-sign-hat-with-glasses-light-orange-background_2034-1998.jpg?w=2000", "https://img.freepik.com/free-photo/asian-happy-female-woman-girl-holds-colourful-shopping-packages-standing-yellow-background-studio-shot-close-up-portrait-young-beautiful-attractive-girl-smiling-looking-camera-with-bags_609648-3029.jpg?t=st=1711290564~exp=1711294164~hmac=9196bcf32ec37e7f564749dba28e529c0d534bd324edac2d407acb4330527845&w=2000"]
   },
   "header": {
     "enable": true,

@@ -57,7 +57,7 @@ export default function ComponentProducts({
     );
   };
 
-  const ProductSortCompoent = () => {
+  const ProductSortComponent = () => {
     if (searchParams?.sortParam === "most_popular") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
@@ -121,7 +121,7 @@ export default function ComponentProducts({
       <div className="w-full flex-1 flex-col">
         <MenuBar searchParams={searchParams} onOpen={onOpen}/>
         <main className="mt-4 h-full w-full overflow-visible px-1">
-          <ProductSortCompoent />
+          <ProductSortComponent/>
         </main>
       </div>
     </>

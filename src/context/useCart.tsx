@@ -51,75 +51,51 @@ export function CartProvider(props: { children: JSX.Element }) {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
 
-  const addToCart = (product: ItemProduct, variant: boolean) => {
+  const addToCart = (product: ItemProduct) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) =>
-        variant
-          ? item.product?.variant?.id === product?.variant?.id
-          : item.product?.id === product?.id
+      const existingItem = prevItems.find(
+        (item) => item.product.id === product.id
       );
       if (existingItem) {
         return prevItems.map((res) =>
-          !variant
-            ? res.product?.id === product?.id
-              ? { ...res, quantity: res.quantity + 1 }
-              : res
-            : res.product?.variant?.id === product?.variant?.id
+          res.product?.id === product?.id
             ? { ...res, quantity: res.quantity + 1 }
             : res
         );
       }
       const newItem: CartItem = { product, quantity: 1 };
       const updatedItems = [...prevItems, newItem];
+      localStorage.setItem("cartItems", JSON.stringify(updatedItems));
       return updatedItems;
     });
-    updateLocalStorage();
   };
 
-  const minusCart = (product: ItemProduct, variant: boolean) => {
+  const minusCart = (product: ItemProduct) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems?.find((item) =>
-        variant
-          ? item.product?.variant?.id === product?.variant?.id
-          : item.product?.id === product?.id
+      const existingItem = prevItems?.find(
+        (item) => item.product?.id === product?.id
       );
       if (existingItem) {
         return prevItems?.map((res) =>
-          !variant
-            ? res.product?.id === product?.id
-              ? { ...res, quantity: res.quantity - 1 }
-              : res
-            : res.product?.variant?.id === product?.variant?.id
+          res.product?.id === product?.id
             ? { ...res, quantity: res.quantity - 1 }
             : res
         );
       }
-      const updatedItems = prevItems?.filter((item: CartItem) =>
-        variant
-          ? item.product?.variant?.id === product?.variant?.id
-          : item.product?.id === product?.id
+      const updatedItems = prevItems?.filter(
+        (item: CartItem) => item.product?.id === product?.id
       );
+      localStorage.setItem("cartItems", JSON.stringify(updatedItems));
       return updatedItems;
     });
-    updateLocalStorage();
   };
 
-  const removeFromCart = (productId: string, variant: boolean) => {
-    if (cartItems.length === 1) {
-      cleanCartItems();
-      return;
-    }
+  const removeFromCart = (id: String) => {
     setCartItems((prevItems) => {
-      const updatedItems = prevItems?.filter(
-        (item) => item.product.id !== productId
-      );
-      const updatedVariant = prevItems?.filter(
-        (item) => item.product.variant?.id !== productId
-      );
-      return variant ? updatedVariant : updatedItems;
+      const item = prevItems.filter((item) => item.product.id != id);
+      localStorage.setItem("cartItems", JSON.stringify(item));
+      return item;
     });
-
-    updateLocalStorage();
   };
 
   const cleanCartItems = () => {

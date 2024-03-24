@@ -15,9 +15,9 @@ export type CartItem = {
 
 export type CartContextType = {
   cartItems: CartItem[];
-  addToCart: (product: ItemProduct, variant: boolean) => void;
-  minusCart: (product: ItemProduct, variant: boolean) => void;
-  removeFromCart: (productId: string, variant: boolean) => void;
+  addToCart: (product: ItemProduct) => void;
+  minusCart: (product: ItemProduct) => void;
+  removeFromCart: (id: String) => void;
   addCarts: (cartItems: CartItem[]) => void;
   cleanCartItems: Function;
   logout: Function;
