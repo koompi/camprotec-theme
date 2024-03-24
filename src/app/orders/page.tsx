@@ -4,23 +4,33 @@ import React from "react";
 import OrderCard from "./components/OrderCard";
 import { useQuery } from "@apollo/client";
 import { GET_ORDERS } from "@/graphql/orders";
-import { Skeleton } from "@nextui-org/react";
 import { OrdersType } from "@/types/checkout";
 
 const OrderPage = () => {
   const { data, loading, refetch } = useQuery(GET_ORDERS, {
     variables: {
       filter: {
-        limit: 10,
+        limit: 100,
         skip: 0,
         sort: -1,
       },
     },
   });
 
+  const newestSort = (): OrdersType[] => {
+    if (!data?.storeOrders) {
+      return [];
+    }
+    return [...data?.storeOrders].sort((a: OrdersType, b: OrdersType) =>
+      a.createdAt > b.createdAt ? -1 : 1
+    );
+  };
+
   if (loading || !data) {
     return "loading ...";
   }
+
+  console.log("data", data);
 
   return (
     <section className="container max-w-full sm:max-w-full lg:max-w-5xl py-9 px-3 sm:px-3 lg:px-6 mx-auto">
@@ -31,7 +41,7 @@ const OrderPage = () => {
         </p>
       </div>
       <div className="flex flex-col gap-6 items-center">
-        {data.storeOrders?.map((res: OrdersType, idx: number) => {
+        {newestSort()?.map((res: OrdersType, idx: number) => {
           return (
             <OrderCard
               key={idx}

@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import Steps from "@uiw/react-steps";
 import { OrdersType } from "@/types/checkout";
 import dayjs from "dayjs";
+import { formatToUSD } from "@/utils/usd";
 
 const OrderCard: FC<OrdersType> = (props) => {
   return (
@@ -23,7 +24,7 @@ const OrderCard: FC<OrdersType> = (props) => {
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-0 sm:gap-0 lg:gap-3">
-            {/* <Button
+            <Button
               color="primary"
               variant="light"
               startContent={
@@ -31,7 +32,7 @@ const OrderCard: FC<OrdersType> = (props) => {
               }
             >
               View order details
-            </Button> */}
+            </Button>
             <Button
               color="primary"
               variant="light"
@@ -60,15 +61,23 @@ const OrderCard: FC<OrdersType> = (props) => {
               <p className="text-sm font-light">SONY</p>
               <p className="text-sm font-light">Variants</p>
               <p className="text-sm font-light">Qty: 5</p>
-              <p className="text-sm font-light">$1200.00</p>
+              <p className="text-sm font-light">
+                {formatToUSD(parseFloat(props?.totalPrice.toString()))}
+              </p>
             </div>
           </div>
           <div className="mt-3">
             <Steps
-              current={0}
+              current={
+                props?.status === "START"
+                  ? 0
+                  : props?.status === "CLOSE"
+                  ? 3
+                  : 1
+              }
               direction="vertical"
               progressDot
-              status="process"
+              // status="process"
             >
               <Steps.Step title="Ordered" />
               <Steps.Step title="Confirmed" />
@@ -77,9 +86,9 @@ const OrderCard: FC<OrdersType> = (props) => {
             </Steps>
           </div>
         </div>
-        <Button size="lg" variant="light" color="primary">
+        {/* <Button size="lg" variant="light" color="primary">
           Expected delivery on Monday 16 Jul 2024
-        </Button>
+        </Button> */}
       </CardBody>
     </Card>
   );
