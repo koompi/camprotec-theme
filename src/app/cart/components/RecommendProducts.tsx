@@ -16,24 +16,6 @@ import { useRouter } from "next/navigation";
 import FilterProduct from "./CheckoutComponent";
 
 const RecommendProducts = ({ products }: { products: ProductType[] }) => {
-  // const { data, loading } = useQuery(GLOBAL_PRODUCT_FILTERING, {
-  //   variables: {
-  //     tagId: null,
-  //     keyword: null,
-  //     status: null,
-  //     range: null,
-  //     filter: {
-  //       skip: 0,
-  //       limit: 10,
-  //       sort: -1,
-  //     },
-  //   },
-  // });
-
-  // if (loading || !data) {
-  //   return null;
-  // }
-
   return (
     <div className="h-[80dvh] sticky top-28 hidden sm:hidden lg:block">
       <Swiper

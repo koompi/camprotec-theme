@@ -98,7 +98,8 @@ export default function PageLocation() {
     storeCreateAddress({ variables: inputDelivery })
       .then(() => {
         toast.success("New location has been created!");
-        router.back();
+        // router.back();
+        router.push(`/cart?steps=shipping`);
       })
       .catch((err) => {
         console.log(err);

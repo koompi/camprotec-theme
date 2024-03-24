@@ -161,7 +161,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
         </div>
 
         {/* Product Info */}
-        <div className="sticky top-28 col-span-1 flex flex-col">
+        <div className="sticky top-28 col-span-1 flex flex-col border py-6 px-3 rounded-lg">
           <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
           <h2 className="sr-only">Product information</h2>
           <div className="my-2 flex items-center gap-2">

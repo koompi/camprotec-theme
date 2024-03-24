@@ -37,3 +37,21 @@ export type CustomerAdressType = {
   storeId: string;
   label: string;
 };
+
+export type CheckoutCartType = {
+  productId: string;
+  qty: number;
+  unitPrice: number;
+};
+
+export type OrdersType = {
+  carts: CheckoutCartType[];
+  code: string;
+  createdAt: string;
+  id: string;
+  ownerId: string;
+  status: string;
+  tax: string;
+  totalDiscount: number;
+  totalPrice: number;
+};

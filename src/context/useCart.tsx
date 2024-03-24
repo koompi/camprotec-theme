@@ -128,7 +128,7 @@ export function CartProvider(props: { children: JSX.Element }) {
   };
 
   const addCarts = (items: CartItem[]) => {
-    // toast.success("The product is added into the cart!");
+    toast.success("The product is added into the cart!");
 
     setCartItems(items.concat(cartItems));
     updateLocalStorage();
@@ -159,7 +159,7 @@ export function CartProvider(props: { children: JSX.Element }) {
         logout: logout,
       }}
     >
-      {/* <Toaster position="bottom-right" closeButton /> */}
+      <Toaster position="top-right" closeButton />
       {props.children}
     </CartContext.Provider>
   );

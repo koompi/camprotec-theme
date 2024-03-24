@@ -1,10 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionItem,
   Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
   Image,
   Link,
   Progress,
@@ -18,16 +22,84 @@ import { VisaIcon, MasterCardIcon, PayPalIcon } from "./Providers";
 
 import ShippingForm from "./ShippingForm";
 import OrderSummary from "./OrderSummary";
-import PaymentForm from "./PaymentForm";
+// import PaymentForm from "./PaymentForm";
 import PaymentMethodRadio from "./PaymentMethodRadio";
 import { useCart } from "@/context/useCart";
 import { useAuth } from "@/context/useAuth";
 import { ProductType } from "@/types/product";
+import { formatToUSD } from "@/utils/usd";
+import { CustomerAdressType } from "@/types/checkout";
+import { useQuery } from "@apollo/client";
+import { ESTIMATE_PRICE } from "@/graphql/delivery";
+import { useMutation } from "@apollo/client";
+import { CHECKOUT } from "@/graphql/mutation/checkout";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   const { user } = useAuth();
+  const router = useRouter();
 
   const { cartItems, loading } = useCart();
+  const [price, setPrice] = useState(0);
+  const [ship, setShip] = useState<string>("");
+  const [toDelivery, setToDelivery] = useState<CustomerAdressType | null>();
+
+  const [storeCreateCheckouts] = useMutation(CHECKOUT);
+
+  // estimate price
+  const {
+    data: es_price,
+    loading: priceLoading,
+    refetch,
+  } = useQuery(ESTIMATE_PRICE, {
+    variables: {
+      adr: {
+        lat: toDelivery?.lat,
+        lng: toDelivery?.lng,
+      },
+    },
+  });
+
+  //  function checkout
+
+  const onSubmitChekcout = () => {
+    const totalPrice = (
+      price + es_price?.estimatePrice?.data?.data?.price
+    ).toFixed(2);
+
+    const newCart = cartItems?.map((item) => {
+      return {
+        productId: item?.product?.id,
+        qty: item?.quantity,
+        unitPrice: item?.product?.price,
+        variantId: item?.product?.variantId,
+      };
+    });
+
+    const body = {
+      input: {
+        carts: newCart,
+        currency: "USD",
+        totalPrice: totalPrice,
+      },
+      deliveryId: ship,
+      addressId: toDelivery?.id,
+      payment: "CASH",
+    };
+
+    storeCreateCheckouts({ variables: body })
+      .then((_) => {
+        toast.success(
+          "Congratulation! you've been order the product(s) successfully!"
+        );
+        router.push("/orders");
+      })
+      .catch((err) => {
+        toast.error("Your transaction is failed!");
+        console.log(err);
+      });
+  };
 
   const [[page, direction], setPage] = React.useState([0, 0]);
 
@@ -47,6 +119,17 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       opacity: 0,
     }),
   };
+
+  useEffect(() => {
+    const subtotal: number[] = [];
+    cartItems.map((product: any) =>
+      subtotal.push(product.quantity * product.product.price)
+    );
+    const Subtotal: any = subtotal.reduce((accumulator, value) => {
+      return accumulator + value;
+    }, 0);
+    setPrice(Subtotal);
+  }, [cartItems]);
 
   const paginate = (newDirection: number) => {
     if (page + newDirection < 0 || page + newDirection > 2) return;
@@ -93,7 +176,14 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       case 1:
         return (
           <div className="mt-0 sm:mt-0 lg:mt-4 flex flex-col gap-6">
-            <ShippingForm hideTitle variant="bordered" />
+            <ShippingForm
+              hideTitle
+              variant="bordered"
+              ship={ship}
+              setShip={setShip}
+              toDelivery={toDelivery as any}
+              setToDelivery={setToDelivery}
+            />
           </div>
         );
       case 2:
@@ -118,38 +208,68 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   <RadioGroup
                     aria-label="Select existing payment method"
                     classNames={{ wrapper: "gap-3" }}
-                    defaultValue="4229"
+                    defaultValue="cash"
                   >
                     <PaymentMethodRadio
                       isRecommended
                       classNames={paymentRadioClasses}
-                      description="Expires on 12/2024"
+                      description="Paid by cash"
+                      icon={
+                        <Icon
+                          icon="solar:wallet-money-bold"
+                          className="text-danger"
+                          fontSize={32}
+                        />
+                      }
+                      label="Cash"
+                      value="cash"
+                    />
+                    <PaymentMethodRadio
+                      classNames={paymentRadioClasses}
+                      description="coming soon"
+                      icon={
+                        <Icon
+                          icon="solar:filters-bold-duotone"
+                          className="text-danger"
+                          fontSize={32}
+                        />
+                      }
+                      label="Baray"
+                      value="baray"
+                      isDisabled
+                    />
+                    <PaymentMethodRadio
+                      classNames={paymentRadioClasses}
+                      description="coming soon"
                       icon={<VisaIcon height={30} width={30} />}
-                      label="Visa ending in 4229"
+                      label="Visa"
                       value="4229"
+                      isDisabled
                     />
                     <PaymentMethodRadio
                       classNames={paymentRadioClasses}
-                      description="Expires on 02/2025"
+                      description="coming soon"
                       icon={<MasterCardIcon height={30} width={30} />}
-                      label="MasterCard ending in 8888"
+                      label="MasterCard"
                       value="8888"
+                      isDisabled
                     />
                     <PaymentMethodRadio
                       classNames={paymentRadioClasses}
-                      description="Select this option to pay with PayPal"
+                      description="coming soon"
                       icon={<PayPalIcon height={30} width={30} />}
                       label="PayPal"
                       value="paypal"
+                      isDisabled
                     />
                   </RadioGroup>
                 </AccordionItem>
-                <AccordionItem
+                {/* <AccordionItem
                   key="add_new_payment"
                   title="Add a new payment method"
                 >
                   <PaymentForm variant="bordered" />
-                </AccordionItem>
+                </AccordionItem> */}
               </Accordion>
             </div>
           </div>
@@ -157,7 +277,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       default:
         return null;
     }
-  }, [page]);
+  }, [page, ship, toDelivery]);
 
   if (loading) {
     return (
@@ -223,7 +343,14 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
               isDisabled={page === 0}
               radius="full"
               variant="flat"
-              onPress={() => paginate(-1)}
+              onPress={() => {
+                if (page <= 1) {
+                  refetch();
+                  setToDelivery(null);
+                  setShip("");
+                }
+                paginate(-1);
+              }}
             >
               <Icon icon="solar:arrow-left-outline" width={20} />
               Go back
@@ -251,7 +378,13 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   fullWidth
                   className="mt-8 bg-foreground text-background"
                   size="lg"
-                  onPress={() => paginate(1)}
+                  onPress={() => {
+                    if (page === 2) {
+                      onSubmitChekcout();
+                    }
+                    paginate(1);
+                  }}
+                  isDisabled={page === 1 && !(ship && toDelivery)}
                 >
                   {ctaLabel}
                 </Button>
@@ -299,7 +432,60 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
           </div>
         </div>
       </div>
-      <RecommendProducts products={products} />
+      {page <= 0 ? (
+        <RecommendProducts products={products} />
+      ) : (
+        <div className="h-[80dvh] sticky top-28 hidden sm:hidden lg:block">
+          <Card shadow="sm" isBlurred>
+            <CardHeader>Sumary</CardHeader>
+            <CardBody>
+              <dl className="flex flex-col gap-4 py-4">
+                <div className="flex justify-between">
+                  <dt className="text-small text-default-500">Subtotal</dt>
+                  <dd className="text-small font-semibold text-default-700">
+                    {formatToUSD(price)}
+                  </dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-small text-default-500 flex items-center gap-3">
+                    Delivery
+                    <Icon
+                      icon="streamline:transfer-motorcycle-solid"
+                      fontSize={16}
+                    />
+                  </dt>
+                  <dd className="text-small font-semibold text-default-700">
+                    {es_price?.estimatePrice?.data?.data?.price
+                      ? formatToUSD(es_price?.estimatePrice?.data?.data?.price)
+                      : formatToUSD(0)}
+                  </dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-small text-default-500">Tax</dt>
+                  <dd className="text-small font-semibold text-default-700">
+                    $0.00
+                  </dd>
+                </div>
+
+                <Divider />
+                <div className="flex justify-between">
+                  <dt className="text-small font-semibold text-default-500">
+                    Total
+                  </dt>
+                  <dd className="font-semibold text-primary text-xl">
+                    {formatToUSD(
+                      price +
+                        (es_price?.estimatePrice?.data?.data?.price
+                          ? es_price?.estimatePrice?.data?.data?.price
+                          : 0)
+                    )}
+                  </dd>
+                </div>
+              </dl>
+            </CardBody>
+          </Card>
+        </div>
+      )}
     </section>
   );
 };

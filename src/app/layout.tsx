@@ -3,7 +3,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "../config/site";
 import { ApolloWrapper } from "@/libs/apollo-wrapper";
-import ThemeProvider from "@/context/useTheme";
+import ThemeProvider, { useTheme } from "@/context/useTheme";
 import NavbarLayout from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
 import MobileNavigator from "./components/layouts/MobileNavigator";
@@ -21,6 +21,8 @@ const inter = Inter({ subsets: ["latin"] });
 // });
 
 export const metadata: Metadata = {
+  title: siteConfig.name,
+
   metadataBase: new URL("https://riverbase.org"),
   alternates: {
     canonical: "/",

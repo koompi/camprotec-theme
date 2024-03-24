@@ -53,7 +53,7 @@ const NavbarLayout = () => {
         <NavbarItem>
           <Link
             className="text-default-500 font-semibold"
-            href={pathname == "/" ? "#products" : "/#products" }
+            href={pathname == "/" ? "#products" : "/#products"}
             // size="sm"
           >
             <p>Products</p>
@@ -135,6 +135,7 @@ const NavbarLayout = () => {
                 </DropdownItem>
                 <DropdownItem
                   key="orders"
+                  href="/orders"
                   startContent={
                     <Icon
                       icon="solar:cart-large-minimalistic-linear"

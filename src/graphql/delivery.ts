@@ -32,3 +32,9 @@ export const CUSTOMER_ADDRESS = gql`
     }
   }
 `;
+
+export const ESTIMATE_PRICE = gql`
+  query ($adr: AdrInput!) {
+    estimatePrice(adr: $adr)
+  }
+`;

@@ -82,7 +82,7 @@ const TagGroupRadioItem = React.forwardRef<
       ref={ref}
       className={cn(
         "group inline-flex items-center justify-between hover:bg-content2 flex-row-reverse",
-        "cursor-pointer border-2 border-default rounded-lg",
+        "cursor-pointer border border-default rounded-lg",
         "data-[selected=true]:border-primary"
       )}
     >
