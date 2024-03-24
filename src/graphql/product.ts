@@ -18,10 +18,13 @@ export const GET_PRODUCT = gql`
       detail
       currency
       variants {
-        attribute
         id
+        default
+        attributes {
+          type
+          option
+        }
         label
-        option
         previews
         price
       }
@@ -49,9 +52,14 @@ export const GET_ALL_PRODUCTS = gql`
       status
       detail
       variants {
+        id
+        default
         price
         previews
-        option
+        attributes {
+          type
+          option
+        }
         label
       }
       createdAt
@@ -78,9 +86,14 @@ export const PRODUCTS = gql`
       status
       detail
       variants {
+        id
+        default
         price
         previews
-        option
+        attributes {
+          type
+          option
+        }
         label
       }
       createdAt
@@ -115,10 +128,14 @@ export const GLOBAL_PRODUCT_FILTERING = gql`
       sell
       rating
       variants {
+        default
         id
         label
         price
-        option
+        attributes {
+          type
+          option
+        }
         previews
       }
     }

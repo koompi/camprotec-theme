@@ -1,15 +1,19 @@
+export interface Attribute {
+  type: string;
+  option: string;
+}
 export interface Variants {
   id: string;
   label: string;
-  option: string;
+  default: boolean;
   previews: string;
-  price: string;
-  attribute: string;
+  price: number;
+  attributes: Attribute[];
 }
 
 export type ItemProduct = {
   thumbnail?: any;
-  variantId: string | null;
+  variant?: Variants;
   title?: string;
   id: string;
   name: string;
@@ -17,7 +21,9 @@ export type ItemProduct = {
   currency: "KHR" | "USD";
   preview: string;
   slug?: string;
+  variantId?: string | null;
 };
+
 export type ProductType = {
   id: string;
   title: string;

@@ -7,12 +7,14 @@ import { cn } from "@/utils/cn";
 
 import RatingRadioGroup from "./RatingRadioGroup";
 import TagGroupRadioItem from "./TagGroupRadioItem";
-import { ItemProduct, ProductType, Variants } from "@/types/product";
+import { Attribute, ItemProduct, ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
 import { LexicalViewer } from "@/editor/LexicalViewer";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 import { CartItem } from "@/types/global";
+import { VariantRadio } from "./VariantRadio";
+import { useForm } from "react-hook-form";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -40,38 +42,55 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     ref
   ) => {
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
-    const { addToCart, addCarts } = useCart();
-    const [items, setItems] = useState<CartItem[]>([]);
-    const [selections, setSelections] = useState();
+    const { addToCart } = useCart();
 
-    const handleAddToCart = (product: ItemProduct) => {
-      let p: ItemProduct = {
-        id: product?.id,
-        variantId: null,
-        name: product?.name,
-        price: product?.price,
-        currency: product?.currency,
-        preview: product?.preview,
-      };
-      addToCart(p, false);
-    };
+    const cartVaraints = [
+      {
+        id: "1",
+        label: "Default",
+        default: true,
+        previews: previews[0],
+        price: price,
+        attributes: [],
+      },
+    ].concat(variants as never[]);
+
+    const defaultValue = cartVaraints.find(
+      (item) => item.id == "1" && item
+    ) as Variants;
+
+    const [variant, setVariant] = useState<Variants>(defaultValue);
+    // const [items, setItems] = useState<CartItem[]>([]);
+    // const [selections, setSelections] = useState();
+
+    // const handleAddToCart = (product: ItemProduct) => {
+    //   let p: ItemProduct = {
+    //     id: product?.id,
+    //     variantId: null,
+    //     name: product?.name,
+    //     price: product?.price,
+    //     currency: product?.currency,
+    //     preview: product?.preview,
+    //   };
+    //   addToCart(p, false);
+    // };
 
     // function to group items by date
-    const groupItemsByVariant = useCallback(() => {
-      const groups = [] as any;
-      variants?.forEach((item) => {
-        if (!groups[item.attribute.split(" ")[0]]) {
-          groups[item.attribute.split(" ")[0]] = [];
-        }
-        groups[item.attribute.split(" ")[0]].push(item);
-      });
+    // const groupItemsByVariant = useCallback(() => {
+    //   const groups = [] as any;
+    //   variants?.forEach((item) => {
+    //     if (!groups[item.attribute.split(" ")[0]]) {
+    //       groups[item.attribute.split(" ")[0]] = [];
+    //     }
+    //     groups[item.attribute.split(" ")[0]].push(item);
+    //   });
 
-      return groups;
-    }, [variants]);
+    //   return groups;
+    // }, [variants]);
 
-    const groups = useMemo(() => {
-      return groupItemsByVariant();
-    }, [groupItemsByVariant]);
+    // const groups = useMemo(() => {
+    //   return groupItemsByVariant();
+    // }, [groupItemsByVariant]);
 
     // console.log("groups", JSON.stringify(variants, null, 4));
     // const variantObjet = useMemo(() => {
@@ -90,17 +109,17 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     //   return result;
     // }, [variants]);
 
-    const totalPrice = useMemo(() => {
-      if (typeof selections !== "undefined") {
-        let total = Object.entries<number>(selections)
-          .map((e: [string, number]) => e[1])
-          .reduce((a, b) => a + b);
+    // const totalPrice = useMemo(() => {
+    //   if (typeof selections !== "undefined") {
+    //     let total = Object.entries<number>(selections)
+    //       .map((e: [string, number]) => e[1])
+    //       .reduce((a, b) => a + b);
 
-        return total;
-      }
+    //     return total;
+    //   }
 
-      return 0;
-    }, [selections]);
+    //   return 0;
+    // }, [selections]);
 
     return (
       <div
@@ -114,7 +133,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
         {/* Product Gallery */}
         <div className="relative col-span-2 h-full w-full flex-none">
           {/* Main Image */}
-
           <div className="aspect-3/4">
             <div className="bg-base-100 rounded-lg flex justify-center items-center border px-0">
               <Image
@@ -169,7 +187,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
             <p>Reviews</p>
           </div>
           <p className="text-2xl text-primary font-bold tracking-tight">
-            ${price}
+            {formatToUSD(parseInt(variant.price.toString()))}
           </p>
           <div className="mt-4">
             <p className="sr-only">Product desc</p>
@@ -181,63 +199,126 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               <Icon icon="carbon:delivery" width={24} />
               <p className="text-small font-medium">30 days return</p>
             </div>
-            <div>
-              {variants.length > 0 &&
-                Object.keys(groups).map((item: string, idx: number) => {
-                  return (
-                    <RadioGroup
-                      aria-label="Select varaints"
-                      // orientation="horizontal"
-                      label={`Variants: (${item})`}
-                      key={idx}
-                      className="mt-3"
-                      onValueChange={(value) => {
-                        console.log("hello", value);
-                        // setSelections({})
-                        if (typeof selections === "undefined") {
-                          setSelections({
-                            [value.attribute]: parseInt(value.price),
-                          });
-                        } else {
-                          setSelections({
-                            ...selections,
-                            [value.attribute]: parseInt(value.price),
-                          });
-                        }
-                      }}
-                    >
-                      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-1 items-center">
-                        {groups[item]?.map((res: Variants, idx: number) => {
-                          return (
-                            <TagGroupRadioItem
-                              size="sm"
-                              key={idx}
-                              value={res as any}
-                            >
-                              <div className="grid grid-cols-4 items-center gap-3 p-3">
-                                <Image
-                                  alt="varaints"
-                                  src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
-                                  className="col-span-1 w-full h-full"
-                                  radius="md"
-                                />
-                                <div className="col-span-3">
-                                  <p className="line-clamp-2">{res.label}</p>
-                                  <p className="text-base font-medium text-primary">
-                                    {formatToUSD(
-                                      parseInt(res?.price.toString())
-                                    )}
-                                  </p>
+            {/* <>
+              {
+                variants.length > 0 &&
+                  variants.map((item: any, idx: number) => {
+                    return (
+                      <RadioGroup
+                        aria-label="Select varaints"
+                        orientation="horizontal"
+                        label={`Variants`}
+                        key={idx}
+                        className="mt-3 grid-cols-2"
+                      >
+                        <TagGroupRadioItem
+                          size="lg"
+                          key={idx}
+                          value={item?.id}
+                          className="col-span-1"
+                        >
+                          <div className="flex items-center gap-3 p-3">
+                            <Image
+                              alt="varaints"
+                              src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                              className="h-12"
+                              radius="md"
+                            />
+                            <div>
+                              <p className="line-clamp-2">{item.label}</p>
+                              {item.attributes.map(
+                                (atb: Attribute, idx: number) => {
+                                  return <p key={idx}>{atb.option}</p>;
+                                }
+                              )}
+                              <p className="text-base font-medium text-primary">
+                                {formatToUSD(parseInt(item?.price.toString()))}
+                              </p>
+                            </div>
+                          </div>
+                        </TagGroupRadioItem>
+                      </RadioGroup>
+                    );
+                  })
+                // Object.keys(groups).map((item: string, idx: number) => {
+                //   return (
+                // <RadioGroup
+                //   aria-label="Select varaints"
+                //   orientation="horizontal"
+                //   label={`Variants: (${item})`}
+                //   key={idx}
+                //   className="mt-3 grid-cols-2"
+                // >
+                // {groups[item]?.map((res: Variants, idx: number) => {
+                //   return (
+                //     <TagGroupRadioItem
+                //       size="lg"
+                //       key={idx}
+                //       value={res?.id}
+                //       className="col-span-1"
+                //     >
+                //       <div className="flex items-center gap-3 p-3">
+                // <Image
+                //   alt="varaints"
+                //   src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
+                //   className="h-12"
+                //   radius="md"
+                // />
+                //         <div>
+                //           <p className="line-clamp-2">{res.label}</p>
+                // <p className="text-base font-medium text-primary">
+                //   {formatToUSD(parseInt(res?.price.toString()))}
+                // </p>
+                //         </div>
+                //       </div>
+                //     </TagGroupRadioItem>
+                //     );
+                //   })}
+                // </RadioGroup>
+                //   );
+                // }
+              }
+            </> */}
+
+            <RadioGroup label="Variants" defaultValue="1">
+              <div className="grid grid-cols-2 gap-2">
+                {variants.length > 0 &&
+                  cartVaraints.map((item: Variants, idx: number) => {
+                    return (
+                      <VariantRadio
+                        key={idx}
+                        value={item?.id}
+                        onChange={(_) => setVariant(item)}
+                      >
+                        <div className="flex items-center space-x-4">
+                          <Image
+                            alt="variants"
+                            src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                            className="h-12"
+                            radius="md"
+                          />
+                          <div>
+                            <span className="text-md font-bold">
+                              {item.label}
+                            </span>
+                            <p className="text-base font-medium text-primary">
+                              {formatToUSD(parseInt(item?.price.toString()))}
+                            </p>
+                            {item.attributes.map(
+                              (item: Attribute, idx: number) => (
+                                <div key={idx} className="text-xs flex">
+                                  {/* <span>{item.type}: </span> */}
+                                  <span>{item.option}</span>
                                 </div>
-                              </div>
-                            </TagGroupRadioItem>
-                          );
-                        })}
-                      </div>
-                    </RadioGroup>
-                  );
-                })}
-            </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </VariantRadio>
+                    );
+                  })}
+              </div>
+            </RadioGroup>
           </div>
 
           <div className="mt-12">
@@ -251,20 +332,19 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                const p: ItemProduct = {
+                const product: ItemProduct = {
                   id: props?.id,
-                  variantId: null,
                   name: title,
-                  price: price,
-                  currency: props?.currency,
-                  preview: props?.thumbnail,
+                  variant: variant,
+                  price: variant ? variant.price : price,
+                  currency: "USD",
+                  preview: variant ? variant.previews : props?.thumbnail,
                 };
 
-                variants.length > 0 ? addCarts(items) : handleAddToCart(p);
-                toast.success("The product is added into the cart!");
+                addToCart(product, variant.id != "1" ? true : false);
               }}
             >
-              Add to cart {totalPrice}
+              Add to cart
             </Button>
           </div>
           <div className="mt-16 block sm:block lg:hidden">

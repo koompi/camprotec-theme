@@ -17,8 +17,6 @@ import { useAuth } from "@/context/useAuth";
 export default function Component() {
   const { user } = useAuth();
 
-  console.log("user", user);
-
   return (
     <div className="flex items-center justify-center py-12">
       <Card

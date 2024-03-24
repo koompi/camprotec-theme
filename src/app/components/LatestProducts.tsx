@@ -9,9 +9,9 @@ import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
 
 const LatestProducts = ({ products }: { products: ProductType[] }) => {
-  if (!products) {
-    return <ProductSkeleton />;
-  }
+  // if (!products) {
+  //   return <ProductSkeleton />;
+  // }
 
   return (
     <>
@@ -21,13 +21,16 @@ const LatestProducts = ({ products }: { products: ProductType[] }) => {
             CHECK THE CORE PRODUCT
           </h1>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 px-2 border border-base-100">
-            {products
+            {/* {products
               ?.sort((a: ProductType, b: ProductType) =>
-                a?.brand > b?.brand ? 1 : -1
+                a.brand ? (a?.brand > b?.brand ? 1 : -1) : 1
               )
               .map((res: ProductType, idx: number) => {
                 return <ProductCard key={idx} product={res} loading={false} />;
-              })}
+              })} */}
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} loading={false} />
+            ))}
           </div>
           <Button
             variant="light"

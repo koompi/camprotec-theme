@@ -8,8 +8,6 @@ import { OrdersType } from "@/types/checkout";
 import dayjs from "dayjs";
 
 const OrderCard: FC<OrdersType> = (props) => {
-  console.log("pro", props.carts);
-
   return (
     <Card
       className="w-full border-2 border-spacing-1 border-dashed bg-none"
