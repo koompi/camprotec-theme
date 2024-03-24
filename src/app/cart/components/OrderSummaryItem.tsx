@@ -48,12 +48,13 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
             </span>
             <span className="text-small text-default-500">x {quantity}</span>
           </div>
-          {product.variant?.id == "1" && (
-            <Chip radius="sm" size="sm" variant="flat" color="secondary">
-              Default
-            </Chip>
-          )}
+
           <div className="flex space-x-2 mt-2">
+            {!product.variant?.id && (
+              <Chip radius="sm" size="sm" variant="flat" color="secondary">
+                Default
+              </Chip>
+            )}
             {product?.variant?.attributes.map((atr, idx: number) => {
               return (
                 <Chip
@@ -70,6 +71,44 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
           </div>
         </div>
         <div className="flex gap-3">
+          <Button
+            isIconOnly
+            className="h-6 w-6 min-w-[1.5rem]"
+            radius="full"
+            variant="flat"
+            isDisabled={quantity <= 1}
+            onPress={() =>
+              minusCart(product)
+            }
+          >
+            <Icon icon="lucide:minus" width={14} />
+          </Button>
+          <Button
+            isIconOnly
+            className="h-6 w-6 min-w-[1.5rem]"
+            radius="full"
+            variant="flat"
+            color="success"
+            onPress={() =>
+              addToCart(product)
+            }
+          >
+            <Icon icon="lucide:plus" width={14} />
+          </Button>
+          <Button
+            isIconOnly
+            className="h-6 w-6 min-w-[1.5rem]"
+            radius="full"
+            variant="flat"
+            color="danger"
+            onPress={() => {
+              removeFromCart(product.id);
+            }}
+          >
+            <Icon icon="lucide:x" width={14} />
+          </Button>
+        </div>
+        {/* <div className="flex gap-3">
           <Tooltip content="Minus" placement="top">
             <Button
               isIconOnly
@@ -110,13 +149,12 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
                   product.variant?.id ? product.variant?.id : product.id,
                   product.variant?.id ? true : false
                 );
-                // toast.info("The product is added into the cart!");
               }}
             >
               <Icon icon="lucide:x" width={14} />
             </Button>
           </Tooltip>
-        </div>
+        </div> */}
       </li>
     );
   }

@@ -3,11 +3,11 @@ export interface Attribute {
   option: string;
 }
 export interface Variants {
-  id: string;
+  id?: string | null;
   label: string;
-  default: boolean;
   previews: string;
   price: number;
+  default: boolean;
   attributes: Attribute[];
 }
 
@@ -21,7 +21,7 @@ export type ItemProduct = {
   currency: "KHR" | "USD";
   preview: string;
   slug?: string;
-  variantId?: string | null;
+  productId: string,
 };
 
 export type ProductType = {
