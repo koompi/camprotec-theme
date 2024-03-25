@@ -7,6 +7,15 @@ export const GET_ORDERS = gql`
         productId
         qty
         unitPrice
+        product {
+          brand
+          previews
+          price
+          slug
+          title
+          rating
+          thumbnail
+        }
       }
       code
       createdAt

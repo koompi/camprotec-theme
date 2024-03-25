@@ -8,14 +8,12 @@ import {
   CardBody,
   Button,
   Spacer,
-  Tooltip,
   Skeleton,
 } from "@nextui-org/react";
 import { formatToUSD } from "@/utils/usd";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { cn } from "@/utils/cn";
 import Link from "next/link";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
 
@@ -31,8 +29,9 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
       price: product?.price,
       currency: product?.currency,
       preview: product?.preview,
+      productId: "",
     };
-    addToCart(p, false);
+    addToCart(p);
   };
 
   return (
@@ -159,6 +158,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                       price: props?.product?.price,
                       currency: props?.product?.currency,
                       preview: props?.product?.thumbnail,
+                      productId: "",
                     };
 
                     props?.product?.variants.length > 0

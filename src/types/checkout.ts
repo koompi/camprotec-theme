@@ -1,3 +1,5 @@
+import { ProductType } from "./product";
+
 export type DeliveryType = {
   photos: string;
   firstName: string;
@@ -42,6 +44,7 @@ export type CheckoutCartType = {
   productId: string;
   qty: number;
   unitPrice: number;
+  product: ProductType;
 };
 
 export type OrdersType = {

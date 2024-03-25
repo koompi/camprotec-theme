@@ -49,35 +49,41 @@ const OrderCard: FC<OrdersType> = (props) => {
         </div>
         <Divider className="my-3" />
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Image
-              alt="product img"
-              src="/images/banner.avif"
-              isBlurred
-              className="h-12 sm:h-12 lg:h-36 object-contain object-center"
-            />
-            <div className="flex flex-col gap-1">
-              <p className="font-medium text-medium">Printer SONY</p>
-              <p className="text-sm font-light">SONY</p>
-              <p className="text-sm font-light">Variants</p>
-              <p className="text-sm font-light">Qty: 5</p>
-              <p className="text-sm font-light">
-                {formatToUSD(parseFloat(props?.totalPrice.toString()))}
-              </p>
+          {props.carts.length <= 1 && (
+            <div className="flex items-center gap-6">
+              <Image
+                alt={props.carts[0].product.title}
+                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${props?.carts[0]?.product?.thumbnail}`}
+                isBlurred
+                className="h-12 sm:h-12 lg:h-36 object-contain object-center"
+              />
+              <div className="flex flex-col gap-1">
+                <p className="font-medium text-medium">
+                  {props.carts[0].product.title}
+                </p>
+                <p className="text-sm font-light">
+                  Brand: {props.carts[0].product.brand}
+                </p>
+                <p className="text-sm font-light">Qty: {props.carts[0].qty}</p>
+                <p className="text-sm font-light">
+                  {formatToUSD(parseFloat(props?.totalPrice.toString()))}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
           <div className="mt-3">
             <Steps
               current={
                 props?.status === "START"
                   ? 0
-                  : props?.status === "CLOSE"
-                  ? 3
-                  : 1
+                  : props?.status === "PROCESS"
+                  ? 1
+                  : props?.status === "DELIVERY"
+                  ? 2
+                  : 3
               }
               direction="vertical"
               progressDot
-              // status="process"
             >
               <Steps.Step title="Ordered" />
               <Steps.Step title="Confirmed" />

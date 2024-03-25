@@ -21,7 +21,8 @@ export type ItemProduct = {
   currency: "KHR" | "USD";
   preview: string;
   slug?: string;
-  productId: string,
+  productId: string;
+  variantId: string | null;
 };
 
 export type ProductType = {
