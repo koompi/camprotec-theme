@@ -9,6 +9,7 @@ import {
   PaginationItemType,
   PaginationItemRenderProps,
   Pagination,
+  Skeleton,
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 
@@ -35,7 +36,6 @@ const OrderPage = () => {
   // };
 
   //  custom pagination
-
   const renderItem = ({
     ref,
     key,
@@ -96,10 +96,28 @@ const OrderPage = () => {
   };
 
   if (loading || !data) {
-    return "loading ...";
+    return (
+      <section className="container max-w-full sm:max-w-full lg:max-w-5xl py-9 px-3 sm:px-3 lg:px-6 mx-auto">
+        <div className="flex flex-col gap-3 items-center">
+          <div className="w-full min-h-36">
+            <Skeleton className="rounded-lg">
+              <div className="h-36 rounded-lg bg-default-300"></div>
+            </Skeleton>
+          </div>
+          <div className="w-full min-h-36">
+            <Skeleton className="rounded-lg">
+              <div className="h-36 rounded-lg bg-default-300"></div>
+            </Skeleton>
+          </div>
+          <div className="w-full min-h-36">
+            <Skeleton className="rounded-lg">
+              <div className="h-36 rounded-lg bg-default-300"></div>
+            </Skeleton>
+          </div>
+        </div>
+      </section>
+    );
   }
-
-  console.log("data", data);
 
   return (
     <section className="container max-w-full sm:max-w-full lg:max-w-5xl py-9 px-3 sm:px-3 lg:px-6 mx-auto">

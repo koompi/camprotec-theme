@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Category } from "@/types/category";
 import { Card, CardBody, Skeleton } from "@nextui-org/react";
 import { categories } from "../api/categories";
+import ScrollingCategories from "./ScrollCategories";
 
 const Categories: FC = async () => {
   const { props } = await categories();
@@ -28,22 +29,51 @@ const Categories: FC = async () => {
               CHOOSE CATEGORY
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 px-4">
+          <ScrollingCategories
+            shouldPauseOnHover
+            gap="9px"
+            className="hidden sm:hidden lg:flex"
+          >
             {props.categories?.map((cat: Category, idx: number) => {
               return (
                 <Link key={idx} href={`/products?search=&category=${cat.id}`}>
                   <Card
-                    className="bg-primary/10 px-8 py-6 font-bold w-full "
+                    className="bg-primary/10 px-1 py-3 font-bold w-full min-w-72 h-full "
                     isHoverable
                     isPressable
                     shadow="none"
                   >
-                    <CardBody className="text-center">{cat.title.en}</CardBody>
+                    <CardBody className="text-center font-normal">
+                      {cat.title.en}
+                    </CardBody>
                   </Card>
                 </Link>
               );
             })}
-          </div>
+          </ScrollingCategories>
+          <ScrollingCategories
+            shouldPauseOnHover
+            gap="9px"
+            className="flex sm:flex lg:hidden mx-auto items-center justify-center place-items-center"
+            isVertical
+          >
+            {props.categories?.map((cat: Category, idx: number) => {
+              return (
+                <Link key={idx} href={`/products?search=&category=${cat.id}`}>
+                  <Card
+                    className="bg-primary/10 px-1 py-3 font-bold w-full min-w-72 h-full "
+                    isHoverable
+                    isPressable
+                    shadow="none"
+                  >
+                    <CardBody className="text-center font-normal">
+                      {cat.title.en}
+                    </CardBody>
+                  </Card>
+                </Link>
+              );
+            })}
+          </ScrollingCategories>
         </>
       )}
     </div>

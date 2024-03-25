@@ -74,7 +74,7 @@ const Banner = () => {
               loop={true}
               modules={[Autoplay, EffectCreative]}
               centeredSlides={true}
-              className="mySwiper3 rounded-xl bg-transparent max-h-[30dvh] sm:max-h-[30dvh] lg:max-h-[50dvh]"
+              className="mySwiper3 rounded-xl bg-base-100 max-h-[28dvh] sm:max-h-[28dvh] lg:max-h-[50dvh]"
             >
               {value?.banner?.promotes.map((item: string, idx: number) => (
                 <SwiperSlide key={idx}>

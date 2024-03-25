@@ -19,7 +19,10 @@ export const Search = () => {
     router.push(`/products?search=${value ? value : ""}&category=`);
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 items-center">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex gap-2 items-center w-full"
+    >
       <Input
         color="primary"
         {...(register("search"), { required: true })}

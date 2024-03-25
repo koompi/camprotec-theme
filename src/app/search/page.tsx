@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, Navbar } from "@nextui-org/react";
 
 import { ProductType } from "@/types/product";
 import { Category } from "@/types/category";
@@ -18,7 +18,9 @@ export default async function SearchPage({
 
   return (
     <section className="container mx-auto px-2 sm:px-2 lg:px-6 py-2">
-      <Search />
+      <Navbar shouldHideOnScroll classNames={{ wrapper: "px-0" }}>
+        <Search />
+      </Navbar>
       {mycategories.categories?.length > 0 && (
         <div className="my-auto flex max-w-lg flex-col gap-2">
           <h3 className="text-lg font-bold leading-8 mt-3">Popular Search</h3>

@@ -48,6 +48,7 @@ export type CheckoutCartType = {
 };
 
 export type OrdersType = {
+  product?: ProductType;
   carts: CheckoutCartType[];
   code: string;
   createdAt: string;
