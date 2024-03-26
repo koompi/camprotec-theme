@@ -1,22 +1,22 @@
 FROM node:18-slim AS base
 ARG ROOTPROJ
 ARG THEMEPATH
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+ENV NPM_HOME="/npm"
+ENV PATH="$NPM_HOME:$PATH"
 RUN corepack enable
 COPY ${ROOTPROJ}/. /app
 COPY ${THEMEPATH}/. /app
 WORKDIR /app
 
 FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
+RUN --mount=type=cache,id=npm,target=/npm/store npm install --force
 
 FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
-RUN pnpm run build
+RUN --mount=type=cache,id=npm,target=/npm/store npm install --force
+RUN npm run build
 
 FROM base
-COPY --from=prod-deps /app/node_modules /app/node_modules
-COPY --from=build /app/dist /app/dist
+COPY --from=prod-deps /app/node_modules /app
+COPY --from=build /app/.next /app
 EXPOSE 3000
-CMD [ "pnpm", "run", "start" ]
+CMD ["npm", "start"]
