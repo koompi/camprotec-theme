@@ -95,7 +95,7 @@ const OrderSinglePage = () => {
                     <div className="flex items-center gap-3">
                       <Image
                         alt={res?.product?.title}
-                        src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.product?.thumbnail}`}
+                        src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${res?.product?.thumbnail}`}
                         isBlurred
                         className=" border-2 h-16 w-16 object-cover object-center"
                       />

@@ -142,7 +142,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               <Image
                 alt={title}
                 radius="md"
-                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
+                src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${selectedImage}`}
                 isZoomed
                 className="object-contain object-center h-[30dvh] sm:h-[30dvh] lg:h-[50dvh] cursor-pointer"
               />
@@ -167,7 +167,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                     img: "h-full w-full",
                   }}
                   radius="lg"
-                  src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${preview}`}
+                  src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${preview}`}
                   className="object-contain object-center"
                 />
               </button>
@@ -224,7 +224,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                           <div className="flex items-center gap-3 p-3">
                             <Image
                               alt="varaints"
-                              src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                              src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${item?.previews}`}
                               className="h-12"
                               radius="md"
                             />
@@ -264,7 +264,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 //       <div className="flex items-center gap-3 p-3">
                 // <Image
                 //   alt="varaints"
-                //   src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
+                //   src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${res?.previews}`}
                 //   className="h-12"
                 //   radius="md"
                 // />
@@ -299,7 +299,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                           <div className="flex items-center space-x-4">
                             <Image
                               alt="variants"
-                              src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                              src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${item?.previews}`}
                               className="h-12"
                               radius="md"
                             />

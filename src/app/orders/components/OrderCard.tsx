@@ -56,7 +56,7 @@ const OrderCard: FC<OrdersType> = (props) => {
             <div className="flex flex-wrap items-center gap-6">
               <Image
                 alt={props.carts[0]?.product?.title}
-                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${props?.carts[0]?.product?.thumbnail}`}
+                src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${props?.carts[0]?.product?.thumbnail}`}
                 isBlurred
                 className=" border-2 h-16 w-16 sm:h-16 sm:w-16 lg:h-36 lg:w-36 object-cover object-center"
               />
@@ -79,7 +79,7 @@ const OrderCard: FC<OrdersType> = (props) => {
                 <Image
                   key={idx}
                   alt={props.carts[0]?.product?.title}
-                  src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.product?.thumbnail}`}
+                  src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${res?.product?.thumbnail}`}
                   isBlurred
                   className="border-2 col-span-1 h-16 w-16 sm:h-16 sm:w-16 lg:h-24 lg:w-24 object-cover bg-white object-center"
                 />

@@ -6,9 +6,22 @@ import {
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 
-const GRAPHQL_ENDPOINT =
-  process.env.GRAPHQL_ENDPOINT ||
-  `${process.env.NEXT_PUBLIC_BACKEND}/graphql/private?store_id=${process.env.NEXT_PUBLIC_ID_STORE}`;
+import { onError } from "@apollo/client/link/error";
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path, nodes }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const ENDPOINT =
+  process.env.NEXT_PUBLIC_BACKEND ?? "https/backend.riverbase.org";
+
+const GRAPHQL_ENDPOINT = `${ENDPOINT}/graphql/public?store_id=${process.env.NEXT_PUBLIC_ID_STORE ?? "65a4a66033b9eda51233220c"}`;
 
 const token =
   typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
@@ -38,6 +51,7 @@ const privateClient = () => {
               stripDefer: true,
             }),
             concat(authMiddleware, httpLink),
+            errorLink
           ])
         : concat(authMiddleware, httpLink),
   });

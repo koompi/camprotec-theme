@@ -27,7 +27,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
         <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center">
           <Image
             alt={product?.name}
-            src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${product?.preview}`}
+            src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${product?.preview}`}
             isZoomed
           />
         </div>

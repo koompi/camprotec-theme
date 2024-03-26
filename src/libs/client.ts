@@ -1,17 +1,38 @@
 "use server";
 
-const GRAPHQL_ENDPOINT =
-  process.env.GRAPHQL_ENDPOINT ||
-  `${process.env.NEXT_PUBLIC_BACKEND}/graphql/public?store_id=${process.env.NEXT_PUBLIC_ID_STORE}`;
+const ENDPOINT =
+  process.env.NEXT_PUBLIC_BACKEND ?? "https/backend.riverbase.org";
 
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+const GRAPHQL_ENDPOINT = `${ENDPOINT}/graphql/public?store_id=${
+  process.env.NEXT_PUBLIC_ID_STORE ?? "65a4a66033b9eda51233220c"
+}`;
+
+import {
+  ApolloClient,
+  from,
+  InMemoryCache,
+  createHttpLink,
+} from "@apollo/client";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
+import { onError } from "@apollo/client/link/error";
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path, nodes }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const httpLink = createHttpLink({
+  uri: GRAPHQL_ENDPOINT,
+});
 
 export const { getClient } = registerApolloClient(() => {
   return new ApolloClient({
     cache: new InMemoryCache(),
-    link: new HttpLink({
-      uri: GRAPHQL_ENDPOINT,
-    }),
+    link: from([errorLink, httpLink]),
   });
 });
