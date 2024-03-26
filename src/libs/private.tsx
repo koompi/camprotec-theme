@@ -6,17 +6,17 @@ import {
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 
-import { onError } from "@apollo/client/link/error";
+// import { onError } from "@apollo/client/link/error";
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path, nodes }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
-    );
-  if (networkError) console.log(`[Network error]: ${networkError}`);
-});
+// const errorLink = onError(({ graphQLErrors, networkError }) => {
+//   if (graphQLErrors)
+//     graphQLErrors.forEach(({ message, locations, path, nodes }) =>
+//       console.log(
+//         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+//       )
+//     );
+//   if (networkError) console.log(`[Network error]: ${networkError}`);
+// });
 
 const ENDPOINT =
   process.env.NEXT_PUBLIC_BACKEND ?? "https/backend.riverbase.org";
@@ -47,12 +47,11 @@ const privateClient = () => {
     link:
       typeof window === "undefined"
         ? ApolloLink.from([
-            new SSRMultipartLink({
-              stripDefer: true,
-            }),
-            concat(authMiddleware, httpLink),
-            errorLink
-          ])
+          new SSRMultipartLink({
+            stripDefer: true,
+          }),
+          concat(authMiddleware, httpLink)
+        ])
         : concat(authMiddleware, httpLink),
   });
 };
