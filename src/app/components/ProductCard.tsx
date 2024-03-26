@@ -140,7 +140,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
 
               <div className="mt-1 flex justify-between items-center">
                 <span className="text-primary lg:text-xl text-sm font-bold">
-                  {formatToUSD(props.product.price)}
+                  {formatToUSD(props?.product.price)}
                 </span>
                 <Button
                   variant="flat"
@@ -151,20 +151,40 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    const p: ItemProduct = {
-                      id: props?.product?.id,
-                      variantId: null,
+                    
+                    const product: ItemProduct = {
+                      id: props?.product.id,
                       name: props?.product?.title,
-                      price: props?.product?.price,
-                      currency: props?.product?.currency,
-                      preview: props?.product?.thumbnail,
-                      productId: "",
+                      variant: {
+                        id: null,
+                        label: "Default",
+                        default: true,
+                        previews:props?.product.thumbnail,
+                        price: props?.product.price,
+                        attributes: [],
+                      },
+                      price: props?.product.price,
+                      currency: "USD",
+                      preview: props?.product.thumbnail,
+                      productId: props?.product.id,
+                      variantId: null
                     };
+    
+                    handleAddToCart(product);
+                    // const p: ItemProduct = {
+                    //   id: props?.product?.id,
+                    //   variantId: null,
+                    //   name: props?.product?.title,
+                    //   price: props?.product?.price,
+                    //   currency: props?.product?.currency,
+                    //   preview: props?.product?.thumbnail,
+                    //   productId: "",
+                    // };
 
-                    props?.product?.variants.length > 0
-                      ? (addCarts(items), setItems([]))
-                      : handleAddToCart(p);
-                    toast.success("The product is added into the cart!");
+                    // props?.product?.variants.length > 0
+                    //   ? (addCarts(items), setItems([]))
+                    //   : handleAddToCart(p);
+                    // toast.success("The product is added into the cart!");
                   }}
                 >
                   Add to Cart

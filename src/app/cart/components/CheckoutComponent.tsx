@@ -50,7 +50,6 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   // estimate price
   const {
     data: es_price,
-    loading: priceLoading,
     refetch,
   } = useQuery(ESTIMATE_PRICE, {
     variables: {
@@ -60,12 +59,12 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       },
     },
   });
-
+  
   //  function checkout
 
   const onSubmitCheckout = () => {
     const totalPrice = (
-      price + es_price?.estimatePrice?.data?.data?.price
+      price + es_price?.estimatePrice?.data?.price
     ).toFixed(2);
 
     const newCart = cartItems?.map((item) => {
@@ -455,8 +454,8 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                     />
                   </dt>
                   <dd className="text-small font-semibold text-default-700">
-                    {es_price?.estimatePrice?.data?.data?.price
-                      ? formatToUSD(es_price?.estimatePrice?.data?.data?.price)
+                    {es_price?.estimatePrice?.data?.price
+                      ? formatToUSD(es_price?.estimatePrice?.data?.price)
                       : formatToUSD(0)}
                   </dd>
                 </div>
@@ -475,8 +474,8 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   <dd className="font-semibold text-primary text-xl">
                     {formatToUSD(
                       price +
-                        (es_price?.estimatePrice?.data?.data?.price
-                          ? es_price?.estimatePrice?.data?.data?.price
+                        (es_price?.estimatePrice?.datat?.price
+                          ? es_price?.estimatePrice?.data?.price
                           : 0)
                     )}
                   </dd>

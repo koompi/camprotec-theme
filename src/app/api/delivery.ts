@@ -14,7 +14,7 @@ export async function estimate_price(lat: number, lng: number) {
 
   return {
     props: {
-      estimate_price: data?.estimatePrice?.data?.data,
+      estimate_price: data?.estimatePrice?.data,
     },
   };
 }
