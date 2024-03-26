@@ -1,14 +1,14 @@
 import { filterProducts } from "../api/product";
-import CheckoutComponet from "./components/CheckoutComponent";
+import CheckoutComponent from "./components/CheckoutComponent";
 import { Toaster } from "sonner";
 
-export default async function CheckoutPage() {
+export default async function CartPage() {
   const { props } = await filterProducts();
 
   return (
     <>
       <Toaster position="top-right" closeButton />{" "}
-      <CheckoutComponet products={props.products} />
+      <CheckoutComponent products={props.products} />
     </>
   );
 }
