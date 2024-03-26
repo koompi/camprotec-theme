@@ -347,6 +347,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                   currency: "USD",
                   preview: variant ? variant.previews : props?.thumbnail,
                   productId: props?.id,
+                  variantId: variant.id ? variant.id : null
                 };
 
                 addToCart(product);
