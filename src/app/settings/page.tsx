@@ -13,6 +13,7 @@ import {
   Radio,
   RadioGroup,
   Chip,
+  avatar,
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { useAuth } from "@/context/useAuth";
@@ -20,7 +21,7 @@ import { useMutation } from "@apollo/client";
 import { UPDATE_USER } from "@/graphql/mutation/user";
 import { Toaster, toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { validateNumber } from "@/utils/phone";
+import axios, { AxiosResponse } from "axios";
 
 interface FormUpdateUserProfile {
   avatar?: string;
@@ -29,86 +30,60 @@ interface FormUpdateUserProfile {
   gender?: string;
   phoneNumber?: string;
   username?: string;
+  email?: string;
 }
-
-const initialNewPhone = {
-  phoneNumber: "",
-  isInternal: false,
-  isVerified: false,
-  isActived: false,
-  isBanned: false,
-};
 
 export default function Component() {
   const { user } = useAuth();
-  const { register, handleSubmit } = useForm<FormUpdateUserProfile>();
-  const [value, setValue] = useState<string>("");
-  const [newPhone, setNewPhone] = useState(initialNewPhone);
-  const [operator, setOperator] = useState("");
-  const [color, setColor] = useState<"warning" | "success" | "danger" | null>(
-    null
-  );
-  const [isValid, setIsValid] = useState(false);
-  const [validationMessage, setValidationMessage] = useState("");
+  const { register, handleSubmit, watch } = useForm<FormUpdateUserProfile>();
+  const [value, setValue] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<string | null>(null);
 
   const [updateUser, { loading }] = useMutation(UPDATE_USER);
 
   const onSubmit = async (data: FormUpdateUserProfile) => {
     const input = {
       ...data,
-      gender: value,
+      gender: !value ? user?.gender : value,
+      avatar: !photo ? user?.avatar : photo,
     };
 
     console.log("input", input);
 
-    // updateUser({ variables: { input } })
-    //   .then(() => {
-    //     toast.success("User has been updated!");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    updateUser({ variables: { input } })
+      .then(() => {
+        toast.success("User has been updated!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  // phone validator
-  useEffect(() => {
-    if (operator.toLocaleLowerCase() === "cellcard") {
-      setColor("warning");
-    }
-    if (operator.toLocaleLowerCase() === "smart") {
-      setColor("success");
-    }
-    if (operator.toLocaleLowerCase() === "metfone") {
-      setColor("danger");
-    }
-  }, [operator]);
+  //  function to upload img
+  async function handleChange(e: any) {
+    e.preventDefault();
 
-  useEffect(() => {
-    if (newPhone.phoneNumber !== "") {
-      try {
-        const valid = validateNumber({ phoneNumber: newPhone.phoneNumber });
-        if (valid.name) {
-          setIsValid(true);
-          setValidationMessage("");
-          setOperator(valid.name);
-        }
-      } catch (error: any) {
-        if (error) {
-          setIsValid(false);
-          setValidationMessage(error.detail.message);
-          setOperator("");
-        }
-      }
-    }
-  }, [newPhone.phoneNumber]);
-
-  function handleNewPhoneChange(e: any) {
-    const { name, value } = e.target;
-    const object = {
-      ...newPhone,
-      [name]: value,
+    const body = {
+      upload: e.target?.files[0],
     };
-    setNewPhone(() => object);
+
+    axios
+      .post(
+        `https://backend.riverbase.org/api/upload/image/${user?.id}`,
+        body,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res: AxiosResponse<any, any>) => {
+        setPhoto(res.data.path);
+        toast.success("File has been added");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
@@ -136,7 +111,19 @@ export default function Component() {
                       size="sm"
                       variant="light"
                     >
-                      <Icon icon="solar:pen-2-linear" />
+                      <div className="text-center w-full">
+                        <label className="relative cursor-pointer flex flex-col justify-center items-center">
+                          <Icon icon="solar:pen-2-linear" />
+
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            className="sr-only"
+                            onChange={handleChange}
+                          />
+                        </label>
+                      </div>
                     </Button>
                   }
                   placement="bottom-right"
@@ -145,7 +132,7 @@ export default function Component() {
                   <Avatar
                     className="h-14 w-14"
                     isBordered
-                    src={user?.avatar}
+                    src={!photo ? user?.avatar : photo}
                     alt={user?.fullname}
                   />
                 </Badge>
@@ -168,51 +155,32 @@ export default function Component() {
                 labelPlacement="outside"
                 placeholder="Enter email"
                 defaultValue={user?.email}
-                isDisabled
+                {...register("email")}
+                isDisabled={user?.email ? true : false}
               />
 
               {/* Phone Number */}
               <Input
-                variant="bordered"
-                label="Phone number"
-                labelPlacement="outside"
-                size="lg"
-                placeholder="0xx xx xxx"
-                {...register("phoneNumber")}
-                defaultValue={newPhone.phoneNumber}
-                value={newPhone.phoneNumber}
-                onChange={handleNewPhoneChange}
-                type="number"
-                endContent={
-                  operator !== "" && (
-                    <Chip size="sm" color={color as any}>
-                      {operator}
-                    </Chip>
-                  )
-                }
-                isInvalid={!isValid}
-                errorMessage={validationMessage}
-              />
-              {/* <Input
                 label="Phone Number"
                 labelPlacement="outside"
                 placeholder="Enter phone number"
+                defaultValue={user.phone_number}
                 {...register("phoneNumber")}
-              /> */}
+              />
               {/* username */}
               <Input
                 label="Username"
                 labelPlacement="outside"
                 placeholder="Enter username"
+                defaultValue={user?.fullname}
                 {...register("username")}
               />
 
-              {/* Phone Number */}
+              {/* Phone gender */}
               <RadioGroup
                 label="Select your gender"
                 orientation="horizontal"
-                // {...register("gender")}
-                value={value}
+                defaultValue={user?.gender}
                 onValueChange={(value) => {
                   setValue(value);
                 }}
@@ -239,14 +207,22 @@ export default function Component() {
             </CardBody>
 
             <CardFooter className="mt-4 justify-end gap-2">
-              <Button radius="full" variant="bordered">
+              {/* <Button radius="full" variant="bordered">
                 Cancel
-              </Button>
+              </Button> */}
               <Button
                 color="primary"
                 type="submit"
                 radius="full"
+                fullWidth
                 className="text-base-100"
+                isDisabled={
+                  watch("firstName") === user?.first_name &&
+                  watch("lastName") === user?.last_name &&
+                  watch("username") === user?.fullname &&
+                  watch("phoneNumber") === user?.phone_number &&
+                  watch("email") === user?.email
+                }
               >
                 Save Changes
               </Button>

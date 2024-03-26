@@ -31,6 +31,8 @@ const getUser = async () => {
           avatar: user.avatar,
           fullname: user?.fullname,
           id: user?._id,
+          phone_number: user?.phone_number,
+          gender: user?.gender,
         };
       }
       return;
