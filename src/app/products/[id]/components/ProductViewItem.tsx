@@ -9,7 +9,7 @@ import RatingRadioGroup from "./RatingRadioGroup";
 import TagGroupRadioItem from "./TagGroupRadioItem";
 import { Attribute, ItemProduct, ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
-import { LexicalViewer } from "@/editor/LexicalViewer";
+// import { LexicalViewer } from "@/editor/LexicalViewer";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 import { CartItem } from "@/types/global";
@@ -142,7 +142,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               <Image
                 alt={title}
                 radius="md"
-                src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${selectedImage}`}
+                src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${selectedImage}`}
                 isZoomed
                 className="object-contain object-center h-[30dvh] sm:h-[30dvh] lg:h-[50dvh] cursor-pointer"
               />
@@ -167,7 +167,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                     img: "h-full w-full",
                   }}
                   radius="lg"
-                  src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${preview}`}
+                  src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${preview}`}
                   className="object-contain object-center"
                 />
               </button>
@@ -177,7 +177,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <div className="mt-16 hidden sm:hidden lg:block">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
-              <LexicalViewer data={detail} />
+              {/* <LexicalViewer data={detail} /> */}
             </p>
           </div>
         </div>
@@ -224,7 +224,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                           <div className="flex items-center gap-3 p-3">
                             <Image
                               alt="varaints"
-                              src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                              src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${item?.previews}`}
                               className="h-12"
                               radius="md"
                             />
@@ -264,7 +264,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 //       <div className="flex items-center gap-3 p-3">
                 // <Image
                 //   alt="varaints"
-                //   src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${res?.previews}`}
+                //   src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${res?.previews}`}
                 //   className="h-12"
                 //   radius="md"
                 // />
@@ -299,7 +299,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                           <div className="flex items-center space-x-4">
                             <Image
                               alt="variants"
-                              src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${item?.previews}`}
+                              src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${item?.previews}`}
                               className="h-12"
                               radius="md"
                             />
@@ -347,6 +347,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                   currency: "USD",
                   preview: variant ? variant.previews : props?.thumbnail,
                   productId: props?.id,
+                  variantId: variant.id ? variant.id : null
                 };
 
                 addToCart(product);
@@ -358,7 +359,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <div className="mt-16 block sm:block lg:hidden">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
-              <LexicalViewer data={detail} />
+              {/* <LexicalViewer data={detail} /> */}
             </p>
           </div>
         </div>

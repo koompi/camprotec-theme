@@ -11,7 +11,7 @@ import { CustomerAdressType } from "@/types/checkout";
 export default function Page() {
   const { data, loading } = useQuery(CUSTOMER_ADDRESS);
 
-  if (loading || !data) {
+  if (loading) {
     return null;
   }
 

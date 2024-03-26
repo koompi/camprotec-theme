@@ -53,21 +53,8 @@ const RecommendProducts = ({ products }: { products: ProductType[] }) => {
 export default RecommendProducts;
 
 const RecommendCard: FC<{ props: ProductType }> = ({ props }) => {
-  const { addToCart, addCarts } = useCart();
-  const [items, setItems] = useState<CartItem[]>([]);
+  const { addToCart } = useCart();
   const router = useRouter();
-
-  const handleAddToCart = (product: ItemProduct) => {
-    let p: ItemProduct = {
-      id: product?.id,
-      variantId: null,
-      name: product?.name,
-      price: product?.price,
-      currency: product?.currency,
-      preview: product?.preview,
-    };
-    addToCart(p, false);
-  };
 
   return (
     <>
@@ -103,7 +90,7 @@ const RecommendCard: FC<{ props: ProductType }> = ({ props }) => {
           alt={props.title}
           className="absolute inset-0 z-0 h-full w-full rounded-lg object-contain bg-white"
           height="100%"
-          src={`${process.env.NEXT_PUBLIC_IPFS}/api/ipfs?hash=${props?.thumbnail}`}
+          src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${props?.thumbnail}`}
         />
         <div className="absolute inset-x-4 bottom-4 z-10 flex items-center justify-between rounded-medium bg-background/10 p-8 backdrop-blur-md backdrop-saturate-150 dark:bg-default-100/50 ">
           <div className="flex flex-col gap-1">
@@ -121,19 +108,39 @@ const RecommendCard: FC<{ props: ProductType }> = ({ props }) => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              const p: ItemProduct = {
-                id: props?.id,
-                variantId: null,
+              // const p: ItemProduct = {
+              //   id: props?.id,
+              //   variantId: null,
+              //   name: props?.title,
+              //   price: props?.price,
+              //   currency: props?.currency,
+              //   preview: props?.thumbnail,
+              // };
+
+              // props?.variants.length > 0
+              //   ? (addCarts(items), setItems([]))
+              //   : handleAddToCart(p);
+              // toast.success("The product is added into the cart!");
+
+              const product: ItemProduct = {
+                id: props.id,
                 name: props?.title,
+                variant: {
+                  id: null,
+                  label: "Default",
+                  default: true,
+                  previews: props?.thumbnail,
+                  price: props?.price,
+                  attributes: [],
+                },
                 price: props?.price,
-                currency: props?.currency,
+                currency: "USD",
                 preview: props?.thumbnail,
+                productId: props?.id,
+                variantId: null
               };
 
-              props?.variants.length > 0
-                ? (addCarts(items), setItems([]))
-                : handleAddToCart(p);
-              toast.success("The product is added into the cart!");
+              addToCart(product);
             }}
           >
             Add to cart
