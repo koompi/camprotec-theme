@@ -9,7 +9,7 @@ import RatingRadioGroup from "./RatingRadioGroup";
 import TagGroupRadioItem from "./TagGroupRadioItem";
 import { Attribute, ItemProduct, ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
-import { LexicalViewer } from "@/editor/LexicalViewer";
+// import { LexicalViewer } from "@/editor/LexicalViewer";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 import { CartItem } from "@/types/global";
@@ -177,7 +177,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <div className="mt-16 hidden sm:hidden lg:block">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
-              <LexicalViewer data={detail} />
+              {/* <LexicalViewer data={detail} /> */}
             </p>
           </div>
         </div>
@@ -359,7 +359,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <div className="mt-16 block sm:block lg:hidden">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
-              <LexicalViewer data={detail} />
+              {/* <LexicalViewer data={detail} /> */}
             </p>
           </div>
         </div>
