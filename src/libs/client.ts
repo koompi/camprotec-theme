@@ -1,13 +1,11 @@
 "use server";
 
+const ENDPOINT =
+  process.env.NEXT_PUBLIC_BACKEND ?? "https://backend.riverbase.org";
 
-const GRAPHQL_ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND}/graphql/public?store_id=${process.env.NEXT_PUBLIC_ID_STORE}`;
+const GRAPHQL_ENDPOINT = `${ENDPOINT}/graphql/public?store_id=${process.env.NEXT_PUBLIC_ID_STORE ?? "65a4a66033b9eda51233220c"}`;
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  createHttpLink,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
 
 const httpLink = createHttpLink({
@@ -36,16 +34,12 @@ const link = createHttpLink({
   fetch: fetch,
 });
 
-
 export const makePrivateClient = () => {
-
   const httpLink = new HttpLink({
     uri: GRAPHQL_ENDPOINT,
   });
 
-
   console.log("token", token);
-
 
   const authMiddleware = new ApolloLink((operation, forward) => {
     operation.setContext(({ headers = {} }) => ({
@@ -63,11 +57,11 @@ export const makePrivateClient = () => {
     link:
       typeof window === "undefined"
         ? ApolloLink.from([
-          new SSRMultipartLink({
-            stripDefer: true,
-          }),
-          concat(authMiddleware, httpLink),
-        ])
+            new SSRMultipartLink({
+              stripDefer: true,
+            }),
+            concat(authMiddleware, httpLink),
+          ])
         : concat(authMiddleware, httpLink),
   });
 };
