@@ -280,17 +280,15 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               }
             </> */}
             {variants.length > 0 && (
-              <RadioGroup label="Variants" defaultValue="1">
+              <RadioGroup label="Variants" defaultValue={props.id}>
                 <div className="grid grid-cols-2 gap-2">
                   {variants.length > 0 &&
-                    cartVariants.map((item: Variants, idx: number) => {
-                      console.log("item", item);
-
+                    cartVariants.map((item: Variants, idx: number) => {                
                       return (
                         <VariantRadio
                           key={idx}
-                          value={item.id ? "0" : "1"}
-                          onChange={(_) => setVariant({ ...item, "default": item.id ? false : true })}
+                          value={item?.id ? item.id : props.id}
+                          onChange={(_) => setVariant({...item, "default": item.id ? false : true})}
                         >
                           <div className="flex items-center space-x-4">
                             <Image

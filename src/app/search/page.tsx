@@ -43,11 +43,11 @@ export default async function SearchPage({
         </div>
       )}
 
-      {products.products?.length > 0 && (
+      {products?.products?.length > 0 && (
         <div className="my-auto flex max-w-lg flex-col gap-2 pb-9">
           <h3 className="text-lg font-bold leading-8 mt-3">Trending Now</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 px-2 border border-base-100">
-            {products.products
+            {products?.products
               ?.slice(0, 10)
               ?.sort((a: ProductType, b: ProductType) =>
                 a?.sell > b?.sell ? -1 : 1

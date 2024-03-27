@@ -59,7 +59,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       },
     },
   });
-
+  
   //  function checkout
 
   const onSubmitCheckout = () => {

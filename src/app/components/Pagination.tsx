@@ -7,13 +7,11 @@ export const PaginationProduct = ({
     total,
     rowsPerPage,
     setPage,
-    setRowsPerPage,
 }: {
     page: number;
     total: number;
     rowsPerPage: number;
     setPage: Function;
-    setRowsPerPage: Function;
 }) => {
     const router = useRouter();
 
@@ -27,13 +25,8 @@ export const PaginationProduct = ({
         router.push(`?page=${page - 1}&size=${rowsPerPage}`);
     };
 
-    const onRowsPerPageChange = useCallback(
-        (e: React.ChangeEvent<HTMLSelectElement>) => {
-            setRowsPerPage(Number(e.target.value));
-            setPage(1);
-        },
-        [setPage, setRowsPerPage]
-    );
+    console.log(total);
+    
     return (
         <>
             <Button

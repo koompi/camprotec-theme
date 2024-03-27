@@ -16,10 +16,14 @@ export default function ComponentProducts({
   categories,
   products,
   searchParams,
+  total,
+  pages
 }: {
   categories: Category[];
   products: ProductType[];
   searchParams?: { [key: string]: string | string[] | undefined };
+  total: number;
+  pages: number;
 }) {
   const offset = useSearchParams().get("page") ?? "1";
   const limit = useSearchParams().get("size") ?? "20";
@@ -133,9 +137,7 @@ export default function ComponentProducts({
         <main className="mt-4 h-full w-full overflow-visible px-1">
           <ProductSortComponent />
           <div className="w-full flex justify-end mt-8 space-x-2">
-            <PaginationProduct page={page} total={!query_search
-              ? 2
-              : Math.ceil(products.length / rowsPerPage)} rowsPerPage={rowsPerPage} setPage={setPage} setRowsPerPage={setRowsPerPage} />
+            <PaginationProduct page={page} total={!query_search ? 1 : pages} rowsPerPage={rowsPerPage} setPage={setPage}  />
           </div>
         </main>
       </div>

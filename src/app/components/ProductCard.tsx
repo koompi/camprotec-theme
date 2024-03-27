@@ -13,13 +13,11 @@ import {
 import { formatToUSD } from "@/utils/usd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
-import { toast } from "sonner";
 import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
 
 const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const { addToCart, addCarts } = useCart();
+  const { addToCart } = useCart();
 
   const handleAddToCart = (product: ItemProduct) => {
     let p: ItemProduct = {
@@ -43,55 +41,6 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
         shadow="sm"
       >
         <CardBody className="px-3 pb-1">
-          {/* <p>{props.product?.createdAt}</p> */}
-          {/* {!props?.loading && (
-         <Tooltip
-           showArrow
-           placement="top-end"
-           content="Add to Cart"
-           classNames={{
-             base: ["before:bg-neutral-400 dark:before:bg-white"],
-             content: [
-               "py-2 px-4 shadow-xl",
-               "text-black bg-gradient-to-br from-white to-neutral-400",
-             ],
-           }}
-         >
-           <Button
-             isIconOnly
-             className="absolute right-3 top-3 z-30 bg-background/60 backdrop-blur-md backdrop-saturate-150 dark:bg-default-100/50"
-             radius="full"
-             size="sm"
-             variant="flat"
-             onClick={(e) => {
-               e.preventDefault();
-               e.stopPropagation();
-               const p: ItemProduct = {
-                 id: props?.product?.id,
-                 variantId: null,
-                 name: props?.product?.title,
-                 price: props?.product?.price,
-                 currency: props?.product?.currency,
-                 preview: props?.product?.thumbnail,
-               };
-
-               props?.product?.variants.length > 0
-                 ? (addCarts(items), setItems([]))
-                 : handleAddToCart(p);
-               toast.success("The product is added into the cart!");
-             }}
-           >
-             <Icon
-               className={cn("text-default-900/50", {
-                 "text-primary": isLiked,
-               })}
-               icon="solar:cart-large-minimalistic-bold"
-               width={21}
-             />
-           </Button>
-         </Tooltip>
-       )} */}
-
           <Image
             className="aspect-[4/3] w-full h-full bg-repeat-round rounded-2xl mx-auto object-contain object-center bg-white"
             src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${props?.product?.thumbnail}`}
@@ -140,7 +89,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
 
               <div className="mt-1 flex justify-between items-center">
                 <span className="text-primary lg:text-xl text-sm font-bold">
-                  {formatToUSD(props.product.price)}
+                  {formatToUSD(props?.product.price)}
                 </span>
                 <Button
                   variant="flat"
@@ -151,20 +100,26 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    const p: ItemProduct = {
-                      id: props?.product?.id,
-                      variantId: null,
+                    
+                    const product: ItemProduct = {
+                      id: props?.product.id,
                       name: props?.product?.title,
-                      price: props?.product?.price,
-                      currency: props?.product?.currency,
-                      preview: props?.product?.thumbnail,
-                      productId: "",
+                      variant: {
+                        id: null,
+                        label: "Default",
+                        default: true,
+                        previews:props?.product.thumbnail,
+                        price: props?.product.price,
+                        attributes: [],
+                      },
+                      price: props?.product.price,
+                      currency: "USD",
+                      preview: props?.product.thumbnail,
+                      productId: props?.product.id,
+                      variantId: null
                     };
-
-                    props?.product?.variants.length > 0
-                      ? (addCarts(items), setItems([]))
-                      : handleAddToCart(p);
-                    toast.success("The product is added into the cart!");
+    
+                    handleAddToCart(product);
                   }}
                 >
                   Add to Cart

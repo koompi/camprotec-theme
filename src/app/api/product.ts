@@ -71,7 +71,7 @@ export async function filterProducts(searchParams?: {
 
   return {
     props: {
-      products: data.storeGlobalFilterProducts,
+      ...data.storeGlobalFilterProducts
     },
   };
 }

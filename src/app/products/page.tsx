@@ -300,7 +300,7 @@ export default async function ProductsPage({
   return (
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-3 sm:py-3 lg:py-9">
       <div className="flex gap-x-6">
-        <ComponentProducts categories={data_categories.categories} products={data_products.products} searchParams={searchParams}/>
+        <ComponentProducts categories={data_categories.categories} {...data_products} searchParams={searchParams}/>
       </div>
     </section>
   );
