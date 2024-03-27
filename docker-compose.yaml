@@ -3,7 +3,6 @@ version: '3.9'
 services:
   app:
     container_name: ${CONTAINER_NAME}
-    image: node-18-slim
     build:
       context: ${BASEPATH}
       args:
@@ -12,4 +11,3 @@ services:
       dockerfile: ${THEMEPATH}/Dockerfile
     ports:
       - ${PORT_NUMBER}:3000
-                     

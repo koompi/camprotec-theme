@@ -10,7 +10,7 @@ import { Attribute, ItemProduct, ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
 import { useCart } from "@/context/useCart";
 import { VariantRadio } from "./VariantRadio";
-// import { LexicalReader } from "@/editor/LexicalReader";
+import { LexicalReader } from "@/editor/LexicalReader";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -173,7 +173,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <div className="mt-16 hidden sm:hidden lg:block">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
-              {/* <LexicalReader data={detail} /> */}
+              <LexicalReader data={detail} />
             </p>
           </div>
         </div>
@@ -353,7 +353,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <div className="mt-16 block sm:block lg:hidden">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
-              {/* <LexicalReader data={detail} /> */}
+              <LexicalReader data={detail} />
             </p>
           </div>
         </div>
