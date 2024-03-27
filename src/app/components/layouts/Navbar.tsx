@@ -127,9 +127,10 @@ const NavbarLayout = () => {
                     <Icon icon="solar:streets-map-point-broken" fontSize={21} />
                   }
                 >
-                  My Location
+                  Shipping
                 </DropdownItem>
                 <DropdownItem
+                  as={Link}
                   key="orders"
                   href="/orders"
                   startContent={
@@ -141,14 +142,14 @@ const NavbarLayout = () => {
                 >
                   Orders
                 </DropdownItem>
-                <DropdownItem
+                {/* <DropdownItem
                   key="wallet"
                   startContent={
                     <Icon icon="solar:wallet-linear" fontSize={21} />
                   }
                 >
                   Wallet
-                </DropdownItem>
+                </DropdownItem> */}
 
                 <DropdownItem
                   key="logout"

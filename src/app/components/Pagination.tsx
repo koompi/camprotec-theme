@@ -24,8 +24,6 @@ export const PaginationProduct = ({
         setPage(page - 1);
         router.push(`?page=${page - 1}&size=${rowsPerPage}`);
     };
-
-    console.log(total);
     
     return (
         <>
