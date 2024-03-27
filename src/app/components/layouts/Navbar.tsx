@@ -39,7 +39,7 @@ const NavbarLayout = () => {
         <Logo />
       </NavbarBrand>
       <NavbarContent
-        className="hidden h-11 gap-6 rounded-full border-small border-default-200/20 bg-background/60 px-4 shadow-sm backdrop-blur-md backdrop-saturate-150 md:flex"
+        className="hidden h-11 gap-12 rounded-full border-small border-default-200/20 bg-background/60 px-12 shadow-sm backdrop-blur-md backdrop-saturate-150 md:flex"
         justify="center"
       >
         <NavbarItem>
@@ -47,16 +47,12 @@ const NavbarLayout = () => {
             className="text-default-500 font-semibold"
             href={pathname == "/" ? "#" : "/"}
           >
-            <p>Home</p>
+            <p className="text-lg">Home</p>
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link
-            className="text-default-500 font-semibold"
-            href={pathname == "/" ? "#products" : "/#products"}
-            // size="sm"
-          >
-            <p>Products</p>
+          <Link className="text-default-500 font-semibold" href="/products">
+            <p className="text-lg">Products</p>
           </Link>
         </NavbarItem>
         <NavbarItem>
@@ -65,7 +61,7 @@ const NavbarLayout = () => {
             href={pathname == "/" ? "#categories" : "/#categories"}
             // size="sm"
           >
-            <p>Categories</p>
+            <p className="text-lg">Categories</p>
           </Link>
         </NavbarItem>
         <NavbarItem>
@@ -74,7 +70,7 @@ const NavbarLayout = () => {
             href={pathname == "/" ? "#about" : "/#about"}
             // size="sm"
           >
-            <p>About</p>
+            <p className="text-lg">About</p>
           </Link>
         </NavbarItem>
       </NavbarContent>
