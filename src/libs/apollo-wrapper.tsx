@@ -1,6 +1,6 @@
 "use client";
 
-import { ApolloLink, HttpLink, InMemoryCache, concat } from "@apollo/client";
+import { ApolloLink, HttpLink, concat } from "@apollo/client";
 import {
   ApolloNextAppProvider,
   NextSSRApolloClient,

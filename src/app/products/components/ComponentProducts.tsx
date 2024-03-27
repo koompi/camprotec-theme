@@ -8,6 +8,9 @@ import { useDisclosure } from "@nextui-org/react";
 import MenuBar from "./MenuBar";
 import ProductCard from "@/app/components/ProductCard";
 import { ProductType } from "@/types/product";
+import { PaginationProduct } from "@/app/components/Pagination";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export default function ComponentProducts({
   categories,
@@ -18,6 +21,13 @@ export default function ComponentProducts({
   products: ProductType[];
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+  const offset = useSearchParams().get("page") ?? "1";
+  const limit = useSearchParams().get("size") ?? "20";
+  const query_search = useSearchParams().get("search") ?? null;
+
+  const [page, setPage] = useState(parseInt(offset));
+  const [rowsPerPage, setRowsPerPage] = useState(parseInt(limit));
+
   const { isOpen, onOpenChange, onOpen } = useDisclosure();
 
   const mostPopularSort = (): ProductType[] => {
@@ -119,9 +129,14 @@ export default function ComponentProducts({
         />
       </SidebarDrawer>
       <div className="w-full flex-1 flex-col">
-        <MenuBar searchParams={searchParams} onOpen={onOpen}/>
+        <MenuBar searchParams={searchParams} onOpen={onOpen} />
         <main className="mt-4 h-full w-full overflow-visible px-1">
-          <ProductSortComponent/>
+          <ProductSortComponent />
+          <div className="w-full flex justify-end mt-8 space-x-2">
+            <PaginationProduct page={page} total={!query_search
+              ? 2
+              : Math.ceil(products.length / rowsPerPage)} rowsPerPage={rowsPerPage} setPage={setPage} setRowsPerPage={setRowsPerPage} />
+          </div>
         </main>
       </div>
     </>

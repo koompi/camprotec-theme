@@ -117,27 +117,31 @@ export const GLOBAL_PRODUCT_FILTERING = gql`
       range: $range
       filter: $filter
     ) {
-      id
-      createdAt
-      thumbnail
-      title
-      brand
-      price
-      previews
-      slug
-      sell
-      rating
-      variants {
-        default
+      products {
         id
-        label
+        createdAt
+        thumbnail
+        title
+        brand
         price
-        attributes {
-          type
-          option
-        }
         previews
+        slug
+        sell
+        rating
+        status
+        variants {
+          default
+          id
+          label
+          price
+          attributes {
+            type
+            option
+          }
+          previews
+        }
       }
+      total
     }
   }
 `;

@@ -10,13 +10,10 @@ import React, {
 
 import { createHeadlessEditor } from "@lexical/headless";
 import { $generateHtmlFromNodes } from "@lexical/html";
+import "@/editor/editor.css";
 
 /* Lexical Design System */
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
-import { ListItemNode, ListNode } from "@lexical/list";
-import { CodeHighlightNode, CodeNode } from "@lexical/code";
-import { AutoLinkNode, LinkNode } from "@lexical/link";
+import PlaygroundNodes from "./nodes/PlaygroundNodes";
 
 interface Props {
   data: string;
@@ -27,17 +24,7 @@ async function run(value: string, callback: Dispatch<SetStateAction<string>>) {
     const editor = createHeadlessEditor({
       namespace: "Editor",
       nodes: [
-        HeadingNode,
-        ListNode,
-        ListItemNode,
-        QuoteNode,
-        CodeNode,
-        CodeHighlightNode,
-        TableNode,
-        TableCellNode,
-        TableRowNode,
-        AutoLinkNode,
-        LinkNode,
+        ...PlaygroundNodes
       ],
       onError: () => {},
     });
@@ -51,16 +38,17 @@ async function run(value: string, callback: Dispatch<SetStateAction<string>>) {
   });
 }
 const empty =
-  '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
-export const LexicalViewer: FC<Props> = ({ data = empty }) => {
+  '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}'
+  
+export const LexicalReader: FC<Props> = ({ data = empty }) => {
+  
   const [content, setContent] = useState(empty);
-
   useEffect(() => {
     let r = async () => {
       await run(data, setContent);
     };
     r();
   }, [data]);
-
+  
   return <div dangerouslySetInnerHTML={{ __html: content ?? empty }} />;
 };

@@ -40,7 +40,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   const { user } = useAuth();
   const router = useRouter();
 
-  const { cartItems, loading } = useCart();
+  const { cartItems, cleanCartItems, loading } = useCart();
   const [price, setPrice] = useState(0);
   const [ship, setShip] = useState<string>("");
   const [toDelivery, setToDelivery] = useState<CustomerAdressType | null>();
@@ -50,7 +50,6 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   // estimate price
   const {
     data: es_price,
-    loading: priceLoading,
     refetch,
   } = useQuery(ESTIMATE_PRICE, {
     variables: {
@@ -65,7 +64,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
 
   const onSubmitCheckout = () => {
     const totalPrice = (
-      price + es_price?.estimatePrice?.data?.data?.price
+      price + es_price?.estimatePrice?.data?.price
     ).toFixed(2);
 
     const newCart = cartItems?.map((item) => {
@@ -94,6 +93,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
           "Congratulation! you've been order the product(s) successfully!"
         );
         router.push("/orders");
+        cleanCartItems()        
       })
       .catch((err) => {
         toast.error("Your transaction order is failed!");
@@ -455,8 +455,8 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                     />
                   </dt>
                   <dd className="text-small font-semibold text-default-700">
-                    {es_price?.estimatePrice?.data?.data?.price
-                      ? formatToUSD(es_price?.estimatePrice?.data?.data?.price)
+                    {es_price?.estimatePrice?.data?.price
+                      ? formatToUSD(es_price?.estimatePrice?.data?.price)
                       : formatToUSD(0)}
                   </dd>
                 </div>
@@ -475,9 +475,9 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   <dd className="font-semibold text-primary text-xl">
                     {formatToUSD(
                       price +
-                        (es_price?.estimatePrice?.data?.data?.price
-                          ? es_price?.estimatePrice?.data?.data?.price
-                          : 0)
+                      (es_price?.estimatePrice?.data?.price
+                        ? es_price?.estimatePrice?.data?.price
+                        : 0)
                     )}
                   </dd>
                 </div>

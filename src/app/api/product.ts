@@ -1,11 +1,14 @@
+import { GET_ORDERS } from "@/graphql/orders";
 import {
   GET_ALL_PRODUCTS,
   GET_PRODUCT,
   GLOBAL_PRODUCT_FILTERING,
 } from "@/graphql/product";
-import { getClient } from "@/libs/client";
+import { getClient, makePrivateClient } from "@/libs/client";
 
 const client = getClient();
+
+// const apiPrivate = makePrivateClient;
 
 export async function getLatestProducts() {
   const { data } = await client.query({
@@ -17,7 +20,8 @@ export async function getLatestProducts() {
         sort: 1,
       },
     },
-  });  
+    
+  });
   return {
     props: {
       products: data.storeProducts,
@@ -62,6 +66,7 @@ export async function filterProducts(searchParams?: {
         sort: price ? (sortParam == "price_low_to_high" ? 1 : -1) : -1,
       },
     },
+    fetchPolicy: "no-cache",
   });
 
   return {

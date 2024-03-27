@@ -27,6 +27,7 @@ export type ItemProduct = {
 
 export type ProductType = {
   id: string;
+  status: boolean;
   title: string;
   thumbnail: string;
   rating: number;

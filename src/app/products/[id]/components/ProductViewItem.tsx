@@ -1,20 +1,16 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Button, Image, RadioGroup, ScrollShadow } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { cn } from "@/utils/cn";
 
 import RatingRadioGroup from "./RatingRadioGroup";
-import TagGroupRadioItem from "./TagGroupRadioItem";
 import { Attribute, ItemProduct, ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
-// import { LexicalViewer } from "@/editor/LexicalViewer";
 import { useCart } from "@/context/useCart";
-import { toast } from "sonner";
-import { CartItem } from "@/types/global";
 import { VariantRadio } from "./VariantRadio";
-import { useForm } from "react-hook-form";
+import { LexicalReader } from "@/editor/LexicalReader";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -177,7 +173,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <div className="mt-16 hidden sm:hidden lg:block">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
-              {/* <LexicalViewer data={detail} /> */}
+              <LexicalReader data={detail} />
             </p>
           </div>
         </div>
@@ -289,12 +285,12 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                   {variants.length > 0 &&
                     cartVariants.map((item: Variants, idx: number) => {
                       console.log("item", item);
-                      
+
                       return (
                         <VariantRadio
                           key={idx}
                           value={item.id ? "0" : "1"}
-                          onChange={(_) => setVariant({...item, "default": item.id ? false : true})}
+                          onChange={(_) => setVariant({ ...item, "default": item.id ? false : true })}
                         >
                           <div className="flex items-center space-x-4">
                             <Image
@@ -359,7 +355,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <div className="mt-16 block sm:block lg:hidden">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
-              {/* <LexicalViewer data={detail} /> */}
+              <LexicalReader data={detail} />
             </p>
           </div>
         </div>
