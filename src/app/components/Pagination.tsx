@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { Button, Pagination } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export const PaginationProduct = ({
     page,
@@ -24,7 +24,7 @@ export const PaginationProduct = ({
         setPage(page - 1);
         router.push(`?page=${page - 1}&size=${rowsPerPage}`);
     };
-    
+
     return (
         <>
             <Button

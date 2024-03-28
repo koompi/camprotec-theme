@@ -6,7 +6,7 @@ import { getLatestProducts } from "./api/product";
 
 export default async function Home() {
   const { props } = await getLatestProducts();
-
+  
   return (
     <main>
       <section className="bg-gradient-to-r from-primary/10">

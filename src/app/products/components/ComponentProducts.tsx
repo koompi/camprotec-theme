@@ -15,20 +15,18 @@ import { useState } from "react";
 export default function ComponentProducts({
   categories,
   products,
-  // searchParams,
   total,
   pages,
   loading
 }: {
   categories: Category[];
   products: ProductType[];
-  // searchParams?: { [key: string]: string | string[] | undefined };
   total: number;
   pages: number;
   loading: boolean
 }) {
   const offset = useSearchParams().get("page") ?? "1";
-  const limit = useSearchParams().get("size") ?? "16";
+  const limit = useSearchParams().get("size") ?? "5";
   const query_search = useSearchParams().get("search") ?? null;
   const sort = useSearchParams().get("sort") ?? null;
 
@@ -124,8 +122,8 @@ export default function ComponentProducts({
     }
   };
 
-
-
+  let total_pages = Math.ceil(total);
+  
   return (
     <>
       <SidebarDrawer isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -141,9 +139,9 @@ export default function ComponentProducts({
       <div className="w-full flex-1 flex-col">
         <MenuBar onOpen={onOpen} />
         <main className="mt-4 h-full w-full overflow-visible px-1">
-          {loading ? <div>loading...</div> : <ProductSortComponent />}
+        {loading ? <div>loading...</div> :  <ProductSortComponent />}
           <div className="w-full flex justify-end mt-8 space-x-2">
-            {loading ? <div>loading...</div> : <PaginationProduct page={page} total={pages} rowsPerPage={rowsPerPage} setPage={setPage} />}
+            {loading ? <div>loading...</div> : <PaginationProduct page={page} total={total_pages} rowsPerPage={rowsPerPage} setPage={setPage} />}
 
           </div>
         </main>
