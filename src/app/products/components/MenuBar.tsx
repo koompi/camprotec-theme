@@ -2,16 +2,15 @@
 import { Button, Select, SelectItem } from "@nextui-org/react";
 import { SearchProduct } from "./Search";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const MenuBar = ({
-  searchParams,
   onOpen
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
   onOpen: () => void;
 }) => {
   const router = useRouter();
+  const search = useSearchParams();
   return (
     <>
       <header className="relative z-20 flex flex-col gap-2 rounded-medium bg-default-50 px-4 pb-3 pt-2 md:pt-3">
@@ -31,19 +30,16 @@ const MenuBar = ({
                 />
               }
               variant="bordered"
-                onClick={onOpen}
+              onClick={onOpen}
             >
               Filters
             </Button>
             <div className="hidden items-center gap-1 md:flex">
               <SearchProduct
-                routeBack={`?search=&category=${
-                  searchParams?.cat ? searchParams?.cat : ""
-                }&sub_category=${
-                  searchParams?.sub ? searchParams?.sub : ""
-                }&sort=${
-                  searchParams?.sortParam ? searchParams?.sortParam : ""
-                }`}
+                routeBack={`?search=&category=${search.get("cat") ? search.get("cat") : ""
+                  }&sub_category=${search.get("sub") ? search.get("sub") : ""
+                  }&sort=${search.get("sort") ? search.get("sort") : ""
+                  }`}
               />
             </div>
           </div>
@@ -60,15 +56,12 @@ const MenuBar = ({
             labelPlacement="outside-left"
             placeholder="Select an option"
             variant="bordered"
-            selectedKeys={[searchParams?.sort as string]}
+            selectedKeys={[search.get("sort") as string]}
             onChange={(e) => {
               router.push(
-                `?search=${
-                  searchParams?.search ? searchParams?.search : ""
-                }&category=${
-                  searchParams?.cat ? searchParams?.cat : ""
-                }&sub_category=${
-                  searchParams?.sub ? searchParams?.sub : ""
+                `?search=${search.get("search") ? search.get("search") : ""
+                }&category=${search.get("cat") ? search.get("cat") : ""
+                }&sub_category=${search.get("sub") ? search.get("sub") : ""
                 }&sort=${e.target.value ? e.target.value : ""}`
               );
             }}
