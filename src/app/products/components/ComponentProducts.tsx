@@ -135,7 +135,7 @@ export default function ComponentProducts({
         />
       </SidebarDrawer>
       <div className="w-full flex-1 flex-col">
-        <MenuBar searchParams={searchParams} onOpen={onOpen} />
+        <MenuBar onOpen={onOpen} />
         <main className="mt-4 h-full w-full overflow-visible px-1">
           {loading ? <div>loading...</div> : <ProductSortComponent />}
           <div className="w-full flex justify-end mt-8 space-x-2">
