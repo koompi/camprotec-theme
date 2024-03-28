@@ -7,6 +7,7 @@ import ComponentProducts from "./components/ComponentProducts";
 import { GLOBAL_PRODUCT_FILTERING } from "@/graphql/product"
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { CATEGORIES } from "@/graphql/category";
+import { useSearchParams } from "next/navigation";
 
 // import React, { useState } from "react";
 // import { useQuery } from "@apollo/client";
@@ -291,19 +292,17 @@ import { CATEGORIES } from "@/graphql/category";
 
 // export default ProductsPage;
 
-export default function ProductsPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const search = searchParams?.search || null;
-  const cat = searchParams?.category || null;
-  const sub = searchParams?.sub_category || null;
-  const page = (searchParams?.page as string) || null;
-  const size = (searchParams?.size as string) || null;
-  const minPice = (searchParams?.min_price as string) || null;
-  const maxPice = (searchParams?.max_price as string) || null;
-  const sortParam = (searchParams?.sort as string) || null;
+export default function ProductsPage() {
+  const searchParams = useSearchParams()
+
+  const search = searchParams.get("search") || null;
+  const cat = searchParams.get("category") || null;
+  const sub = searchParams.get("sub_category") || null;
+  const page = (searchParams.get("page") as string) || null;
+  const size = (searchParams.get("size") as string) || null;
+  const minPice = (searchParams.get("min_price") as string) || null;
+  const maxPice = (searchParams.get("max_price") as string) || null;
+  const sortParam = (searchParams.get("sort") as string) || null;
   const price =
     ["price_low_to_high", "price_high_to_low"].includes(sortParam as string) ||
     null;
