@@ -27,7 +27,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
       price: product?.price,
       currency: product?.currency,
       preview: product?.preview,
-      productId: "",
+      productId: product?.id,
     };
     addToCart(p);
   };

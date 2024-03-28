@@ -17,13 +17,15 @@ export default function ComponentProducts({
   products,
   searchParams,
   total,
-  pages
+  pages,
+  loading
 }: {
   categories: Category[];
   products: ProductType[];
   searchParams?: { [key: string]: string | string[] | undefined };
   total: number;
   pages: number;
+  loading: boolean
 }) {
   const offset = useSearchParams().get("page") ?? "1";
   const limit = useSearchParams().get("size") ?? "20";
@@ -135,9 +137,9 @@ export default function ComponentProducts({
       <div className="w-full flex-1 flex-col">
         <MenuBar searchParams={searchParams} onOpen={onOpen} />
         <main className="mt-4 h-full w-full overflow-visible px-1">
-          <ProductSortComponent />
+          {loading ? <div>loading...</div> : <ProductSortComponent />}
           <div className="w-full flex justify-end mt-8 space-x-2">
-            <PaginationProduct page={page} total={!query_search ? 1 : pages} rowsPerPage={rowsPerPage} setPage={setPage}  />
+            <PaginationProduct page={page} total={!query_search ? 1 : pages} rowsPerPage={rowsPerPage} setPage={setPage} />
           </div>
         </main>
       </div>

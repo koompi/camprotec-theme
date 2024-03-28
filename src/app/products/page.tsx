@@ -1,9 +1,12 @@
-// "use client";
+"use client";
 
 // import { useSearchParams } from "next/navigation";
-import { filterProducts } from "../api/product";
-import { categories } from "../api/categories";
+// import { filterProducts } from "../api/product";
+// import { categories } from "../api/categories";
 import ComponentProducts from "./components/ComponentProducts";
+import { GLOBAL_PRODUCT_FILTERING } from "@/graphql/product"
+import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
+import { CATEGORIES } from "@/graphql/category";
 
 // import React, { useState } from "react";
 // import { useQuery } from "@apollo/client";
@@ -288,19 +291,56 @@ import ComponentProducts from "./components/ComponentProducts";
 
 // export default ProductsPage;
 
-export default async function ProductsPage({
+export default function ProductsPage({
   searchParams,
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const { props: data_products } = await filterProducts(searchParams);
-  const { props: data_categories } = await categories();
-  
+  const search = searchParams?.search || null;
+  const cat = searchParams?.category || null;
+  const sub = searchParams?.sub_category || null;
+  const page = (searchParams?.page as string) || null;
+  const size = (searchParams?.size as string) || null;
+  const minPice = (searchParams?.min_price as string) || null;
+  const maxPice = (searchParams?.max_price as string) || null;
+  const sortParam = (searchParams?.sort as string) || null;
+  const price =
+    ["price_low_to_high", "price_high_to_low"].includes(sortParam as string) ||
+    null;
+
+  const { data: products, loading: loadingProduct } = useQuery(GLOBAL_PRODUCT_FILTERING, {
+    variables: {
+      tagId: cat ? (sub ? [sub] : [cat]) : search ? [] : null,
+      keyword: search ? search : search,
+      status: price ? "price" : null,
+      range: minPice
+        ? {
+          start: parseInt(minPice as string),
+          end: parseInt(maxPice as string),
+        }
+        : null,
+      filter: {
+        skip: page
+          ? parseInt(page) > 1
+            ? parseInt(page) * parseInt(size as string)
+            : 0
+          : 0,
+        limit: size ? parseInt(size) : 32,
+        sort: price ? (sortParam == "price_low_to_high" ? 1 : -1) : -1,
+      },
+    },
+  });
+
+  const { data: categories } = useQuery(CATEGORIES, {
+    variables: {
+      filter:  null,
+    },
+  })
 
   return (
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-3 sm:py-3 lg:py-9">
       <div className="flex gap-x-6">
-        <ComponentProducts categories={data_categories.categories} {...data_products} searchParams={searchParams}/>
+        <ComponentProducts categories={categories?.storeOwnerCategories} {...products?.storeGlobalFilterProducts} searchParams={searchParams} loading={loadingProduct}/>
       </div>
     </section>
   );

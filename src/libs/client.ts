@@ -39,8 +39,6 @@ export const makePrivateClient = () => {
     uri: GRAPHQL_ENDPOINT,
   });
 
-  console.log("token", token);
-
   const authMiddleware = new ApolloLink((operation, forward) => {
     operation.setContext(({ headers = {} }) => ({
       headers: {

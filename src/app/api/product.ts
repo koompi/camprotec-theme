@@ -8,7 +8,7 @@ import { getClient, makePrivateClient } from "@/libs/client";
 
 const client = getClient();
 
-// const apiPrivate = makePrivateClient;
+const apiPrivate = makePrivateClient;
 
 export async function getLatestProducts() {
   const { data } = await client.query({
@@ -19,8 +19,7 @@ export async function getLatestProducts() {
         skip: 0,
         sort: 1,
       },
-    },
-    
+    }
   });
   return {
     props: {
@@ -66,12 +65,11 @@ export async function filterProducts(searchParams?: {
         sort: price ? (sortParam == "price_low_to_high" ? 1 : -1) : -1,
       },
     },
-    fetchPolicy: "no-cache",
   });
 
   return {
     props: {
-      ...data.storeGlobalFilterProducts
+      ...data.storeGlobalFilterProducts,
     },
   };
 }
