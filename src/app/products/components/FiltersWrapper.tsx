@@ -51,7 +51,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
       <div
         ref={ref}
         className={cn(
-          "h-full w-full max-w-sm rounded-medium bg-content1 p-6",
+          "h-full w-full max-w-sm rounded-medium bg-content1 p-6 pb-16 ",
           className
         )}
       >

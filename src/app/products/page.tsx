@@ -324,7 +324,7 @@ export default function ProductsPage() {
             ? parseInt(page) * parseInt(size as string)
             : 0
           : 0,
-        limit: size ? parseInt(size) : 32,
+        limit: size ? parseInt(size) : 16,
         sort: price ? (sortParam == "price_low_to_high" ? 1 : -1) : -1,
       },
     },
@@ -335,8 +335,6 @@ export default function ProductsPage() {
       filter:  null,
     },
   })
-
-
 
   return (
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-3 sm:py-3 lg:py-9">

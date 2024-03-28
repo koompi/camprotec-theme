@@ -142,6 +142,7 @@ export const GLOBAL_PRODUCT_FILTERING = gql`
         }
       }
       total
+      pages
     }
   }
 `;

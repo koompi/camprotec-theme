@@ -15,21 +15,22 @@ import { useState } from "react";
 export default function ComponentProducts({
   categories,
   products,
-  searchParams,
+  // searchParams,
   total,
   pages,
   loading
 }: {
   categories: Category[];
   products: ProductType[];
-  searchParams?: { [key: string]: string | string[] | undefined };
+  // searchParams?: { [key: string]: string | string[] | undefined };
   total: number;
   pages: number;
   loading: boolean
 }) {
   const offset = useSearchParams().get("page") ?? "1";
-  const limit = useSearchParams().get("size") ?? "20";
+  const limit = useSearchParams().get("size") ?? "16";
   const query_search = useSearchParams().get("search") ?? null;
+  const sort = useSearchParams().get("sort") ?? null;
 
   const [page, setPage] = useState(parseInt(offset));
   const [rowsPerPage, setRowsPerPage] = useState(parseInt(limit));
@@ -74,7 +75,7 @@ export default function ComponentProducts({
   };
 
   const ProductSortComponent = () => {
-    if (searchParams?.sortParam === "most_popular") {
+    if (sort === "most_popular") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {mostPopularSort().map((res: ProductType, idx: number) => {
@@ -83,7 +84,7 @@ export default function ComponentProducts({
         </div>
       );
     }
-    if (searchParams?.sortParam === "newest") {
+    if (sort === "newest") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {newestSort().map((res: ProductType, idx: number) => {
@@ -92,7 +93,7 @@ export default function ComponentProducts({
         </div>
       );
     }
-    if (searchParams?.sortParam === "top_rated") {
+    if (sort === "top_rated") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {topRated().map((res: ProductType, idx: number) => {
@@ -102,8 +103,8 @@ export default function ComponentProducts({
       );
     }
     if (
-      searchParams?.sort === "price_low_to_high" ||
-      searchParams?.sort === "price_high_to_low"
+      sort === "price_low_to_high" ||
+      sort === "price_high_to_low"
     ) {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
@@ -122,6 +123,9 @@ export default function ComponentProducts({
       );
     }
   };
+
+
+
   return (
     <>
       <SidebarDrawer isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -139,7 +143,8 @@ export default function ComponentProducts({
         <main className="mt-4 h-full w-full overflow-visible px-1">
           {loading ? <div>loading...</div> : <ProductSortComponent />}
           <div className="w-full flex justify-end mt-8 space-x-2">
-            <PaginationProduct page={page} total={!query_search ? 1 : pages} rowsPerPage={rowsPerPage} setPage={setPage} />
+            {loading ? <div>loading...</div> : <PaginationProduct page={page} total={pages} rowsPerPage={rowsPerPage} setPage={setPage} />}
+
           </div>
         </main>
       </div>
