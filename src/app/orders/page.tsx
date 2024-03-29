@@ -19,7 +19,7 @@ import { PaginationProduct } from "../components/Pagination";
 
 const OrderPage = () => {
   const offset = useSearchParams().get("page") ?? "1";
-  const limit = useSearchParams().get("size") ?? "5";
+  const limit = useSearchParams().get("size") ?? "16";
   const query_search = useSearchParams().get("search") ?? null;
 
   const [page, setPage] = useState(parseInt(offset));

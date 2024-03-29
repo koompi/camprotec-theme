@@ -122,8 +122,9 @@ export default function ComponentProducts({
     }
   };
 
-  let total_pages = Math.ceil(total);
+  let total_pages = Math.ceil(total / rowsPerPage) ? 1 : Math.ceil(total / rowsPerPage);
   
+
   return (
     <>
       <SidebarDrawer isOpen={isOpen} onOpenChange={onOpenChange}>
