@@ -1,11 +1,25 @@
+"use client";
+
 import Banner from "./components/Banner";
 import LatestProducts from "./components/LatestProducts";
 import Categories from "./components/Categories";
 import About from "./components/About";
-import { getLatestProducts } from "./api/product";
+import { GET_ALL_PRODUCTS } from "@/graphql/product";
+import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 
-export default async function Home() {
-  const { props } = await getLatestProducts();
+export default function Home() {
+  const { data: products, loading: loadingProduct } = useQuery(
+    GET_ALL_PRODUCTS,
+    {
+      variables: {
+        filter: {
+          limit: 10,
+          skip: 0,
+          sort: -1,
+        },
+      },
+    }
+  );
 
   return (
     <main>
@@ -16,7 +30,10 @@ export default async function Home() {
         <Categories />
       </section>
       <section id="products" className="pt-8">
-        <LatestProducts products={props?.products} />
+        <LatestProducts
+          products={products?.storeProducts}
+          loading={loadingProduct}
+        />
       </section>
       <section id="about" className="pt-8">
         <About />

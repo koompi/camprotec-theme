@@ -8,14 +8,20 @@ import { Button } from "@nextui-org/react";
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
 
-const LatestProducts = ({ products }: { products: ProductType[] }) => {
-  if (!products) {
+const LatestProducts = ({
+  products,
+  loading,
+}: {
+  products: ProductType[];
+  loading: boolean;
+}) => {
+  if (loading) {
     return <ProductSkeleton />;
   }
 
   return (
     <>
-      {products.length > 0 && (
+      {products?.length > 0 && (
         <div className="container mx-auto">
           <h1 className="text-primary font-extrabold text-lg sm:text-lg lg:text-4xl text-center md:py-12 py-8">
             CHECK THE CORE PRODUCT
