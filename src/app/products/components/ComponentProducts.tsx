@@ -16,14 +16,13 @@ export default function ComponentProducts({
   categories,
   products,
   total,
-  pages,
-  loading
+  loading,
 }: {
   categories: Category[];
   products: ProductType[];
   total: number;
   pages: number;
-  loading: boolean
+  loading: boolean;
 }) {
   const offset = useSearchParams().get("page") ?? "1";
   const limit = useSearchParams().get("size") ?? "16";
@@ -100,10 +99,7 @@ export default function ComponentProducts({
         </div>
       );
     }
-    if (
-      sort === "price_low_to_high" ||
-      sort === "price_high_to_low"
-    ) {
+    if (sort === "price_low_to_high" || sort === "price_high_to_low") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {products.map((res: ProductType, idx: number) => {
@@ -122,8 +118,8 @@ export default function ComponentProducts({
     }
   };
 
-  let total_pages = Math.ceil(total);
-  
+  let total_pages = Math.ceil(total / parseInt(limit));
+
   return (
     <>
       <SidebarDrawer isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -139,10 +135,18 @@ export default function ComponentProducts({
       <div className="w-full flex-1 flex-col">
         <MenuBar onOpen={onOpen} />
         <main className="mt-4 h-full w-full overflow-visible px-1">
-        {loading ? <div>loading...</div> :  <ProductSortComponent />}
+          {loading ? <div>loading...</div> : <ProductSortComponent />}
           <div className="w-full flex justify-end mt-8 space-x-2">
-            {loading ? <div>loading...</div> : <PaginationProduct page={page} total={total_pages} rowsPerPage={rowsPerPage} setPage={setPage} />}
-
+            {loading ? (
+              <div>loading...</div>
+            ) : (
+              <PaginationProduct
+                page={page}
+                total={total_pages}
+                rowsPerPage={rowsPerPage}
+                setPage={setPage}
+              />
+            )}
           </div>
         </main>
       </div>

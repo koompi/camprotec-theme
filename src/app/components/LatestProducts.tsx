@@ -9,9 +9,9 @@ import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
 
 const LatestProducts = ({ products }: { products: ProductType[] }) => {
-  // if (!products) {
-  //   return <ProductSkeleton />;
-  // }
+  if (!products) {
+    return <ProductSkeleton />;
+  }
 
   return (
     <>

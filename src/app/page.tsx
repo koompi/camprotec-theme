@@ -6,7 +6,7 @@ import { getLatestProducts } from "./api/product";
 
 export default async function Home() {
   const { props } = await getLatestProducts();
-  
+
   return (
     <main>
       <section className="bg-gradient-to-r from-primary/10">
@@ -16,7 +16,7 @@ export default async function Home() {
         <Categories />
       </section>
       <section id="products" className="pt-8">
-        <LatestProducts products={props.products} />
+        <LatestProducts products={props?.products} />
       </section>
       <section id="about" className="pt-8">
         <About />

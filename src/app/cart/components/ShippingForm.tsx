@@ -39,8 +39,6 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
       return "Loading...";
     }
 
-    console.log("add", address);
-
     return (
       <>
         <Accordion

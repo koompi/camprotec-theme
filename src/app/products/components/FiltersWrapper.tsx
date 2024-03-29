@@ -16,8 +16,6 @@ import { cn } from "@/utils/cn";
 // import ColorRadioItem from "./color-radio-item";
 import PriceSlider from "./PriceSlider";
 import { Filter } from "@/types/filterTypes";
-import { CATEGORIES } from "@/graphql/category";
-import { useQuery } from "@apollo/client";
 import { Category, SubCategory } from "@/types/category";
 import { useSearchParams } from "next/navigation";
 
@@ -85,7 +83,11 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                   <AccordionItem
                     key={cat?.id}
                     aria-label={cat?.title?.en}
-                    title={<span className="text-sm">{cat?.title?.en}</span>}
+                    title={
+                      <span className="text-sm">
+                        {cat?.title?.en} {`(${cat?.children?.length})`}
+                      </span>
+                    }
                     onPress={() => {
                       router.push(
                         `?search${search ? search : ""}=&category=${
