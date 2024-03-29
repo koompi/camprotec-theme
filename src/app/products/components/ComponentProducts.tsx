@@ -142,7 +142,6 @@ export default function ComponentProducts({
         {loading ? <div>loading...</div> :  <ProductSortComponent />}
           <div className="w-full flex justify-end mt-8 space-x-2">
             {loading ? <div>loading...</div> : <PaginationProduct page={page} total={total_pages} rowsPerPage={rowsPerPage} setPage={setPage} />}
-
           </div>
         </main>
       </div>

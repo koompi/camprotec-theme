@@ -1,16 +1,25 @@
-"use server";
+"use client";
 
-import React, { FC } from "react";
+import React from "react";
 import Link from "next/link";
 import { Category } from "@/types/category";
 import { Card, CardBody, Skeleton } from "@nextui-org/react";
-import { categories } from "../api/categories";
 import ScrollingCategories from "./ScrollCategories";
+import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
+import { CATEGORIES } from "@/graphql/category";
 
-const Categories: FC = async () => {
-  const { props } = await categories();
+const Categories = () => {
+  const { data: categories, loading: loadingCategory } = useQuery(CATEGORIES, {
+    variables: {
+      filter: {
+        limit: 8,
+        skip: 0,
+        sort: -1,
+      },
+    }
+  });
 
-  if (!props) {
+  if (loadingCategory) {
     return (
       <div className="flex flex-wrap gap-3 mt-3">
         <Skeleton className="flex rounded-md w-full h-full" />
@@ -20,9 +29,10 @@ const Categories: FC = async () => {
     );
   }
 
+
   return (
     <div className="container mx-auto">
-      {props.categories.length > 0 && (
+      {categories?.storeOwnerCategories.length > 0 && (
         <>
           <div className="font-extrabold md:text-3xl text-center md:py-12 pb-4 mt-2 lg:mt-20">
             <div className="text-primary text-lg sm:text-lg lg:text-4xl">
@@ -34,7 +44,7 @@ const Categories: FC = async () => {
             gap="9px"
             className="hidden sm:hidden lg:flex"
           >
-            {props.categories?.map((cat: Category, idx: number) => {
+            {categories?.storeOwnerCategories?.map((cat: Category, idx: number) => {
               return (
                 <Link key={idx} href={`/products?search=&category=${cat.id}`}>
                   <Card
@@ -57,7 +67,7 @@ const Categories: FC = async () => {
             className="flex sm:flex lg:hidden mx-auto items-center justify-center place-items-center"
             isVertical
           >
-            {props.categories?.map((cat: Category, idx: number) => {
+            {categories?.storeOwnerCategories?.map((cat: Category, idx: number) => {
               return (
                 <Link key={idx} href={`/products?search=&category=${cat.id}`}>
                   <Card
