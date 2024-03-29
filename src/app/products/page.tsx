@@ -11,8 +11,8 @@ export default function ProductsPage() {
   const search = searchParams.get("search") || null;
   const cat = searchParams.get("category") || null;
   const sub = searchParams.get("sub_category") || null;
-  const page = (searchParams.get("page") as string) || null;
-  const size = (searchParams.get("size") as string) || null;
+  const page = (searchParams.get("page") as string) || "1";
+  const size = (searchParams.get("size") as string) || "4";
   const minPice = (searchParams.get("min_price") as string) || null;
   const maxPice = (searchParams.get("max_price") as string) || null;
   const sortParam = (searchParams.get("sort") as string) || null;
@@ -20,6 +20,18 @@ export default function ProductsPage() {
     ["price_low_to_high", "price_high_to_low"].includes(sortParam as string) ||
     null;
 
+  let skip =
+    parseInt(page as string) > 1
+      ? (parseInt(size as string) / 2) * parseInt(page as string) + 1
+      : 0;
+  let limit = parseInt(size as string);
+  let rangePrice = minPice
+    ? {
+        start: parseInt(minPice as string),
+        end: parseInt(maxPice as string),
+      }
+    : null;
+    
   const { data: products, loading: loadingProduct } = useQuery(
     GLOBAL_PRODUCT_FILTERING,
     {
@@ -27,19 +39,10 @@ export default function ProductsPage() {
         tagId: cat ? (sub ? [sub] : [cat]) : search ? [] : null,
         keyword: search ? search : search,
         status: price ? "price" : null,
-        range: minPice
-          ? {
-              start: parseInt(minPice as string),
-              end: parseInt(maxPice as string),
-            }
-          : null,
+        range: rangePrice,
         filter: {
-          skip: page
-            ? parseInt(page) > 1
-              ? parseInt(page) * parseInt(size as string)
-              : 0
-            : 0,
-          limit: size ? parseInt(size) : 16,
+          limit: limit,
+          skip: skip,
           sort: price ? (sortParam == "price_low_to_high" ? 1 : -1) : -1,
         },
       },

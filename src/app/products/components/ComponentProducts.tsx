@@ -16,6 +16,7 @@ export default function ComponentProducts({
   categories,
   products,
   total,
+  pages,
   loading,
 }: {
   categories: Category[];
@@ -24,13 +25,19 @@ export default function ComponentProducts({
   pages: number;
   loading: boolean;
 }) {
-  const offset = useSearchParams().get("page") ?? "1";
-  const limit = useSearchParams().get("size") ?? "16";
-  const query_search = useSearchParams().get("search") ?? null;
-  const sort = useSearchParams().get("sort") ?? null;
+  const searchParams = useSearchParams();
+
+  const offset = searchParams.get("page") ?? "1";
+  const limit = searchParams.get("size") ?? "4";
+  const query_search = searchParams.get("search") ?? null;
+  const cat = searchParams.get("category") || null;
+  const sub = searchParams.get("sub_category") || null;
+  const minPrice = (searchParams.get("min_price") as string) || null;
+  const maxPrice = (searchParams.get("max_price") as string) || null;
+  const sort = searchParams.get("sort") ?? null;
+
 
   const [page, setPage] = useState(parseInt(offset));
-  const [rowsPerPage, setRowsPerPage] = useState(parseInt(limit));
 
   const { isOpen, onOpenChange, onOpen } = useDisclosure();
 
@@ -118,9 +125,10 @@ export default function ComponentProducts({
     }
   };
 
-  let total_pages = Math.ceil(total / rowsPerPage) ? 1 : Math.ceil(total / rowsPerPage);
-  
+  let totalPages = Math.ceil(total / parseInt(limit as string)) ?? 1;
 
+  const pageFilter = (!query_search && !cat && !sub && !sort) ? ((maxPrice && minPrice) ? totalPages : pages) : totalPages;
+  
   return (
     <>
       <SidebarDrawer isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -138,16 +146,13 @@ export default function ComponentProducts({
         <main className="mt-4 h-full w-full overflow-visible px-1">
           {loading ? <div>loading...</div> : <ProductSortComponent />}
           <div className="w-full flex justify-end mt-8 space-x-2">
-            {loading ? (
-              <div>loading...</div>
-            ) : (
-              <PaginationProduct
-                page={page}
-                total={total_pages}
-                rowsPerPage={rowsPerPage}
-                setPage={setPage}
-              />
-            )}
+            {loading ? <div>loading...</div> :<PaginationProduct
+              page={page}
+              total={pageFilter == 0 ? 1 : pageFilter}
+              rowsPerPage={parseInt(limit as string)}
+              setPage={setPage}
+            /> }
+            
           </div>
         </main>
       </div>

@@ -41,10 +41,6 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
 
     const [selected, setSelected] = useState(sub);
 
-    // const { data, loading } = useQuery(CATEGORIES);
-
-    // if (loading) return null;
-
     return (
       <div
         ref={ref}
@@ -65,7 +61,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
           aria-label="Price Range"
           range={{
             min: 0,
-            defaultValue: [min ? parseInt(min) : 0, max ? parseInt(max) : 5000],
+            defaultValue: [min ? parseInt(min as string) : 0, max ? parseInt(max as string) : 5000],
             max: 5000,
             step: 100,
           }}
