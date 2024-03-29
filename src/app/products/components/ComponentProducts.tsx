@@ -4,13 +4,14 @@ import { Category } from "@/types/category";
 import ecommerceItems from "./EcommerceItems";
 import FiltersWrapper from "./FiltersWrapper";
 import SidebarDrawer from "./SidebarDrawer";
-import { useDisclosure } from "@nextui-org/react";
+import { useDisclosure, Image } from "@nextui-org/react";
 import MenuBar from "./MenuBar";
 import ProductCard from "@/app/components/ProductCard";
 import { ProductType } from "@/types/product";
 import { PaginationProduct } from "@/app/components/Pagination";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import ProductSkeleton from "@/app/components/ProductSkeleton";
 
 export default function ComponentProducts({
   categories,
@@ -35,7 +36,6 @@ export default function ComponentProducts({
   const minPrice = (searchParams.get("min_price") as string) || null;
   const maxPrice = (searchParams.get("max_price") as string) || null;
   const sort = searchParams.get("sort") ?? null;
-
 
   const [page, setPage] = useState(parseInt(offset));
 
@@ -127,8 +127,17 @@ export default function ComponentProducts({
 
   let totalPages = Math.ceil(total / parseInt(limit as string)) ?? 1;
 
-  const pageFilter = (!query_search && !cat && !sub && !sort) ? ((maxPrice && minPrice) ? totalPages : pages) : totalPages;
-  
+  const pageFilter =
+    !query_search && !cat && !sub && !sort
+      ? maxPrice && minPrice
+        ? totalPages
+        : pages
+      : totalPages;
+
+  if (loading) {
+    return <ProductSkeleton />;
+  }
+
   return (
     <>
       <SidebarDrawer isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -139,20 +148,43 @@ export default function ComponentProducts({
           scrollShadowClassName="pb-12"
           showActions={false}
           title="Filter by"
+          total={total}
         />
       </SidebarDrawer>
       <div className="w-full flex-1 flex-col">
         <MenuBar onOpen={onOpen} />
         <main className="mt-4 h-full w-full overflow-visible px-1">
-          {loading ? <div>loading...</div> : <ProductSortComponent />}
+          {products ? (
+            <div className="text-center">
+              <div className="flex justify-center items-center">
+                <Image
+                  isBlurred
+                  radius="none"
+                  alt="Empty"
+                  src="/images/empty-cart.svg"
+                  className="h-32 sm:h-32 lg:h-60"
+                />
+              </div>
+              <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                Whoops! No products.
+              </h1>
+              <p className="mt-6 text-base leading-7 text-gray-600">
+                Browse our amazing selection of products and fill your cart with
+                goodies!
+              </p>
+            </div>
+          ) : (
+            <ProductSortComponent />
+          )}
           <div className="w-full flex justify-end mt-8 space-x-2">
-            {loading ? <div>loading...</div> :<PaginationProduct
-              page={page}
-              total={pageFilter == 0 ? 1 : pageFilter}
-              rowsPerPage={parseInt(limit as string)}
-              setPage={setPage}
-            /> }
-            
+            {loading ? null : (
+              <PaginationProduct
+                page={page}
+                total={pageFilter == 0 ? 1 : pageFilter}
+                rowsPerPage={parseInt(limit as string)}
+                setPage={setPage}
+              />
+            )}
           </div>
         </main>
       </div>

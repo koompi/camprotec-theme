@@ -31,7 +31,7 @@ export default function ProductsPage() {
         end: parseInt(maxPice as string),
       }
     : null;
-    
+
   const { data: products, loading: loadingProduct } = useQuery(
     GLOBAL_PRODUCT_FILTERING,
     {

@@ -5,6 +5,7 @@ import {
   Accordion,
   AccordionItem,
   Button,
+  Chip,
   Divider,
   Radio,
   RadioGroup,
@@ -27,10 +28,14 @@ export type FiltersWrapperProps = React.HTMLAttributes<HTMLDivElement> & {
   showActions?: boolean;
   className?: string;
   scrollShadowClassName?: string;
+  total: number;
 };
 
 const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
-  ({ title = "Filters", showTitle = true, className, categories }, ref) => {
+  (
+    { title = "Filters", showTitle = true, className, categories, total },
+    ref
+  ) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const search = searchParams.get("search") || null;
@@ -61,7 +66,10 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
           aria-label="Price Range"
           range={{
             min: 0,
-            defaultValue: [min ? parseInt(min as string) : 0, max ? parseInt(max as string) : 5000],
+            defaultValue: [
+              min ? parseInt(min as string) : 0,
+              max ? parseInt(max as string) : 5000,
+            ],
             max: 5000,
             step: 100,
           }}
@@ -81,7 +89,12 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                     aria-label={cat?.title?.en}
                     title={
                       <span className="text-sm">
-                        {cat?.title?.en} {`(${cat?.children?.length})`}
+                        {cat?.title?.en}{" "}
+                        {/* <Chip
+                          size="sm"
+                          color="primary"
+                          variant="flat"
+                        >{`${cat?.children?.length}`}</Chip> */}
                       </span>
                     }
                     onPress={() => {
@@ -111,7 +124,10 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                     >
                       {cat?.children?.map((sub: SubCategory, idx: number) => (
                         <Radio key={idx} value={sub?.id}>
-                          {sub?.title?.en}
+                          {sub?.title?.en}{" "}
+                          {/* <Chip size="sm" variant="flat" color="primary">
+                            {total}
+                          </Chip> */}
                         </Radio>
                       ))}
                     </RadioGroup>
