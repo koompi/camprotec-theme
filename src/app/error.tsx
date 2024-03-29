@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import { Image, Button, Link } from "@nextui-org/react";
 
 export default function Error({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
@@ -14,11 +14,46 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="relative items-center block w-full h-screen p-6 bg-white border border-gray-100 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-800 dark:hover:bg-gray-700">
-      <div className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2 text-center">
-        <h2>Something went wrong!</h2>
-        <button onClick={() => reset()}>Try again</button>
+    <section className="grid min-h-dvh place-items-center px-6 py-24 sm:py-32 lg:px-8">
+      <div className="text-center">
+        <div className="flex justify-center items-center">
+          <Image
+            isBlurred
+            radius="none"
+            alt="Empty"
+            src="/images/empty-cart.svg"
+            className="h-32 sm:h-32 lg:h-60"
+          />
+        </div>
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          Whoops! Page is error.
+        </h1>
+        <p className="mt-6 text-base leading-7 text-gray-600">
+          Browse our amazing selection of products and fill your cart with
+          goodies!
+        </p>
+        <div className="mt-10 flex items-center justify-center gap-x-6">
+          <Button
+            variant="shadow"
+            color="primary"
+            as={Link}
+            href="/"
+            className="text-base-100"
+          >
+            Go back home
+          </Button>
+
+          <Button
+            variant="light"
+            color="primary"
+            as={Link}
+            href="/products"
+            endContent={<span aria-hidden="true">&rarr;</span>}
+          >
+            Products
+          </Button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

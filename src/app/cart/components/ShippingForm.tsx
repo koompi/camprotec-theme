@@ -35,8 +35,8 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
     const { data: address, loading: loadingAddress } =
       useQuery(CUSTOMER_ADDRESS);
 
-    if (loading || !data || !address || loadingAddress) {
-      return null;
+    if (loading || !data || loadingAddress) {
+      return "Loading...";
     }
 
     return (

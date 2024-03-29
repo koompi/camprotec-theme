@@ -48,10 +48,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   const [storeCreateCheckouts] = useMutation(CHECKOUT);
 
   // estimate price
-  const {
-    data: es_price,
-    refetch,
-  } = useQuery(ESTIMATE_PRICE, {
+  const { data: es_price, refetch } = useQuery(ESTIMATE_PRICE, {
     variables: {
       adr: {
         lat: toDelivery?.lat,
@@ -59,13 +56,13 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       },
     },
   });
-  
+
   //  function checkout
 
   const onSubmitCheckout = () => {
-    const totalPrice = (
-      price + es_price?.estimatePrice?.data?.price
-    ).toFixed(2);
+    const totalPrice = (price + es_price?.estimatePrice?.data?.price).toFixed(
+      2
+    );
 
     const newCart = cartItems?.map((item) => {
       return {
@@ -93,7 +90,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
           "Congratulation! you've been order the product(s) successfully!"
         );
         router.push("/orders");
-        cleanCartItems()        
+        cleanCartItems();
       })
       .catch((err) => {
         toast.error("Your transaction order is failed!");
@@ -475,9 +472,9 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   <dd className="font-semibold text-primary text-xl">
                     {formatToUSD(
                       price +
-                      (es_price?.estimatePrice?.data?.price
-                        ? es_price?.estimatePrice?.data?.price
-                        : 0)
+                        (es_price?.estimatePrice?.data?.price
+                          ? es_price?.estimatePrice?.data?.price
+                          : 0)
                     )}
                   </dd>
                 </div>

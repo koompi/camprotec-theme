@@ -1,4 +1,3 @@
-
 import { ApolloLink, HttpLink, concat } from "@apollo/client";
 import {
   NextSSRInMemoryCache,
@@ -47,11 +46,11 @@ const privateClient = () => {
     link:
       typeof window === "undefined"
         ? ApolloLink.from([
-          new SSRMultipartLink({
-            stripDefer: true,
-          }),
-          concat(authMiddleware, httpLink)
-        ])
+            new SSRMultipartLink({
+              stripDefer: true,
+            }),
+            concat(authMiddleware, httpLink),
+          ])
         : concat(authMiddleware, httpLink),
   });
 };

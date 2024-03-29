@@ -43,10 +43,7 @@ const NavbarLayout = () => {
         justify="center"
       >
         <NavbarItem>
-          <Link
-            className="text-default-500 font-semibold"
-            href={pathname == "/" ? "#" : "/"}
-          >
+          <Link className="text-default-500 font-semibold" href={"/"}>
             <p className="text-lg">Home</p>
           </Link>
         </NavbarItem>

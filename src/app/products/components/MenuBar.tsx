@@ -1,14 +1,11 @@
 "use client";
+
 import { Button, Select, SelectItem } from "@nextui-org/react";
 import { SearchProduct } from "./Search";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const MenuBar = ({
-  onOpen
-}: {
-  onOpen: () => void;
-}) => {
+const MenuBar = ({ onOpen }: { onOpen: () => void }) => {
   const router = useRouter();
   const search = useSearchParams();
   return (
@@ -36,10 +33,11 @@ const MenuBar = ({
             </Button>
             <div className="hidden items-center gap-1 md:flex">
               <SearchProduct
-                routeBack={`?search=&category=${search.get("cat") ? search.get("cat") : ""
-                  }&sub_category=${search.get("sub") ? search.get("sub") : ""
-                  }&sort=${search.get("sort") ? search.get("sort") : ""
-                  }`}
+                routeBack={`?search=&category=${
+                  search.get("category") ? search.get("category") : ""
+                }&sub_category=${
+                  search.get("sub_category") ? search.get("sub_category") : ""
+                }&sort=${search.get("sort") ? search.get("sort") : ""}`}
               />
             </div>
           </div>
@@ -59,9 +57,12 @@ const MenuBar = ({
             selectedKeys={[search.get("sort") as string]}
             onChange={(e) => {
               router.push(
-                `?search=${search.get("search") ? search.get("search") : ""
-                }&category=${search.get("cat") ? search.get("cat") : ""
-                }&sub_category=${search.get("sub") ? search.get("sub") : ""
+                `?search=${
+                  search.get("search") ? search.get("search") : ""
+                }&category=${
+                  search.get("category") ? search.get("category") : ""
+                }&sub_category=${
+                  search.get("sub_category") ? search.get("sub_category") : ""
                 }&sort=${e.target.value ? e.target.value : ""}`
               );
             }}

@@ -13,14 +13,14 @@ const Logo = () => {
       {value?.header?.logo ? (
         <Image
           width={100}
-          alt={value?.name}
+          alt={value?.globals?.name}
           src={value?.header?.logo}
-          fallbackSrc={value?.name}
+          fallbackSrc={value?.globals?.name}
           radius="none"
         />
       ) : (
         <h1 className="font-bold text-md sm:text-md lg:text-xl">
-          {value?.name}
+          {value?.globals?.name}
         </h1>
       )}
     </Link>

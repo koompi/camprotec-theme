@@ -58,10 +58,10 @@ const OrderSinglePage = () => {
             data?.storeOrder?.status === "START"
               ? 0
               : data?.storeOrder?.status === "PROCESS"
-              ? 1
-              : data?.storeOrder?.status === "DELIVERY"
-              ? 2
-              : 3
+                ? 1
+                : data?.storeOrder?.status === "DELIVERY"
+                  ? 2
+                  : 3
           }
           direction="horizontal"
         >
@@ -87,8 +87,6 @@ const OrderSinglePage = () => {
         <div className="my-3 flex flex-col gap-3">
           {data?.storeOrder?.carts?.map(
             (res: CheckoutCartType, idx: number) => {
-              console.log("res", res);
-
               return (
                 <div key={idx}>
                   <div className="flex justify-between items-center gap-x-6">

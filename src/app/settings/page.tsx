@@ -46,8 +46,6 @@ export default function Component() {
       avatar: !photo ? user?.avatar : photo,
     };
 
-    console.log("input", input);
-
     updateUser({ variables: { input } })
       .then(() => {
         toast.success("User has been updated!");

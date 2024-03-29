@@ -8,7 +8,13 @@ import { Button } from "@nextui-org/react";
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
 
-const LatestProducts = ({ products, loading }: { products: ProductType[], loading: boolean }) => {
+const LatestProducts = ({
+  products,
+  loading,
+}: {
+  products: ProductType[];
+  loading: boolean;
+}) => {
   if (loading) {
     return <ProductSkeleton />;
   }
