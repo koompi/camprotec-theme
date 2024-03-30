@@ -8,8 +8,10 @@ export const CATEGORIES = gql`
       title {
         en
       }
+      products
       children {
         id
+        products
         title {
           en
         }
@@ -22,7 +24,7 @@ export const SUB_CATEGORY_BY_ID = gql`
   query ($parentId: String!) {
     storeOwnerSubcategories(parentId: $parentId) {
       id
-      logo
+      products
       title {
         en
       }

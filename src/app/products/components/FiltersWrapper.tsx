@@ -90,11 +90,11 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                     title={
                       <span className="text-sm">
                         {cat?.title?.en}{" "}
-                        {/* <Chip
+                        <Chip
                           size="sm"
                           color="primary"
                           variant="flat"
-                        >{`${cat?.children?.length}`}</Chip> */}
+                        >{`${cat?.products}`}</Chip>
                       </span>
                     }
                     onPress={() => {
@@ -125,9 +125,9 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                       {cat?.children?.map((sub: SubCategory, idx: number) => (
                         <Radio key={idx} value={sub?.id}>
                           {sub?.title?.en}{" "}
-                          {/* <Chip size="sm" variant="flat" color="primary">
-                            {total}
-                          </Chip> */}
+                          <Chip size="sm" variant="flat" color="primary">
+                            {sub?.products}
+                          </Chip>
                         </Radio>
                       ))}
                     </RadioGroup>

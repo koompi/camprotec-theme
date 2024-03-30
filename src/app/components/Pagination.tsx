@@ -63,7 +63,12 @@ export const PaginationProduct = ({
         total={total}
         onChange={(p) => {
           setPage(p);
-          router.push(`?page=${p}&size=${rowsPerPage}`);
+          router.push(
+            `?search=${search ? search : ""}&category=${cat ? cat : ""
+            }&sub_category=${sub ? sub : ""}&sort=${sub ? sub : ""
+            }&min_price=${minPice ? minPice : ""}&max_price=${maxPice ? maxPice : ""
+            }&page=${p}&size=${rowsPerPage}`
+          );
         }}
       />
       <Button

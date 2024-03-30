@@ -211,7 +211,7 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
                   `?search=${search ? search : ""}&category=${
                     cat ? cat : ""
                   }&sub_category=${sub ? sub : ""}&sort=${
-                    sub ? sub : ""
+                    sortParam ? sortParam : ""
                   }&min_price=${price[0] ? price[0] : ""}&max_price=${
                     price[1] ? price[1] : ""
                   }`

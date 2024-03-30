@@ -12,7 +12,7 @@ export default function ProductsPage() {
   const cat = searchParams.get("category") || null;
   const sub = searchParams.get("sub_category") || null;
   const page = (searchParams.get("page") as string) || "1";
-  const size = (searchParams.get("size") as string) || "4";
+  const size = (searchParams.get("size") as string) || "16";
   const minPice = (searchParams.get("min_price") as string) || null;
   const maxPice = (searchParams.get("max_price") as string) || null;
   const sortParam = (searchParams.get("sort") as string) || null;
@@ -53,7 +53,7 @@ export default function ProductsPage() {
     variables: {
       filter: null,
     },
-  });
+  });  
 
   return (
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-3 sm:py-3 lg:py-9">
