@@ -6,14 +6,8 @@ import { useQuery } from "@apollo/client";
 import { GET_ORDERS } from "@/graphql/orders";
 import { OrdersType } from "@/types/checkout";
 import {
-  PaginationItemType,
-  PaginationItemRenderProps,
-  Pagination,
   Skeleton,
 } from "@nextui-org/react";
-import { Icon } from "@iconify/react";
-
-import { cn } from "@/utils/cn";
 import { useSearchParams } from "next/navigation";
 import { PaginationProduct } from "../components/Pagination";
 

@@ -12,7 +12,7 @@ const MenuBar = ({ onOpen }: { onOpen: () => void }) => {
   const selected = sort?.length > 0 ? sort : "all" ;
   return (
     <>
-      <header className="relative z-20 flex flex-col gap-2 rounded-medium bg-default-50 px-4 pb-3 pt-2 md:pt-3">
+      <header className="relative z-20 flex flex-col gap-2 rounded-medium lg:bg-default-50 xl:bg-default-50 lg:px-4 xl:px-4 px-0 pb-3 pt-2 md:pt-3">
         <div className="flex items-center gap-1 md:hidden md:gap-2">
           <h2 className="text-large font-medium">Find your products</h2>
         </div>

@@ -3,7 +3,7 @@
 const ENDPOINT =
   process.env.NEXT_PUBLIC_BACKEND ?? "https://backend.riverbase.org";
 
-const GRAPHQL_ENDPOINT = `${ENDPOINT}/graphql/public?store_id=${process.env.NEXT_PUBLIC_ID_STORE ?? "65a4a66033b9eda51233220c"}`;
+const GRAPHQL_ENDPOINT = `${ENDPOINT}/graphql/store?store_id=${process.env.NEXT_PUBLIC_ID_STORE ?? "65a4a66033b9eda51233220c"}`;
 
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";

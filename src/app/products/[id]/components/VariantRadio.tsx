@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {useRadio, VisuallyHidden, RadioProps, cn} from "@nextui-org/react";
 
@@ -5,14 +7,11 @@ export const VariantRadio = (props: RadioProps) => {
   const {
     Component,
     children,
-    isSelected,
     description,
     getBaseProps,
-    getWrapperProps,
     getInputProps,
     getLabelProps,
     getLabelWrapperProps,
-    getControlProps,
   } = useRadio(props);
 
   return (
@@ -27,9 +26,6 @@ export const VariantRadio = (props: RadioProps) => {
       <VisuallyHidden>
         <input {...getInputProps()} />
       </VisuallyHidden>
-      {/* <span {...getWrapperProps()}>
-        <span {...getControlProps()} />
-      </span> */}
       <div {...getLabelWrapperProps()}>
         {children && <span {...getLabelProps()}>{children}</span>}
         {description && (
