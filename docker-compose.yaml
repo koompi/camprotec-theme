@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   app:
     container_name: ${CONTAINER_NAME}
@@ -11,3 +9,4 @@ services:
       dockerfile: ${THEMEPATH}/Dockerfile
     ports:
       - ${PORT_NUMBER}:3000
+                     
