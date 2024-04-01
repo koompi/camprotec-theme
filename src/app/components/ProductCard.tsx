@@ -43,7 +43,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
         <CardBody className="px-3 pb-1">
           <Image
             className="aspect-[4/3] w-full h-full bg-repeat-round rounded-2xl mx-auto object-contain object-center bg-white"
-            src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${props?.product?.thumbnail}`}
+            src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${props?.product?.thumbnail}`}
             alt="product image"
             radius="none"
             isZoomed

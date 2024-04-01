@@ -67,7 +67,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                         alt="delivery logo"
                         src={
                           del?.logo
-                            ? `${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${del?.logo}`
+                            ? `${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${del?.logo}`
                             : "/images/shop.png"
                         }
                         radius="none"

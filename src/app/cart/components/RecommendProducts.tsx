@@ -90,7 +90,7 @@ const RecommendCard: FC<{ props: ProductType }> = ({ props }) => {
           alt={props.title}
           className="absolute inset-0 z-0 h-full w-full rounded-lg object-contain bg-white"
           height="100%"
-          src={`${process.env.NEXT_PUBLIC_IPFS ?? "https://ipfs.backnd.riverbase.org"}/api/ipfs?hash=${props?.thumbnail}`}
+          src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${props?.thumbnail}`}
         />
         <div className="absolute inset-x-4 bottom-4 z-10 flex items-center justify-between rounded-medium bg-background/10 p-8 backdrop-blur-md backdrop-saturate-150 dark:bg-default-100/50 ">
           <div className="flex flex-col gap-1">

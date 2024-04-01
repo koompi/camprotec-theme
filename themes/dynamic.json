@@ -7,7 +7,7 @@
   "banner": {
     "message": null,
     "title": null,
-    "desc": "It's time to indulge! Dive into a sea of savings on all your favorite items. Snag incredible deals you won't believe (...your eyes ). Don't miss out, this sale's hotter than sunshine! ☀️",
+    "desc": null,
     "promotes": [
       "https://img.freepik.com/premium-photo/shocked-beautiful-asian-woman-showing-red-sale-sign_8087-4000.jpg?w=2000",
       "https://img.freepik.com/premium-photo/young-smiling-asian-woman-hands-showing-sale-sign-hat-with-glasses-light-orange-background_2034-1998.jpg?w=2000",
@@ -16,7 +16,7 @@
   },
   "header": {
     "enable": true,
-    "logo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmTMN9f6uabNn9BYo6cZYLJ3pyuBvzpj9xgm2Vcxyt8Ady",
+    "logo": "https://drive.backend.riverbase.org/api/drive?hash=QmTMN9f6uabNn9BYo6cZYLJ3pyuBvzpj9xgm2Vcxyt8Ady",
     "name": "Camprtec"
   },
   "about": {
@@ -26,37 +26,37 @@
       {
         "name": "KEN SOVANN",
         "position": "General Manager",
-        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmWYjFHRvFqpsr9REvdEPCJAKZmpizJThGMujTe5jFGjne"
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmWYjFHRvFqpsr9REvdEPCJAKZmpizJThGMujTe5jFGjne"
       },
       {
         "name": "OENG SOKUNTHEARY",
         "position": "CEO",
-        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmcwG9aKRiacSgCvyKDRRCUPYV9nc9j5sGifZTBFvwPA1e"
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmcwG9aKRiacSgCvyKDRRCUPYV9nc9j5sGifZTBFvwPA1e"
       },
       {
         "name": "LOR LYPICH",
         "position": "Chief Software Development Officer ",
-        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmPvKcUR4FZzKXGEwrpTY7d1pmjMR7mhebNxN3JLG2CGRS"
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmPvKcUR4FZzKXGEwrpTY7d1pmjMR7mhebNxN3JLG2CGRS"
       },
       {
         "name": "SAMRITH RATANA",
         "position": "Programmer Officer",
-        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmeCL31QTkUAfVuQtVi4YhuqGs8SyRdjtCyuExCmGXxiyG"
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmeCL31QTkUAfVuQtVi4YhuqGs8SyRdjtCyuExCmGXxiyG"
       },
       {
         "name": "YOURK CHHUNLAY",
         "position": "IT Officer",
-        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmP39DpsDp3K7GLV6RurA8Hqs2HCbPRkv2T1ZGQunxuCzS"
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmP39DpsDp3K7GLV6RurA8Hqs2HCbPRkv2T1ZGQunxuCzS"
       },
       {
         "name": "BOU SOVANDY",
         "position": "Deputy of General Manager,  Chief Marketing Officer",
-        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmZfHSkRfLmnf9dHF9w4paFHmeYFNvrxVqLBy2tCw3v8pi"
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmZfHSkRfLmnf9dHF9w4paFHmeYFNvrxVqLBy2tCw3v8pi"
       },
       {
         "name": "VIN SUNHEANG",
         "position": "Chief Of Marketing Officer",
-        "photo": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmPwL4SzXxTGoZEc6aLDyuA7aSFpqek6vmy8RrUwhzwBiq"
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmPwL4SzXxTGoZEc6aLDyuA7aSFpqek6vmy8RrUwhzwBiq"
       }
     ]
   },
