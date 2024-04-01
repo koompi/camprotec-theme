@@ -17,6 +17,7 @@ pnpm-lock.yaml
 
 # production
 /build
+/themes
 
 # misc
 .DS_Store
