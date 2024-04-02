@@ -1,87 +1,90 @@
 {
-  "globals": {
-    "name": "Cam Professional",
-    "handle": "@cam",
-    "officialName": "CAM Professional Technology Co,Ltd"
-  },
-  "banner": {
-    "message": null,
-    "title": null,
-    "desc": null,
-    "promotes": [
-      "https://img.freepik.com/premium-photo/shocked-beautiful-asian-woman-showing-red-sale-sign_8087-4000.jpg?w=2000",
-      "https://img.freepik.com/premium-photo/young-smiling-asian-woman-hands-showing-sale-sign-hat-with-glasses-light-orange-background_2034-1998.jpg?w=2000",
-      "https://img.freepik.com/free-photo/asian-happy-female-woman-girl-holds-colourful-shopping-packages-standing-yellow-background-studio-shot-close-up-portrait-young-beautiful-attractive-girl-smiling-looking-camera-with-bags_609648-3029.jpg?t=st=1711290564~exp=1711294164~hmac=9196bcf32ec37e7f564749dba28e529c0d534bd324edac2d407acb4330527845&w=2000"
-    ]
-  },
-  "header": {
-    "enable": true,
-    "logo": "https://drive.backend.riverbase.org/api/drive?hash=QmTMN9f6uabNn9BYo6cZYLJ3pyuBvzpj9xgm2Vcxyt8Ady",
-    "name": "Camprtec"
-  },
   "about": {
-    "title": "About Us",
-    "description": "",
+    "description": "Here our core teams",
     "members": [
       {
-        "name": "KEN SOVANN",
-        "position": "General Manager",
-        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmWYjFHRvFqpsr9REvdEPCJAKZmpizJThGMujTe5jFGjne"
+        "name": "VAN Soklay",
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=CpYfwqCMqWavozflAjeGKGBpRxEtrDSYqgYpxnhFNwxhcA.image/jpeg",
+        "position": "CEO"
       },
       {
-        "name": "OENG SOKUNTHEARY",
-        "position": "CEO",
-        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmcwG9aKRiacSgCvyKDRRCUPYV9nc9j5sGifZTBFvwPA1e"
+        "name": "THENG Theara",
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=skNnTxQNvZMvsYOqwQr1laPRLIzPJZK1WoQrWLqomFjqXk.image/jpeg",
+        "position": "Business"
       },
       {
-        "name": "LOR LYPICH",
-        "position": "Chief Software Development Officer ",
-        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmPvKcUR4FZzKXGEwrpTY7d1pmjMR7mhebNxN3JLG2CGRS"
+        "name": "Cheangmai",
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=TZpecjWptaGOVsafUrqRZnBkgZXjuqDdvgrxZNdaaDvQgU.image/jpeg",
+        "position": "Business"
       },
       {
-        "name": "SAMRITH RATANA",
-        "position": "Programmer Officer",
-        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmeCL31QTkUAfVuQtVi4YhuqGs8SyRdjtCyuExCmGXxiyG"
+        "name": "Makara",
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=fzfjL1qKguCHnDJXQZPnJNQBqIscbZIDtebyiKGLZRuYxV.image/jpeg",
+        "position": "Business"
       },
       {
-        "name": "YOURK CHHUNLAY",
-        "position": "IT Officer",
-        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmP39DpsDp3K7GLV6RurA8Hqs2HCbPRkv2T1ZGQunxuCzS"
-      },
-      {
-        "name": "BOU SOVANDY",
-        "position": "Deputy of General Manager,  Chief Marketing Officer",
-        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmZfHSkRfLmnf9dHF9w4paFHmeYFNvrxVqLBy2tCw3v8pi"
-      },
-      {
-        "name": "VIN SUNHEANG",
-        "position": "Chief Of Marketing Officer",
-        "photo": "https://drive.backend.riverbase.org/api/drive?hash=QmPwL4SzXxTGoZEc6aLDyuA7aSFpqek6vmy8RrUwhzwBiq"
+        "name": "Samnag",
+        "photo": "https://drive.backend.riverbase.org/api/drive?hash=dszbGiEBBRJnKICLwnKfjKZhRloyMkzPASRaSSuIajRfIK.image/jpeg",
+        "position": "Developer"
       }
-    ]
+    ],
+    "title": "About us"
+  },
+  "banner": {
+    "desc": "",
+    "message": "",
+    "promotes": [
+      "QmSBRaR6DNr8GyH3MQfhvGryVdMPPHrrXfu1bvG58sfmmF.image/png",
+      "QmSvmDQmnwdTmpyzVUz7np9YCnmPSJn2RTCG6m3jJw6TSL.image/png",
+      "QmTYiVvRmGZe2dAopbYP2MxRyypgXewCD9WP7VKyVT1Ty4.image/png",
+      "QmUCZrT7ZNe4Sez3fHuFpGquE8myZomXvkUbQsfJVhDRQv.image/png"
+    ],
+    "title": ""
   },
   "footer": {
+    "contact": {
+      "address": "Phnom Penh",
+      "email": "office@gmail.com",
+      "phone": "010959402"
+    },
     "socials": [
       {
-        "name": "facebook",
         "enable": true,
-        "link": "https://www.facebook.com/CAMProfessionaltechnology"
+        "link": "https://www.riverbase.org",
+        "name": "facebook"
       },
-      { "name": "youtube", "enable": false, "link": "" },
-      { "name": "instagram", "enable": false, "link": "" },
       {
-        "name": "linkedin",
         "enable": true,
-        "link": "https://www.linkedin.com/company/camprotec"
+        "link": "https://www.riverbase.org",
+        "name": "youtube"
       },
-      { "name": "telegram", "enable": false, "link": "" },
-      { "name": "tiktok", "enable": false, "link": "" },
-      { "name": "twitter", "enable": false, "link": "" }
-    ],
-    "contact": {
-      "address": "#18C1, Sangkat Tuek Thlar, Khan Sen Sok, Phnom Penh, Cambodia",
-      "email": "info@camprotec.com.kh",
-      "phone": "023 884 789"
-    }
+      {
+        "enable": true,
+        "link": "https://www.riverbase.org",
+        "name": "instagram"
+      },
+      {
+        "enable": true,
+        "link": "https://www.riverbase.org",
+        "name": "linkedin"
+      },
+      {
+        "enable": true,
+        "link": "https://www.riverbase.org",
+        "name": "telegram"
+      },
+      { "enable": true, "link": "https://www.riverbase.org", "name": "tiktok" },
+      { "enable": true, "link": "https://www.riverbase.org", "name": "twitter" }
+    ]
+  },
+  "globals": {
+    "handle": "koompitesting",
+    "name": "Koompi",
+    "officialName": "KOOMPI Demo"
+  },
+  "header": {
+    "enable": "https://ipfs.backend.riverbase.org/api/ipfs?hash=QmQZDYWSqLxnqAmpP3hY9cALi6nZaR6Lky46PagW5vCWuR",
+    "logo": "https://drive.backend.riverbase.org/api/drive?hash=GzSWAGhixdJrbfaabqAkdSgHcY1MLVmXpLjSixIpEuqmjX.image/png",
+    "name": "Soklay Store"
   }
 }
