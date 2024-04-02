@@ -55,7 +55,7 @@ const Banner = () => {
           </p>
 
           <div className="mt-10 relative max-w-5xl mx-auto">
-            <Swiper
+            {value?.banner?.promotes?.length > 0 && <Swiper
               grabCursor={true}
               effect={"creative"}
               creativeEffect={{
@@ -76,12 +76,18 @@ const Banner = () => {
               centeredSlides={true}
               className="mySwiper3 rounded-xl bg-base-100 max-h-[28dvh] sm:max-h-[28dvh] lg:max-h-[50dvh]"
             >
-              {value?.banner?.promotes.map((item: string, idx: number) => (
+
+              {value?.banner?.promotes?.map((item: string, idx: number) => (
                 <SwiperSlide key={idx}>
-                  <Image alt="" src={`${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`} className="w-full " />
+                  <Image
+                    alt=""
+                    src={`${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`}
+                    className="w-full "
+                  />
                 </SwiperSlide>
               ))}
-            </Swiper>
+            </Swiper>}
+
 
             <div className="absolute bottom-12 -start-20 -z-[1] size-48 bg-gradient-to-b from-primary to-white p-px rounded-lg ">
               <div className="bg-white size-48 rounded-lg 0"></div>
