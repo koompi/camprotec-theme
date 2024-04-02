@@ -34,8 +34,8 @@ const LatestProducts = ({
               .map((res: ProductType, idx: number) => {
                 return <ProductCard key={idx} product={res} loading={false} />;
               })} */}
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} loading={false} />
+            {products?.map((p) => (
+              <ProductCard key={p?.id} product={p} loading={false} />
             ))}
           </div>
           <Button
