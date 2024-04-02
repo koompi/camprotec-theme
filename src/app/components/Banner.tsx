@@ -78,7 +78,7 @@ const Banner = () => {
             >
               {value?.banner?.promotes.map((item: string, idx: number) => (
                 <SwiperSlide key={idx}>
-                  <Image alt="" src={item} className="w-full " />
+                  <Image alt="" src={`${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`} className="w-full " />
                 </SwiperSlide>
               ))}
             </Swiper>
