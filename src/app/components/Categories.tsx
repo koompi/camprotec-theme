@@ -46,7 +46,7 @@ const Categories = () => {
           >
             {categories?.storeOwnerCategories?.map((cat: Category, idx: number) => {
               return (
-                <Link key={idx} href={`/products?search=&category=${cat.id}`}>
+                <Link key={idx} href={`/products?search=&category=${cat?.id}`}>
                   <Card
                     className="bg-primary/10 px-1 py-3 font-bold w-full min-w-72 h-full "
                     isHoverable
@@ -54,7 +54,7 @@ const Categories = () => {
                     shadow="none"
                   >
                     <CardBody className="text-center font-normal">
-                      {cat.title.en}
+                      {cat?.title?.en}
                     </CardBody>
                   </Card>
                 </Link>
@@ -69,7 +69,7 @@ const Categories = () => {
           >
             {categories?.storeOwnerCategories?.map((cat: Category, idx: number) => {
               return (
-                <Link key={idx} href={`/products?search=&category=${cat.id}`}>
+                <Link key={idx} href={`/products?search=&category=${cat?.id}`}>
                   <Card
                     className="bg-primary/10 px-1 py-3 font-bold w-full min-w-72 h-full "
                     isHoverable
@@ -77,7 +77,7 @@ const Categories = () => {
                     shadow="none"
                   >
                     <CardBody className="text-center font-normal">
-                      {cat.title.en}
+                      {cat?.title?.en}
                     </CardBody>
                   </Card>
                 </Link>
