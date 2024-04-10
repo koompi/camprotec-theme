@@ -58,4 +58,5 @@ export type OrdersType = {
   tax: string;
   totalDiscount: number;
   totalPrice: number;
+  refetch: Function;
 };

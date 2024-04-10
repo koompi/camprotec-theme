@@ -8,8 +8,28 @@ import { OrdersType } from "@/types/checkout";
 import dayjs from "dayjs";
 import { formatToUSD } from "@/utils/usd";
 import Link from "next/link";
+import { useMutation } from "@apollo/client";
+import { toast } from "sonner";
+import { CONFIRM_ORDER } from "@/graphql/mutation/order";
 
 const OrderCard: FC<OrdersType> = (props) => {
+  const [storeConfirmOrder] = useMutation(CONFIRM_ORDER);
+
+  const onConfirm = (id: string) => {
+    const variables = {
+      orderId: id,
+    };
+
+    storeConfirmOrder({ variables: variables })
+      .then((_) => {
+        toast.success("Thanks for your order! It's on its way.");
+        props.refetch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Card
       className="w-full border-2 border-spacing-1 border-dashed bg-none"
@@ -58,7 +78,7 @@ const OrderCard: FC<OrdersType> = (props) => {
                 alt={props.carts[0]?.product?.title}
                 src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${props?.carts[0]?.product?.thumbnail}`}
                 isBlurred
-                className=" border-2 h-16 w-16 sm:h-16 sm:w-16 lg:h-36 lg:w-36 object-cover object-center"
+                className="border-2 h-16 w-16 sm:h-16 sm:w-16 lg:h-36 lg:w-36 object-contain object-center"
               />
               <div className="flex flex-col gap-1">
                 <p className="font-medium text-medium line-clamp-1">
@@ -91,11 +111,11 @@ const OrderCard: FC<OrdersType> = (props) => {
               current={
                 props?.status === "START"
                   ? 0
-                  : props?.status === "PROCESS"
-                  ? 1
-                  : props?.status === "DELIVERY"
-                  ? 2
-                  : 3
+                  : props?.status === "CONFIRM"
+                    ? 1
+                    : props?.status === "PROCESS"
+                      ? 2
+                      : 3
               }
               direction="vertical"
               progressDot
@@ -107,9 +127,18 @@ const OrderCard: FC<OrdersType> = (props) => {
             </Steps>
           </div>
         </div>
-        {/* <Button size="lg" variant="light" color="primary">
-          Expected delivery on Monday 16 Jul 2024
-        </Button> */}
+        {props.status === "DELIVERY" && (
+          <Button
+            size="lg"
+            variant="flat"
+            color="primary"
+            onPress={() => {
+              onConfirm(props?.id);
+            }}
+          >
+            Confirm
+          </Button>
+        )}
       </CardBody>
     </Card>
   );

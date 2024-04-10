@@ -135,7 +135,7 @@ export function CartProvider(props: { children: JSX.Element }) {
         logout: logout,
       }}
     >
-      <Toaster position="top-right" closeButton />
+      <Toaster position="top-right" />
       {props.children}
     </CartContext.Provider>
   );

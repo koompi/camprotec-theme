@@ -32,14 +32,13 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
     };
 
     const { data, loading } = useQuery(DELIVERIES);
-    const { data: address, loading: loadingAddress } = useQuery(CUSTOMER_ADDRESS);
+    const { data: address, loading: loadingAddress } =
+      useQuery(CUSTOMER_ADDRESS);
 
     if (loading || !data || loadingAddress) {
       return "Loading...";
     }
 
-    console.log("logo", data);
-    
     return (
       <>
         <Accordion
@@ -66,11 +65,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                     icon={
                       <Image
                         alt="delivery logo"
-                        src={
-                          del?.logo
-                            ? del?.logo
-                            : "/images/shop.png"
-                        }
+                        src={del?.logo ? del?.logo : "/images/shop.png"}
                         radius="none"
                         className="w-12"
                       />
@@ -91,7 +86,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                 icon={
                   <Image
                     alt="delivery logo"
-                    src={""}
+                    src="/images/shop.png"
                     radius="none"
                     className="w-12"
                   />

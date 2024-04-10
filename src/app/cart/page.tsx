@@ -6,7 +6,6 @@ import { Toaster } from "sonner";
 import { GET_ALL_PRODUCTS } from "@/graphql/product";
 
 export default function CartPage() {
-
   const { data: products } = useQuery(GET_ALL_PRODUCTS, {
     variables: {
       filter: {
@@ -19,7 +18,7 @@ export default function CartPage() {
 
   return (
     <>
-      <Toaster position="top-right" closeButton />{" "}
+      <Toaster position="top-right" />{" "}
       <CheckoutComponent products={products?.storeProducts} />
     </>
   );

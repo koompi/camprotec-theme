@@ -1,4 +1,5 @@
 "use client";
+
 import { Button, Spinner, Image, Link, Divider } from "@nextui-org/react";
 import React from "react";
 import { Icon } from "@iconify/react";
@@ -10,10 +11,14 @@ import Steps from "@uiw/react-steps";
 import dayjs from "dayjs";
 import { formatToUSD } from "@/utils/usd";
 import { CheckoutCartType } from "@/types/checkout";
+import { CONFIRM_ORDER } from "@/graphql/mutation/order";
+import { toast } from "sonner";
+import { useMutation } from "@apollo/client";
 
 const OrderSinglePage = () => {
   const router = useRouter();
   const params = useParams();
+  const [storeConfirmOrder] = useMutation(CONFIRM_ORDER);
 
   const { data, loading, refetch } = useQuery(ORDER_BY_ID, {
     variables: {
@@ -25,6 +30,21 @@ const OrderSinglePage = () => {
       storeOrderId: params.id,
     },
   });
+
+  const onConfirm = (id: string) => {
+    const variables = {
+      orderId: id,
+    };
+
+    storeConfirmOrder({ variables: variables })
+      .then((_) => {
+        toast.success("Thanks for your order! It's on its way.");
+        refetch();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (loading || !data)
     return (
@@ -52,18 +72,58 @@ const OrderSinglePage = () => {
           View your order history and check the delivery status for items.
         </p>
       </div>
-      <div className="my-6">
+      <div className="hidden sm:hidden lg:inline">
         <Steps
           current={
             data?.storeOrder?.status === "START"
               ? 0
-              : data?.storeOrder?.status === "PROCESS"
+              : data?.storeOrder?.status === "CONFIRM"
                 ? 1
-                : data?.storeOrder?.status === "DELIVERY"
+                : data?.storeOrder?.status === "PROCESS"
                   ? 2
                   : 3
           }
           direction="horizontal"
+        >
+          <Steps.Step
+            title="Ordered"
+            description={`Place on ${dayjs(
+              data?.storeOrder.createdAt.split(" ")[0]
+            ).format("DD-MMM-YYYY")}`}
+            icon={<Icon icon="solar:box-bold-duotone" fontSize={36} />}
+          />
+          <Steps.Step
+            title="Confirmed"
+            description="The store confirmed your order"
+            icon={
+              <Icon icon="solar:verified-check-bold-duotone" fontSize={36} />
+            }
+          />
+          <Steps.Step
+            title="Out for delivery"
+            description="Shipping"
+            icon={<Icon icon="ic:twotone-delivery-dining" fontSize={36} />}
+          />
+          <Steps.Step
+            title="Delivered"
+            description="Items are delivered"
+            icon={<Icon icon="solar:bag-3-bold-duotone" fontSize={36} />}
+          />
+        </Steps>
+      </div>
+      <div className="inline sm:inline lg:hidden">
+        <Steps
+          current={
+            data?.storeOrder?.status === "START"
+              ? 0
+              : data?.storeOrder?.status === "CONFIRM"
+                ? 1
+                : data?.storeOrder?.status === "PROCESS"
+                  ? 2
+                  : 3
+          }
+          direction="horizontal"
+          progressDot
         >
           <Steps.Step
             title="Ordered"
@@ -75,10 +135,7 @@ const OrderSinglePage = () => {
             title="Confirmed"
             description="The store confirmed your order"
           />
-          <Steps.Step
-            title="Out for delivery"
-            description="Shipping with L192"
-          />
+          <Steps.Step title="Out for delivery" description="Shipping" />
           <Steps.Step title="Delivered" description="Items are delivered" />
         </Steps>
       </div>
@@ -95,7 +152,7 @@ const OrderSinglePage = () => {
                         alt={res?.product?.title}
                         src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${res?.product?.thumbnail}`}
                         isBlurred
-                        className=" border-2 h-16 w-16 object-cover object-center"
+                        className=" border-2 h-16 w-16 object-contain object-center"
                       />
                       <div className="flex flex-col gap-1">
                         <Link
@@ -169,6 +226,20 @@ const OrderSinglePage = () => {
           </div>
         </div>
       </div>
+      {data?.storeOrder?.status === "DELIVERY" && (
+        <Button
+          size="lg"
+          variant="flat"
+          color="primary"
+          fullWidth
+          className="mt-3"
+          onPress={() => {
+            onConfirm(data?.storeOrder?.id);
+          }}
+        >
+          Confirm
+        </Button>
+      )}
     </section>
   );
 };
