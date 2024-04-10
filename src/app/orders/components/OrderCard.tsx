@@ -106,26 +106,42 @@ const OrderCard: FC<OrdersType> = (props) => {
               ))}
             </div>
           )}
-          <div className="mt-3">
-            <Steps
-              current={
-                props?.status === "START"
-                  ? 0
-                  : props?.status === "CONFIRM"
-                    ? 1
-                    : props?.status === "PROCESS"
-                      ? 2
-                      : 3
-              }
-              direction="vertical"
-              progressDot
-            >
-              <Steps.Step title="Ordered" />
-              <Steps.Step title="Confirmed" />
-              <Steps.Step title="Out for delivery" />
-              <Steps.Step title="Delivered" />
-            </Steps>
-          </div>
+          {props?.status !== "CANCEL" ? (
+            <div className="mt-3">
+              <Steps
+                current={
+                  props?.status === "START"
+                    ? 0
+                    : props?.status === "CONFIRM"
+                      ? 1
+                      : props?.status === "PROCESS"
+                        ? 2
+                        : 3
+                }
+                direction="vertical"
+                progressDot
+              >
+                <Steps.Step title="Ordered" />
+                <Steps.Step title="Confirmed" />
+                <Steps.Step title="Out for delivery" />
+                <Steps.Step title="Delivered" />
+              </Steps>
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center text-center gap-3 items-center max-w-36">
+              <Icon
+                icon="solar:bag-cross-bold-duotone"
+                fontSize={45}
+                className="text-danger"
+              />
+              <div className="flex flex-col gap-1 text-danger">
+                <h1 className="text-md font-semibold">Orders Failed</h1>
+                <p className="text-base font-light">
+                  Your order has been canceled! Make a new order!
+                </p>
+              </div>
+            </div>
+          )}
         </div>
         {props.status === "DELIVERY" && (
           <Button

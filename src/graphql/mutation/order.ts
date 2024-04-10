@@ -5,3 +5,9 @@ export const CONFIRM_ORDER = gql`
     storeConfirmOrder(orderId: $orderId)
   }
 `;
+
+export const CANCEL_ORDER = gql`
+  mutation ($orderId: String!) {
+    storeCancelOrder(orderId: $orderId)
+  }
+`;
