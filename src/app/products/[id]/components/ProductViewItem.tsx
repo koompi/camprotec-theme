@@ -1,16 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Image, RadioGroup, ScrollShadow } from "@nextui-org/react";
+import {
+  BreadcrumbItem,
+  Breadcrumbs,
+  Button,
+  Image,
+  RadioGroup,
+  ScrollShadow,
+} from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { cn } from "@/utils/cn";
-
 import RatingRadioGroup from "./RatingRadioGroup";
 import { Attribute, ItemProduct, ProductType, Variants } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
 import { useCart } from "@/context/useCart";
 import { VariantRadio } from "./VariantRadio";
 import { LexicalReader } from "@/editor/LexicalReader";
+import { useSearchParams } from "next/navigation";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -37,6 +44,10 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     },
     ref
   ) => {
+    const searchParams = useSearchParams();
+    const search = searchParams.get("search") || null;
+    const cat = searchParams.get("category") || null;
+    const sortParam = searchParams.get("sort") || null;
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
     const { addToCart } = useCart();
 
@@ -132,6 +143,27 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       >
         {/* Product Gallery */}
         <div className="relative col-span-2 h-full w-full flex-none">
+          <Breadcrumbs size="lg" className="my-3">
+            <BreadcrumbItem href="/products">Products</BreadcrumbItem>
+            <BreadcrumbItem
+              href={`/products/?search${search ? search : ""}=&category=${
+                props?.category?.id ? props?.category?.id : ""
+              }&sort=${sortParam ? sortParam : ""}`}
+            >
+              {props?.category?.title?.en}
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              href={`/products/?search${search ? search : ""}=&category=${
+                props?.category?.id ? props?.category?.id : ""
+              }&sub_category=${props?.subcategories[0]?.id ? props?.subcategories[0]?.id : ""}&sort=${
+                sortParam ? sortParam : ""
+              }`}
+            >
+              {props?.subcategories[0]?.title?.en}
+            </BreadcrumbItem>
+            <BreadcrumbItem>{title}</BreadcrumbItem>
+          </Breadcrumbs>
+
           {/* Main Image */}
           <div className="aspect-3/4">
             <div className="bg-base-100 rounded-lg flex justify-center items-center border px-0">
@@ -169,7 +201,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               </button>
             ))}
           </ScrollShadow>
-
           <div className="mt-16 hidden sm:hidden lg:block">
             <h2 className="text-xl font-semibold mb-3">Details</h2>
             <p className="text-medium text-default-500">
@@ -283,12 +314,17 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               <RadioGroup label="Variants" defaultValue={props.id}>
                 <div className="grid grid-cols-2 gap-2">
                   {variants.length > 0 &&
-                    cartVariants.map((item: Variants, idx: number) => {                
+                    cartVariants.map((item: Variants, idx: number) => {
                       return (
                         <VariantRadio
                           key={idx}
                           value={item?.id ? item.id : props.id}
-                          onChange={(_) => setVariant({...item, "default": item.id ? false : true})}
+                          onChange={(_) =>
+                            setVariant({
+                              ...item,
+                              default: item.id ? false : true,
+                            })
+                          }
                         >
                           <div className="flex items-center space-x-4">
                             <Image
@@ -341,7 +377,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                   currency: "USD",
                   preview: variant ? variant.previews : props?.thumbnail,
                   productId: props?.id,
-                  variantId: variant.id ? variant.id : null
+                  variantId: variant.id ? variant.id : null,
                 };
 
                 addToCart(product);

@@ -17,6 +17,24 @@ export const GET_PRODUCT = gql`
       status
       detail
       currency
+      category {
+        id
+        title {
+          en
+        }
+        children {
+          id
+          title {
+            en
+          }
+        }
+      }
+      subcategories {
+        id
+        title {
+          en
+        }
+      }
       variants {
         id
         default

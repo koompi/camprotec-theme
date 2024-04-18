@@ -1,3 +1,5 @@
+import { Category, SubCategory } from "./category";
+
 export interface Attribute {
   type: string;
   option: string;
@@ -43,6 +45,8 @@ export type ProductType = {
   desc: string;
   detail: string;
   createdAt: string;
+  category: Category;
+  subcategories: SubCategory[];
 };
 
 // dynamic types
