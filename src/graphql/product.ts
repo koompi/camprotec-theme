@@ -17,6 +17,10 @@ export const GET_PRODUCT = gql`
       status
       detail
       currency
+      stocks {
+        amount
+        status
+      }
       category {
         id
         title {

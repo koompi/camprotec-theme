@@ -15,6 +15,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
 import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
+import { toast } from "sonner";
 
 const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
   const { addToCart } = useCart();
@@ -100,7 +101,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     const product: ItemProduct = {
                       id: props?.product.id,
                       name: props?.product?.title,
@@ -108,7 +109,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                         id: null,
                         label: "Default",
                         default: true,
-                        previews:props?.product.thumbnail,
+                        previews: props?.product.thumbnail,
                         price: props?.product.price,
                         attributes: [],
                       },
@@ -116,10 +117,11 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                       currency: "USD",
                       preview: props?.product.thumbnail,
                       productId: props?.product.id,
-                      variantId: null
+                      variantId: null,
                     };
-    
+
                     handleAddToCart(product);
+                    toast.success("The product is added into the cart!");
                   }}
                 >
                   Add to Cart

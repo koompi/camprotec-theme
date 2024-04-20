@@ -6,6 +6,7 @@ import {
   Breadcrumbs,
   Button,
   Image,
+  Input,
   RadioGroup,
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
@@ -27,6 +28,7 @@ import "swiper/css/thumbs";
 // zoom image
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+import { toast } from "sonner";
 
 export type ProductViewInfoProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -48,6 +50,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       rating,
       variants,
       detail,
+      stocks,
       className,
       ...props
     },
@@ -148,8 +151,8 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       <>
         <Breadcrumbs
           size="lg"
-          className="my-1"
-          variant="solid"
+          className="my-3"
+          variant="light"
           color="primary"
           radius="lg"
         >
@@ -192,7 +195,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 delay: 90000,
                 disableOnInteraction: false,
               }}
-              className="swiper-navigator swiperSlider2 bg-base-100 flex justify-center items-center border px-0 rounded-3xl "
+              className="swiper-navigator swiperSlider2 bg-base-100 flex justify-center items-center px-0 rounded-3xl border "
             >
               {previews.map((preview, index) => (
                 <SwiperSlide key={index} className="swiperSlider2">
@@ -260,16 +263,59 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           </div>
 
           {/* Product Info */}
-          <div className="sticky top-28 col-span-1 flex flex-col border py-6 px-3 rounded-3xl">
+          <div className="relative sm:relative lg:sticky top-3 sm:top-3 lg:top-28 col-span-1 flex flex-col border py-6 px-3 rounded-3xl">
             <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
             <h2 className="sr-only">Product information</h2>
             <div className="my-2 flex items-center gap-2">
-              <RatingRadioGroup hideStarsText size="sm" value={`${rating}`} />
+              <RatingRadioGroup
+                hideStarsText
+                size="sm"
+                value={`${rating <= 0 ? "4" : rating}`}
+              />
               <p>Reviews</p>
             </div>
-            <p className="text-2xl text-primary font-bold tracking-tight">
+            <p className="text-5xl text-primary font-bold tracking-tight">
               {formatToUSD(parseInt(variant.price.toString()))}
             </p>
+            <div className="flex flex-col gap-1 my-4">
+              <div className="flex items-center gap-2 text-default-700">
+                <Icon icon="solar:box-line-duotone" fontSize={24} />
+                {stocks?.status === "IN-STOCK" && (
+                  <p className="text-small font-semibold text-primary">
+                    {stocks?.status}
+                  </p>
+                )}
+                {stocks?.status === "LOWER" && (
+                  <p className="text-small font-semibold text-warning">
+                    {stocks?.status}
+                  </p>
+                )}
+                {stocks?.status === "OUT-OF-STOCK" && (
+                  <p className="text-small font-semibold text-danger">
+                    {stocks?.status}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-default-700">
+                <Icon icon="carbon:delivery" fontSize={24} />
+
+                <p className="text-small font-medium">
+                  Delivery approx between{" "}
+                  <span className="font-semibold text-primary">
+                    Monday and Friday
+                  </span>
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-default-700">
+                <Icon icon="solar:delivery-line-duotone" fontSize={24} />
+                <p className="text-small font-medium">
+                  Shipping Tax:{" "}
+                  <span className="text-primary font-semibold">
+                    Base on delivery options
+                  </span>
+                </p>
+              </div>
+            </div>
             <div className="mt-4">
               <p className="sr-only">Product desc</p>
               <p className="line-clamp-3 text-medium text-default-500">
@@ -278,10 +324,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
             </div>
 
             <div className="mt-6 flex flex-col gap-1">
-              <div className="mb-4 flex items-center gap-2 text-default-700">
-                <Icon icon="carbon:delivery" width={24} />
-                <p className="text-small font-medium">30 days return</p>
-              </div>
               {/* <>
               {
                 variants.length > 0 &&
@@ -412,7 +454,16 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               )}
             </div>
 
-            <div className="mt-12">
+            <div className="mt-12 flex gap-3">
+              <Input
+                variant="bordered"
+                defaultValue="1"
+                min={1}
+                color="primary"
+                size="lg"
+                type="number"
+                className="w-1/4"
+              />
               <Button
                 fullWidth
                 className="text-medium font-medium text-base-100"
@@ -437,17 +488,18 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                   };
 
                   addToCart(product);
+                  toast.success("The product is added into the cart!");
                 }}
               >
                 Add to cart
               </Button>
             </div>
-            <div className="mt-16 block sm:block lg:hidden">
-              <h2 className="text-xl font-semibold mb-3">Details</h2>
-              <p className="text-medium text-default-500">
-                <LexicalReader data={detail} />
-              </p>
-            </div>
+          </div>
+          <div className="mt-16 block sm:block lg:hidden">
+            <h2 className="text-xl font-semibold mb-3">Details</h2>
+            <p className="text-medium text-default-500">
+              <LexicalReader data={detail} />
+            </p>
           </div>
         </div>
       </>

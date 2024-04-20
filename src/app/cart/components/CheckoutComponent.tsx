@@ -80,11 +80,11 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
         totalPrice: parseFloat(totalPrice.toString()),
       },
       deliveryId: ship == "PERSONAL" ? null : ship,
-      addressId: toDelivery?.id, 
+      addressId: toDelivery?.id,
       express: ship == "PERSONAL" ? "PERSONAL" : "L192",
       payment: "CASH",
     };
-    
+
     storeCreateCheckouts({ variables: variables })
       .then((_) => {
         toast.success(
@@ -165,7 +165,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
     const paymentRadioClasses = {
       wrapper: "group-data-[selected=true]:border-foreground",
       base: "data-[selected=true]:border-foreground",
-      control: "bg-foreground",
+      control: "bg-primary",
     };
 
     switch (page) {
@@ -374,7 +374,8 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
               {user ? (
                 <Button
                   fullWidth
-                  className="mt-8 bg-foreground text-background"
+                  color="primary"
+                  className="mt-8 text-background"
                   size="lg"
                   onPress={() => {
                     if (page === 2) {
@@ -391,7 +392,8 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   as={Link}
                   href="https://backend.riverbase.org/sso/store"
                   fullWidth
-                  className="mt-8 bg-foreground text-background"
+                  color="primary"
+                  className="mt-8 text-background"
                   size="lg"
                 >
                   Login
@@ -404,7 +406,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
               <p className="text-small font-medium">Review</p>
               <Progress
                 classNames={{
-                  indicator: "!bg-foreground",
+                  indicator: "!bg-primary",
                 }}
                 value={page >= 0 ? 100 : 0}
               />
@@ -413,7 +415,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
               <p className="text-small font-medium">Delivery</p>
               <Progress
                 classNames={{
-                  indicator: "!bg-foreground",
+                  indicator: "!bg-primary",
                 }}
                 value={page >= 1 ? 100 : 0}
               />
@@ -422,7 +424,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
               <p className="text-small font-medium">Payment</p>
               <Progress
                 classNames={{
-                  indicator: "!bg-foreground",
+                  indicator: "!bg-primary",
                 }}
                 value={page >= 2 ? 100 : 0}
               />

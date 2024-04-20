@@ -27,6 +27,11 @@ export type ItemProduct = {
   variantId: string | null;
 };
 
+export type StockType = {
+  amount: number;
+  status: string;
+};
+
 export type ProductType = {
   id: string;
   status: boolean;
@@ -46,6 +51,7 @@ export type ProductType = {
   detail: string;
   createdAt: string;
   category: Category;
+  stocks: StockType;
   subcategories: SubCategory[];
 };
 
