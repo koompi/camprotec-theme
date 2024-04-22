@@ -455,7 +455,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
             </div>
 
             <div className="mt-12 flex gap-3">
-              <Input
+              {/* <Input
                 variant="bordered"
                 defaultValue="1"
                 min={1}
@@ -463,7 +463,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 size="lg"
                 type="number"
                 className="w-1/4"
-              />
+              /> */}
               <Button
                 fullWidth
                 className="text-medium font-medium text-base-100"

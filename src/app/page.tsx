@@ -26,9 +26,9 @@ export default function Home() {
       <section className="bg-gradient-to-r from-primary/10">
         <Banner />
       </section>
-      <section id="categories" className="pt-8">
+      {/* <section id="categories" className="pt-8">
         <Categories />
-      </section>
+      </section> */}
       <section id="products" className="pt-8">
         <LatestProducts
           products={products?.storeProducts}

@@ -52,15 +52,14 @@ const NavbarLayout = () => {
             <p className="text-lg">Products</p>
           </Link>
         </NavbarItem>
-        <NavbarItem>
+        {/* <NavbarItem>
           <Link
             className="text-default-500 font-semibold"
             href={pathname == "/" ? "#categories" : "/#categories"}
-            // size="sm"
           >
             <p className="text-lg">Categories</p>
           </Link>
-        </NavbarItem>
+        </NavbarItem> */}
         <NavbarItem>
           <Link
             className="text-default-500 font-semibold"
@@ -124,7 +123,7 @@ const NavbarLayout = () => {
                     <Icon icon="solar:streets-map-point-broken" fontSize={21} />
                   }
                 >
-                  Shipping
+                  My Locations
                 </DropdownItem>
                 <DropdownItem
                   as={Link}
