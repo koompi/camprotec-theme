@@ -19,7 +19,7 @@ const SidebarDrawer = React.forwardRef<HTMLDivElement, ModalProps>(
         classNames={{
           ...classNames,
           wrapper: cn(
-            "!items-start !justify-start max-w-[288px]",
+            "!items-start !justify-start max-w-[350px]",
             classNames?.wrapper
           ),
           base: cn(
@@ -59,7 +59,7 @@ const SidebarDrawer = React.forwardRef<HTMLDivElement, ModalProps>(
       </Modal>
       <div
         className={cn(
-          "hidden h-full max-w-[288px] overflow-auto sm:flex hide-scroll-bar sticky top-20",
+          "hidden h-full max-w-[350px] overflow-auto sm:flex hide-scroll-bar sticky top-20",
           className
         )}
       >

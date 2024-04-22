@@ -26,11 +26,22 @@ const config: Config = {
           from: { transform: "translateY(0)" },
           to: { transform: "translateY(calc(-50% - var(--gap)/2))" },
         },
+        text: {
+          "0%, 100%": {
+            "background-size": "200% 200%",
+            "background-position": "left center",
+          },
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right center",
+          },
+        },
       },
       animation: {
         "scrolling-banner": "scrolling-banner var(--duration) linear infinite",
         "scrolling-banner-vertical":
           "scrolling-banner-vertical var(--duration) linear infinite",
+        text: "text 5s ease infinite",
       },
       ...theme.background,
     },

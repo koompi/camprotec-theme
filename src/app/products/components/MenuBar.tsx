@@ -9,7 +9,7 @@ const MenuBar = ({ onOpen }: { onOpen: () => void }) => {
   const router = useRouter();
   const search = useSearchParams();
   const sort = search.get("sort") as string;
-  const selected = sort?.length > 0 ? sort : "all" ;
+  const selected = sort?.length > 0 ? sort : "all";
   return (
     <>
       <header className="relative z-20 flex flex-col gap-2 rounded-medium lg:bg-default-50 xl:bg-default-50 lg:px-4 xl:px-4 px-0 pb-3 pt-2 md:pt-3">
@@ -58,8 +58,8 @@ const MenuBar = ({ onOpen }: { onOpen: () => void }) => {
             variant="bordered"
             selectedKeys={[selected]}
             onChange={(e) => {
-              if(e.target.value == "all") {
-                return router.push("/products")
+              if (e.target.value == "all") {
+                return router.push("/products");
               }
               router.push(
                 `?search=${
@@ -72,9 +72,7 @@ const MenuBar = ({ onOpen }: { onOpen: () => void }) => {
               );
             }}
           >
-            <SelectItem key="all">
-              All Product
-            </SelectItem>
+            <SelectItem key="all">All Product</SelectItem>
             <SelectItem key="brand" value="brand">
               Brand
             </SelectItem>

@@ -18,7 +18,7 @@ export default function CartPage() {
 
   return (
     <>
-      <Toaster position="top-right" />{" "}
+      {/* <Toaster position="top-right" />{" "} */}
       <CheckoutComponent products={products?.storeProducts} />
     </>
   );
