@@ -87,6 +87,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                   <AccordionItem
                     key={cat?.id}
                     aria-label={cat?.title?.en}
+                    isCompact
                     title={
                       <span className="text-sm">
                         {cat?.title?.en}{" "}

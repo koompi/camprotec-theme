@@ -49,41 +49,43 @@ const Banner = () => {
           </div>
 
           <p className="mx-auto mt-12 max-w-xl text-lg text-slate-700 leading-7">
-            {value?.banner?.desc
-              ? value?.banner?.desc
-              : "It's time to indulge! Dive into a sea of savings on all your favorite items. Snag incredible deals you won't believe (...your eyes ). Don't miss out, this sale's hotter than sunshine! ☀️"}
+            {value?.banner?.desc ? value?.banner?.desc : null}
           </p>
 
           <div className="mt-10 relative max-w-5xl mx-auto">
-            {value?.banner?.promotes?.length > 0 && <Swiper
-              grabCursor={true}
-              effect={"creative"}
-              creativeEffect={{
-                prev: {
-                  shadow: true,
-                  translate: ["-20%", 0, -1],
-                },
-                next: {
-                  translate: ["100%", 0, 0],
-                },
-              }}
-              autoplay={{
-                delay: 5000,
-                disableOnInteraction: false,
-              }}
-              loop={true}
-              modules={[Autoplay, EffectCreative]}
-              centeredSlides={true}
-              className="mySwiper3 rounded-xl bg-base-100 max-h-[28dvh] sm:max-h-[28dvh] lg:max-h-[50dvh]"
-            >
-
-              {value?.banner?.promotes?.map((item: string, idx: number) => (
-                <SwiperSlide key={idx}>
-                  <Image alt="" src={`${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`} className="w-full " />
-                </SwiperSlide>
-              ))}
-            </Swiper>}
-
+            {value?.banner?.promotes?.length > 0 && (
+              <Swiper
+                grabCursor={true}
+                effect={"creative"}
+                creativeEffect={{
+                  prev: {
+                    shadow: true,
+                    translate: ["-20%", 0, -1],
+                  },
+                  next: {
+                    translate: ["100%", 0, 0],
+                  },
+                }}
+                autoplay={{
+                  delay: 5000,
+                  disableOnInteraction: false,
+                }}
+                loop={true}
+                modules={[Autoplay, EffectCreative]}
+                centeredSlides={true}
+                className="mySwiper3 rounded-xl bg-base-100 max-h-[28dvh] sm:max-h-[28dvh] lg:max-h-[50dvh]"
+              >
+                {value?.banner?.promotes?.map((item: string, idx: number) => (
+                  <SwiperSlide key={idx}>
+                    <Image
+                      alt=""
+                      src={`${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`}
+                      className="w-full bg-white h-[28dvh] sm:h-[28dvh] lg:h-[50dvh] object-contain object-center"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
 
             <div className="absolute bottom-12 -start-20 -z-[1] size-48 bg-gradient-to-b from-primary to-white p-px rounded-lg ">
               <div className="bg-white size-48 rounded-lg 0"></div>
