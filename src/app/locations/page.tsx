@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 import MyLocation from "./components/MyLocation";
 import { CUSTOMER_ADDRESS } from "@/graphql/delivery";
 import { useQuery } from "@apollo/client";
-import { CustomerAdressType } from "@/types/checkout";
+import { CustomerAddressType } from "@/types/checkout";
 
 export default function Page() {
   const { data, loading } = useQuery(CUSTOMER_ADDRESS);
@@ -19,7 +19,7 @@ export default function Page() {
     <section className="container mx-auto px-6 py-12">
       <h1 className="text-xl font-medium">My Locations</h1>
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-3 mt-3">
-        {data?.storeAddress?.map((ad: CustomerAdressType, idx: number) => {
+        {data?.storeAddress?.map((ad: CustomerAddressType, idx: number) => {
           return (
             <MyLocation
               key={idx}
