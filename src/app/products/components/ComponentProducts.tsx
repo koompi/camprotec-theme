@@ -39,7 +39,7 @@ export default function ComponentProducts({
 
   const [page, setPage] = useState(parseInt(offset));
 
-  const { isOpen, onOpenChange, onOpen } = useDisclosure();
+  const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
 
   const mostPopularSort = (): ProductType[] => {
     if (!products) {
@@ -145,38 +145,38 @@ export default function ComponentProducts({
           showActions={false}
           title="Filter by"
           total={total}
+          onCloseBase={onClose}
         />
       </SidebarDrawer>
       <div className="w-full flex-1 flex-col">
         <MenuBar onOpen={onOpen} />
         <main className="mt-4 h-full w-full overflow-visible px-1">
-
-          {loading ? <ProductSkeleton /> :
-
-            products?.length <= 0 || !products ? (
-              <div className="text-center h-[60vh] flex items-center justify-center">
-                <div>
-                  <div className="flex justify-center items-center">
-                    <Image
-                      isBlurred
-                      radius="none"
-                      alt="Empty"
-                      src="/images/empty-cart.svg"
-                      className="h-32 sm:h-32 lg:h-60"
-                    />
-                  </div>
-                  <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-                    Whoops! No products.
-                  </h1>
-                  <p className="mt-6 text-base leading-7 text-gray-600">
-                    Browse our amazing selection of products and fill your cart with
-                    goodies!
-                  </p>
+          {loading ? (
+            <ProductSkeleton />
+          ) : products?.length <= 0 || !products ? (
+            <div className="text-center h-[60vh] flex items-center justify-center">
+              <div>
+                <div className="flex justify-center items-center">
+                  <Image
+                    isBlurred
+                    radius="none"
+                    alt="Empty"
+                    src="/images/empty-cart.svg"
+                    className="h-32 sm:h-32 lg:h-60"
+                  />
                 </div>
+                <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                  Whoops! No products.
+                </h1>
+                <p className="mt-6 text-base leading-7 text-gray-600">
+                  Browse our amazing selection of products and fill your cart
+                  with goodies!
+                </p>
               </div>
-            ) : (
-              <ProductSortComponent />
-            )}
+            </div>
+          ) : (
+            <ProductSortComponent />
+          )}
           <div className="w-full flex justify-end mt-8 space-x-2">
             {loading ? null : (
               <PaginationProduct

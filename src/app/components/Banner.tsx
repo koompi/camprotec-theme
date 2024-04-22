@@ -13,7 +13,7 @@ const Banner = () => {
     <>
       <div className="relative overflow-hidden">
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <Link
+          {/* <Link
             href="/products"
             className=" border border-primary/30 rounded-2xl py-1 px-4 text-slate-500 text-sm mb-5 hover:scale-105 transition duration-300 ease-in-out [font-size:_clamp(0.1em,2vw,0.9em)]"
           >
@@ -25,7 +25,7 @@ const Banner = () => {
                 ? value?.globals?.officialName
                 : value?.globals?.name}
             </span>
-          </Link>
+          </Link> */}
           <div className="text-center mx-auto font-display font-bold tracking-normal text-slate-900 [font-size:_clamp(1.25em,3vw,4em)]">
             {value?.banner?.title
               ? value?.banner?.title
