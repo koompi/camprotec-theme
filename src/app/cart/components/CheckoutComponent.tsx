@@ -28,7 +28,7 @@ import { useCart } from "@/context/useCart";
 import { useAuth } from "@/context/useAuth";
 import { ProductType } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
-import { CustomerAdressType } from "@/types/checkout";
+import { CustomerAddressType } from "@/types/checkout";
 import { useQuery } from "@apollo/client";
 import { ESTIMATE_PRICE } from "@/graphql/delivery";
 import { useMutation } from "@apollo/client";
@@ -43,7 +43,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   const { cartItems, cleanCartItems, loading } = useCart();
   const [price, setPrice] = useState(0);
   const [ship, setShip] = useState<string>("");
-  const [toDelivery, setToDelivery] = useState<CustomerAdressType | null>();
+  const [toDelivery, setToDelivery] = useState<CustomerAddressType | null>();
 
   const [storeCreateCheckouts] = useMutation(CHECKOUT);
 
@@ -79,11 +79,12 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
         currency: "USD",
         totalPrice: parseFloat(totalPrice.toString()),
       },
-      deliveryId: ship,
-      addressId: toDelivery?.id,
+      deliveryId: ship == "PERSONAL" ? null : ship,
+      addressId: toDelivery?.id, 
+      express: ship == "PERSONAL" ? "PERSONAL" : "L192",
       payment: "CASH",
     };
-
+    
     storeCreateCheckouts({ variables: variables })
       .then((_) => {
         toast.success(

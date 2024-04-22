@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import { useQuery } from "@apollo/client";
 import { CUSTOMER_ADDRESS, DELIVERIES } from "@/graphql/delivery";
-import { CustomerAdressType, DeliveryType } from "@/types/checkout";
+import { CustomerAddressType, DeliveryType } from "@/types/checkout";
 import CustomRadio from "./CustomRadio";
 
 export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -19,7 +19,7 @@ export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
   hideTitle?: boolean;
   ship: string;
   setShip: Function;
-  toDelivery: CustomerAdressType | null;
+  toDelivery: CustomerAddressType | null;
   setToDelivery: Function;
 };
 
@@ -32,13 +32,14 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
     };
 
     const { data, loading } = useQuery(DELIVERIES);
-    const { data: address, loading: loadingAddress } =
-      useQuery(CUSTOMER_ADDRESS);
+    const { data: address, loading: loadingAddress } = useQuery(CUSTOMER_ADDRESS);
 
     if (loading || !data || loadingAddress) {
       return "Loading...";
     }
 
+    console.log("logo", data);
+    
     return (
       <>
         <Accordion
@@ -46,7 +47,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
           selectionMode="multiple"
           showDivider={false}
         >
-          <AccordionItem key="1" aria-label="Delivery" title="Delivery">
+          <AccordionItem key="1" aria-label="Delivery" title="Delivery Option">
             <RadioGroup
               aria-label="Select existing payment method"
               classNames={{ wrapper: "gap-3" }}
@@ -67,7 +68,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                         alt="delivery logo"
                         src={
                           del?.logo
-                            ? `${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${del?.logo}`
+                            ? del?.logo
                             : "/images/shop.png"
                         }
                         radius="none"
@@ -83,6 +84,21 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                   />
                 );
               })}
+              <CustomRadio
+                key={2}
+                classNames={deliveryRadioClasses}
+                description=""
+                icon={
+                  <Image
+                    alt="delivery logo"
+                    src={""}
+                    radius="none"
+                    className="w-12"
+                  />
+                }
+                label="Shop Delivery"
+                value="PERSONAL"
+              />
             </RadioGroup>
           </AccordionItem>
           <AccordionItem
@@ -95,11 +111,11 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
               classNames={{ wrapper: "gap-3" }}
               defaultValue={toDelivery as any}
               onValueChange={async (value) => {
-                setToDelivery(value as unknown as CustomerAdressType);
+                setToDelivery(value as unknown as CustomerAddressType);
               }}
             >
               {address?.storeAddress?.map(
-                (ad: CustomerAdressType, idx: number) => {
+                (ad: CustomerAddressType, idx: number) => {
                   return (
                     <CustomRadio
                       key={idx}

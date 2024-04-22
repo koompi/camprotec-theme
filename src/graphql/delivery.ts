@@ -3,15 +3,14 @@ import { gql } from "@apollo/client";
 export const DELIVERIES = gql`
   query {
     storeDeliveries {
-      address
-      addressName
-      customerName
-      email
       id
-      logo
+      fee
       phoneNumber
+      customerName
+      addressName
+      address
+      logo
       express
-      instruction
     }
   }
 `;

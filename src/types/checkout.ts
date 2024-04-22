@@ -27,7 +27,7 @@ export type CheckoutType = {
   payment: "CASH";
 };
 
-export type CustomerAdressType = {
+export type CustomerAddressType = {
   id: string;
   lat: number;
   lng: number;
