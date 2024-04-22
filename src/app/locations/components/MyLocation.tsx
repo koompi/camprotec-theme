@@ -13,9 +13,9 @@ import {
 } from "@nextui-org/react";
 import React, { FC } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { CustomerAdressType } from "@/types/checkout";
+import { CustomerAddressType } from "@/types/checkout";
 
-const MyLocation: FC<CustomerAdressType> = (props) => {
+const MyLocation: FC<CustomerAddressType> = (props) => {
   return (
     <Card
       isBlurred
