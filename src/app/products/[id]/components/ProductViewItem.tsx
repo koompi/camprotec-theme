@@ -470,6 +470,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 variant="shadow"
                 color="primary"
                 size="lg"
+                isDisabled={stocks?.status === "OUT-STOCK"}
                 startContent={
                   <Icon icon="solar:cart-large-2-bold" width={24} />
                 }

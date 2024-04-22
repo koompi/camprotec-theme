@@ -73,6 +73,10 @@ export const GET_ALL_PRODUCTS = gql`
       currency
       status
       detail
+      stocks {
+        amount
+        status
+      }
       variants {
         id
         default
@@ -107,6 +111,10 @@ export const PRODUCTS = gql`
       currency
       status
       detail
+      stocks {
+        amount
+        status
+      }
       variants {
         id
         default
@@ -151,6 +159,10 @@ export const GLOBAL_PRODUCT_FILTERING = gql`
         sell
         rating
         status
+        stocks {
+          amount
+          status
+        }
         variants {
           default
           id

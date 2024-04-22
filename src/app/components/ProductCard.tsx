@@ -33,6 +33,8 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
     addToCart(p);
   };
 
+  console.log("prod", props?.product);
+
   return (
     <div>
       <Card
@@ -92,40 +94,41 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
                 <span className="text-primary lg:text-xl text-sm font-bold">
                   {formatToUSD(props?.product.price)}
                 </span>
-                <Button
-                  variant="flat"
-                  size="sm"
-                  color="primary"
-                  radius="full"
-                  className="hidden sm:hidden lg:flex"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const product: ItemProduct = {
-                      id: props?.product.id,
-                      name: props?.product?.title,
-                      variant: {
-                        id: null,
-                        label: "Default",
-                        default: true,
-                        previews: props?.product.thumbnail,
+                {props?.product?.stocks?.status !== "OUT-STOCK" && (
+                  <Button
+                    variant="flat"
+                    size="sm"
+                    color="primary"
+                    radius="full"
+                    className="hidden sm:hidden lg:flex"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const product: ItemProduct = {
+                        id: props?.product.id,
+                        name: props?.product?.title,
+                        variant: {
+                          id: null,
+                          label: "Default",
+                          default: true,
+                          previews: props?.product.thumbnail,
+                          price: props?.product.price,
+                          attributes: [],
+                        },
                         price: props?.product.price,
-                        attributes: [],
-                      },
-                      price: props?.product.price,
-                      currency: "USD",
-                      preview: props?.product.thumbnail,
-                      productId: props?.product.id,
-                      variantId: null,
-                    };
+                        currency: "USD",
+                        preview: props?.product.thumbnail,
+                        productId: props?.product.id,
+                        variantId: null,
+                      };
 
-                    handleAddToCart(product);
-                    toast.success("The product is added into the cart!");
-                  }}
-                >
-                  Add to Cart
-                </Button>
+                      handleAddToCart(product);
+                      toast.success("The product is added into the cart!");
+                    }}
+                  >
+                    Add to Cart
+                  </Button>
+                )}
               </div>
             </div>
           </>
