@@ -73,14 +73,16 @@ const Banner = () => {
                 loop={true}
                 modules={[Autoplay, EffectCreative]}
                 centeredSlides={true}
-                className="mySwiper3 rounded-xl bg-base-100 max-h-[28dvh] sm:max-h-[28dvh] lg:max-h-[50dvh]"
+                className="rounded-xl bg-base-100 max-h-[28dvh] sm:max-h-[28dvh] lg:max-h-[50dvh] "
               >
                 {value?.banner?.promotes?.map((item: string, idx: number) => (
                   <SwiperSlide key={idx}>
                     <Image
                       alt=""
                       src={`${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`}
-                      className="w-full bg-white h-[28dvh] sm:h-[28dvh] lg:h-[50dvh] object-contain object-center"
+                      className="w-full bg-white h-[28dvh] sm:h-[28dvh] lg:h-full object-cover object-center "
+                      isBlurred
+                      isZoomed
                     />
                   </SwiperSlide>
                 ))}
