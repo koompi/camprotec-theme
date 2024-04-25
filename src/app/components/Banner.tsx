@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTheme } from "@/context/useTheme";
-import { Image } from "@nextui-org/react";
+import { Button, Image } from "@nextui-org/react";
 import { Autoplay, EffectCreative } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -12,20 +12,69 @@ const Banner = () => {
   return (
     <>
       <div className="relative overflow-hidden">
-        <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          {/* <Link
+        <div className="container mx-auto relative sm:relative lg:absolute z-20 left-0 sm:left-0 lg:left-48 max-w-xl top-9 sm:top-9 lg:top-48 px-6 sm:px-6 lg:px-0 mb-12 sm:mb-12 lg:mb-0">
+          <h3 className="text-2xl sm:text-2xl lg:text-6xl font-semibold">
+            {value?.banner?.title ? value?.banner?.title : "Title"}
+          </h3>
+          <p className="text-base md:text-lg text-slate-700 my-4 md:my-6 text-justify sm:text-justify lg:text-start">
+            {value?.banner?.desc
+              ? value?.banner?.desc
+              : "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nam nobis in error repellat voluptatibus ad."}
+          </p>
+          <Button
+            size="lg"
+            variant="shadow"
+            color="primary"
+            radius="full"
+            className="text-background"
+            as={Link}
             href="/products"
-            className=" border border-primary/30 rounded-2xl py-1 px-4 text-slate-500 text-sm mb-5 hover:scale-105 transition duration-300 ease-in-out [font-size:_clamp(0.1em,2vw,0.9em)]"
           >
-            {value?.banner?.message
-              ? value?.banner?.message
-              : " The most popular products is available in"}{" "}
-            <span className="font-semibold text-primary">
-              {value?.globals?.officialName
-                ? value?.globals?.officialName
-                : value?.globals?.name}
-            </span>
-          </Link> */}
+            Find Products
+          </Button>
+        </div>
+        <div className="relative max-w-full mx-auto">
+          {value?.banner?.promotes?.length > 0 && (
+            <Swiper
+              grabCursor={true}
+              effect={"creative"}
+              creativeEffect={{
+                prev: {
+                  shadow: true,
+                  translate: ["-20%", 0, -1],
+                },
+                next: {
+                  translate: ["100%", 0, 0],
+                },
+              }}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              loop={true}
+              modules={[EffectCreative, Autoplay]}
+              centeredSlides={true}
+              className="mySwiperBanner bg-base-100 min-h-[30vh] sm:min-h-[30vh] lg:min-h-[90vh]"
+            >
+              {value?.banner?.promotes?.map((item: string, idx: number) => (
+                <SwiperSlide key={idx}>
+                  <Image
+                    alt=""
+                    src={
+                      !item
+                        ? `${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`
+                        : "images/banner-img-sample.png"
+                    }
+                    className="w-screen bg-white h-full min-h-[30vh] sm:min-h-[30vh] lg:min-h-[90vh] object-cover"
+                    isBlurred
+                    radius="none"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
+        </div>
+        {/* <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <div className="text-center mx-auto font-display font-bold tracking-normal text-slate-900 [font-size:_clamp(1.25em,3vw,4em)]">
             {value?.banner?.title
               ? value?.banner?.title
@@ -51,53 +100,7 @@ const Banner = () => {
           <p className="mx-auto mt-12 max-w-xl text-lg text-slate-700 leading-7">
             {value?.banner?.desc ? value?.banner?.desc : null}
           </p>
-
-          <div className="mt-10 relative max-w-5xl mx-auto">
-            {value?.banner?.promotes?.length > 0 && (
-              <Swiper
-                grabCursor={true}
-                effect={"creative"}
-                creativeEffect={{
-                  prev: {
-                    shadow: true,
-                    translate: ["-20%", 0, -1],
-                  },
-                  next: {
-                    translate: ["100%", 0, 0],
-                  },
-                }}
-                autoplay={{
-                  delay: 5000,
-                  disableOnInteraction: false,
-                }}
-                loop={true}
-                modules={[Autoplay, EffectCreative]}
-                centeredSlides={true}
-                className="rounded-xl bg-base-100 max-h-[28dvh] sm:max-h-[28dvh] lg:max-h-[50dvh] "
-              >
-                {value?.banner?.promotes?.map((item: string, idx: number) => (
-                  <SwiperSlide key={idx}>
-                    <Image
-                      alt=""
-                      src={`${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`}
-                      className="w-full bg-white h-[28dvh] sm:h-[28dvh] lg:h-full object-cover object-center "
-                      isBlurred
-                      isZoomed
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            )}
-
-            <div className="absolute bottom-12 -start-20 -z-[1] size-48 bg-gradient-to-b from-primary to-white p-px rounded-lg ">
-              <div className="bg-white size-48 rounded-lg 0"></div>
-            </div>
-
-            <div className="absolute -top-12 -end-20 -z-[1] size-48 bg-gradient-to-t from-secondary to-secondary/60 p-px rounded-full">
-              <div className="bg-white size-48 rounded-full "></div>
-            </div>
-          </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

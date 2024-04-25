@@ -48,7 +48,7 @@ export const Search = () => {
         type="submit"
         size="lg"
         color="primary"
-        className="text-base-100"
+        className="text-background"
         isIconOnly
       >
         <Icon icon="lucide:search" />

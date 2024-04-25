@@ -237,7 +237,7 @@ export default function PageLocation() {
                 <Button
                   color="primary"
                   onPress={onClose}
-                  className="text-base-100 w-full"
+                  className="text-background w-full"
                   size="lg"
                 >
                   Deliver to this location
@@ -425,7 +425,7 @@ export default function PageLocation() {
             fullWidth
             size="lg"
             variant="flat"
-            className="bg-foreground text-base-100"
+            className="bg-foreground text-background"
             type="submit"
           >
             Save Location

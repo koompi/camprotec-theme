@@ -107,7 +107,7 @@ const OrderSinglePage = () => {
                 <Button
                   color="primary"
                   variant="shadow"
-                  className="text-base-100"
+                  className="text-background"
                   onPress={() => {
                     onCancelOrder(data?.storeOrder?.id);
                   }}

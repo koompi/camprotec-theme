@@ -26,7 +26,7 @@ export default function NotFound() {
             color="primary"
             as={Link}
             href="/"
-            className="text-base-100"
+            className="text-background"
           >
             Go back home
           </Button>

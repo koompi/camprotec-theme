@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       aspectRatio: {
-        "4/3": "4 / 3",
+        "4/3": "4/3",
       },
       fontSize: {
         clamp: "clamp(1rem, 5vw, 3rem)",

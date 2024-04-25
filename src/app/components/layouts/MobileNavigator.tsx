@@ -51,7 +51,7 @@ const MobileNavigator = () => {
   ];
 
   return (
-    <section className="grid grid-cols-4 sm:grid lg:hidden fixed bottom-0 z-30 bg-base-100 w-full min-h-14 container mx-auto px-3">
+    <section className="grid grid-cols-4 sm:grid lg:hidden fixed bottom-0 z-30 bg-white w-full min-h-14 container mx-auto px-3">
       {navigator.map((nav: MobileNavigator, idx: number) => {
         return (
           <div
@@ -60,14 +60,30 @@ const MobileNavigator = () => {
             className="flex flex-col justify-center items-center"
           >
             {nav.url === pathname ? (
-            <>
-              {nav.is_badge ? (
-                <>
-                  <Badge
-                    content={cartItems?.length}
-                    shape="circle"
-                    color="danger"
-                  >
+              <>
+                {nav.is_badge ? (
+                  <>
+                    <Badge
+                      content={cartItems?.length}
+                      shape="circle"
+                      color="danger"
+                    >
+                      <Button
+                        as={Link}
+                        href={nav.url}
+                        variant="light"
+                        isIconOnly
+                        color="primary"
+                      >
+                        <Icon icon={nav.active_icon} fontSize={30} />
+                      </Button>
+                    </Badge>
+                    <span className="text-xs relative -mt-1 text-primary">
+                      {nav.name}
+                    </span>
+                  </>
+                ) : (
+                  <>
                     <Button
                       as={Link}
                       href={nav.url}
@@ -77,37 +93,40 @@ const MobileNavigator = () => {
                     >
                       <Icon icon={nav.active_icon} fontSize={30} />
                     </Button>
-                  </Badge>
-                  <span className="text-xs relative -mt-1 text-primary">
-                    {nav.name}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Button
-                    as={Link}
-                    href={nav.url}
-                    variant="light"
-                    isIconOnly
-                    color="primary"
-                  >
-                    <Icon icon={nav.active_icon} fontSize={30} />
-                  </Button>
-                  <span className="text-xs relative -mt-1 text-primary">
-                    {nav.name}
-                  </span>
-                </>
-              )}
-            </>
+                    <span className="text-xs relative -mt-1 text-primary">
+                      {nav.name}
+                    </span>
+                  </>
+                )}
+              </>
             ) : (
-            <>
-              {nav.is_badge ? (
-                <>
-                  <Badge
-                    shape="circle"
-                    color="danger"
-                    content={cartItems?.length}
-                  >
+              <>
+                {nav.is_badge ? (
+                  <>
+                    <Badge
+                      shape="circle"
+                      color="danger"
+                      content={cartItems?.length}
+                    >
+                      <Button
+                        as={Link}
+                        href={nav.url}
+                        variant="light"
+                        isIconOnly
+                      >
+                        <Icon
+                          icon={nav.icon}
+                          fontSize={30}
+                          className="text-gray-600"
+                        />
+                      </Button>
+                    </Badge>
+                    <span className="text-xs relative -mt-1 text-gray-600">
+                      {nav.name}
+                    </span>
+                  </>
+                ) : (
+                  <>
                     <Button as={Link} href={nav.url} variant="light" isIconOnly>
                       <Icon
                         icon={nav.icon}
@@ -115,26 +134,12 @@ const MobileNavigator = () => {
                         className="text-gray-600"
                       />
                     </Button>
-                  </Badge>
-                  <span className="text-xs relative -mt-1 text-gray-600">
-                    {nav.name}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Button as={Link} href={nav.url} variant="light" isIconOnly>
-                    <Icon
-                      icon={nav.icon}
-                      fontSize={30}
-                      className="text-gray-600"
-                    />
-                  </Button>
-                  <span className="text-xs relative -mt-1 text-gray-600">
-                    {nav.name}
-                  </span>
-                </>
-              )}
-            </>
+                    <span className="text-xs relative -mt-1 text-gray-600">
+                      {nav.name}
+                    </span>
+                  </>
+                )}
+              </>
             )}
           </div>
         );

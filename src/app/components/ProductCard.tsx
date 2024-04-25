@@ -33,8 +33,6 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
     addToCart(p);
   };
 
-  console.log("prod", props?.product);
-
   return (
     <div>
       <Card
@@ -43,12 +41,12 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
         isPressable
         shadow="sm"
       >
-        <CardBody className="px-3 pb-1">
+        <CardBody className="px-3 pb-1 flex justify-center items-center mx-auto">
           <Image
-            className="aspect-[4/3] w-full h-full bg-repeat-round rounded-2xl mx-auto object-contain object-center bg-white"
+            className="h-36 sm:h-36 lg:h-52 bg-repeat-round rounded-2xl mx-auto object-cover object-center bg-white"
             src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${props?.product?.thumbnail}`}
             alt="product image"
-            radius="none"
+            radius="lg"
             isZoomed
             isLoading={props.loading}
           />

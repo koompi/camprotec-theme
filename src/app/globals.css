@@ -21,8 +21,12 @@
 }
 
 .swiper {
-  width: 100%;
-  height: 80dvh;
+  width: 100% !important;
+  height: 100%;
+  object-fit: cover;
+}
+.mySwiperBanner {
+  height: 90dvh !important;
 }
 
 .mySwiper {
@@ -55,7 +59,7 @@
   --swiper-pagination-color: #fff;
 }
 .swiperSlider2 {
-  max-height: 70dvh !important;
+  max-height: 60dvh !important;
 }
 
 /* ------responsive for product details ------- */

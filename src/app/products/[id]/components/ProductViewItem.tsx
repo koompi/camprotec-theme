@@ -201,7 +201,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 <SwiperSlide key={index} className="swiperSlider2">
                   {video_files.includes(preview.split(".")[1]) ? (
                     <video
-                      className="h-[30dvh] sm:h-[30dvh] lg:h-[70dvh] w-full grid place-items-center"
+                      className="h-[30dvh] sm:h-[30dvh] lg:h-[60dvh] w-[100%] grid place-items-center mx-auto"
                       autoPlay
                       loop
                       muted
@@ -466,7 +466,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               /> */}
               <Button
                 fullWidth
-                className="text-medium font-medium text-base-100"
+                className="text-medium font-medium text-background"
                 variant="shadow"
                 color="primary"
                 size="lg"

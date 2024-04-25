@@ -53,7 +53,7 @@ export default function Page() {
             size="lg"
             fullWidth
             color="primary"
-            className="text-base-100"
+            className="text-background"
             as={Link}
             href="/locations/create"
           >

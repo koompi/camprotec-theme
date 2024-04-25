@@ -15,10 +15,23 @@ export default function MessageBanner() {
           className="inline-flex md:ml-1 animate-text bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
           href="/products"
         >
-          The most popular products is available in &nbsp;
-          {value?.globals?.officialNameProducts
-            ? value?.globals?.officialName
-            : value?.globals?.name}
+          {value?.banner?.message ? (
+            <span>
+              Discover{" "}
+              {value?.globals?.officialNameProducts
+                ? value?.globals?.officialName
+                : value?.globals?.name}
+              , {value?.banner?.message}
+            </span>
+          ) : (
+            <span>
+              Discover{" "}
+              {value?.globals?.officialNameProducts
+                ? value?.globals?.officialName
+                : value?.globals?.name}{" "}
+              , a trusted supplier of essential products
+            </span>
+          )}
         </Link>
       </p>
       <Button

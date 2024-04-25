@@ -102,7 +102,7 @@ export default function Component() {
                   content={
                     <Button
                       isIconOnly
-                      className="p-0 text-base-100"
+                      className="p-0 text-background"
                       radius="full"
                       size="sm"
                       variant="light"
@@ -211,7 +211,7 @@ export default function Component() {
                 type="submit"
                 radius="full"
                 fullWidth
-                className="text-base-100"
+                className="text-background"
                 isDisabled={
                   watch("firstName") === user?.first_name &&
                   watch("lastName") === user?.last_name &&

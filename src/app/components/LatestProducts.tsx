@@ -26,14 +26,7 @@ const LatestProducts = ({
           <h1 className="text-primary font-extrabold text-lg sm:text-lg lg:text-4xl text-center md:py-12 py-8">
             CHECK THE CORE PRODUCT
           </h1>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 px-2 border border-base-100">
-            {/* {products
-              ?.sort((a: ProductType, b: ProductType) =>
-                a.brand ? (a?.brand > b?.brand ? 1 : -1) : 1
-              )
-              .map((res: ProductType, idx: number) => {
-                return <ProductCard key={idx} product={res} loading={false} />;
-              })} */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 px-2">
             {products?.map((p) => (
               <ProductCard key={p?.id} product={p} loading={false} />
             ))}
