@@ -7,6 +7,7 @@ import About from "./components/About";
 import { GET_ALL_PRODUCTS } from "@/graphql/product";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import ShuffleHero from "./components/BannerTwo";
+import BannerThree from "./components/BannerThree";
 
 export default function Home() {
   const { data: products, loading: loadingProduct } = useQuery(
@@ -24,8 +25,9 @@ export default function Home() {
 
   return (
     <main>
-      <section className="bg-gradient-to-r from-primary/10">
-        <Banner />
+      <section className="bg-gradient-to-r from-primary/10 via-white to-primary/10 background-animate">
+        <BannerThree />
+        {/* <Banner /> */}
         {/* <ShuffleHero /> */}
       </section>
       <section id="categories" className="pt-8">

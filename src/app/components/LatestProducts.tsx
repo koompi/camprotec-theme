@@ -31,22 +31,24 @@ const LatestProducts = ({
               <ProductCard key={p?.id} product={p} loading={false} />
             ))}
           </div>
-          <Button
-            variant="light"
-            size="lg"
-            as={Link}
-            href="/products"
-            color="primary"
-            className="flex justify-center items-center mx-auto mt-12 max-w-56"
-            endContent={
-              <HiOutlineArrowLongRight
-                size={24}
-                className="group-hover:translate-x-2 duration-150"
-              />
-            }
-          >
-            More Products
-          </Button>
+          {products?.length >= 10 && (
+            <Button
+              variant="light"
+              size="lg"
+              as={Link}
+              href="/products"
+              color="primary"
+              className="flex justify-center items-center mx-auto mt-12 max-w-56"
+              endContent={
+                <HiOutlineArrowLongRight
+                  size={24}
+                  className="group-hover:translate-x-2 duration-150"
+                />
+              }
+            >
+              More Products
+            </Button>
+          )}
         </div>
       )}
     </>

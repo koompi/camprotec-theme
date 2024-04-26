@@ -138,15 +138,25 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   const ctaLabel = React.useMemo(() => {
     switch (page) {
       case 0:
-        return "Continue to shipping";
+        return `Delivery (${formatToUSD(
+          price +
+            (es_price?.estimatePrice?.data?.price
+              ? es_price?.estimatePrice?.data?.price
+              : 0)
+        )})`;
       case 1:
         return "Continue to payment";
       case 2:
         return "Place order";
       default:
-        return "Continue to shipping";
+        return `Delivery (${formatToUSD(
+          price +
+            (es_price?.estimatePrice?.data?.price
+              ? es_price?.estimatePrice?.data?.price
+              : 0)
+        )})`;
     }
-  }, [page]);
+  }, [es_price?.estimatePrice?.data?.price, page, price]);
 
   const stepTitle = React.useMemo(() => {
     switch (page) {
@@ -331,7 +341,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   }
 
   return (
-    <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-4 sm:py-4 lg:py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh_-_60px)]  w-full gap-8">
+    <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-4 sm:py-4 lg:py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full gap-8">
       {/* Left */}
       <div className="col-span-1 w-full flex-none">
         <div className="flex h-full flex-1 flex-col p-0">
@@ -354,6 +364,37 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
               Go back
             </Button>
           </div>
+
+          <div className="py-6 flex w-full justify-between gap-8">
+            <div className="flex w-full flex-col items-start gap-2">
+              <p className="text-small font-medium">Review</p>
+              <Progress
+                classNames={{
+                  indicator: "!bg-primary",
+                }}
+                value={page >= 0 ? 100 : 0}
+              />
+            </div>
+            <div className="flex w-full flex-col items-start gap-2">
+              <p className="text-small font-medium">Delivery</p>
+              <Progress
+                classNames={{
+                  indicator: "!bg-primary",
+                }}
+                value={page >= 1 ? 100 : 0}
+              />
+            </div>
+            <div className="flex w-full flex-col items-start gap-2">
+              <p className="text-small font-medium">Payment</p>
+              <Progress
+                classNames={{
+                  indicator: "!bg-primary",
+                }}
+                value={page >= 2 ? 100 : 0}
+              />
+            </div>
+          </div>
+
           <AnimatePresence custom={direction} initial={false} mode="wait">
             <motion.form
               key={page}
@@ -401,35 +442,6 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
               )}
             </motion.form>
           </AnimatePresence>
-          <div className="mt-auto flex w-full justify-between gap-8 pb-8 pt-4">
-            <div className="flex w-full flex-col items-start gap-2">
-              <p className="text-small font-medium">Review</p>
-              <Progress
-                classNames={{
-                  indicator: "!bg-primary",
-                }}
-                value={page >= 0 ? 100 : 0}
-              />
-            </div>
-            <div className="flex w-full flex-col items-start gap-2">
-              <p className="text-small font-medium">Delivery</p>
-              <Progress
-                classNames={{
-                  indicator: "!bg-primary",
-                }}
-                value={page >= 1 ? 100 : 0}
-              />
-            </div>
-            <div className="flex w-full flex-col items-start gap-2">
-              <p className="text-small font-medium">Payment</p>
-              <Progress
-                classNames={{
-                  indicator: "!bg-primary",
-                }}
-                value={page >= 2 ? 100 : 0}
-              />
-            </div>
-          </div>
         </div>
       </div>
       {page <= 0 ? (

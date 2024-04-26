@@ -46,7 +46,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
             <span className="text-small font-semibold text-default-700">
               ${product?.price}
             </span>
-            <span className="text-small text-default-500">x {quantity}</span>
+            <span className="text-small text-danger">x {quantity}</span>
           </div>
 
           <div className="flex space-x-2 mt-2">
@@ -77,9 +77,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
             radius="full"
             variant="flat"
             isDisabled={quantity <= 1}
-            onPress={() =>
-              minusCart(product)
-            }
+            onPress={() => minusCart(product)}
           >
             <Icon icon="lucide:minus" width={14} />
           </Button>
@@ -89,9 +87,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
             radius="full"
             variant="flat"
             color="success"
-            onPress={() =>
-              addToCart(product)
-            }
+            onPress={() => addToCart(product)}
           >
             <Icon icon="lucide:plus" width={14} />
           </Button>

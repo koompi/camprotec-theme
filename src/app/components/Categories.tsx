@@ -30,7 +30,7 @@ const Categories = () => {
   }
 
   return (
-    <div className="container mx-auto px-6 sm:px-6 lg:px-0">
+    <div className="w-full px-2 sm:px-2 lg:px-0">
       <div className="font-extrabold md:text-3xl text-center md:py-12 pb-4 mt-2 lg:mt-20">
         <div className="text-primary text-lg sm:text-lg lg:text-4xl">
           CHOOSE

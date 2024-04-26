@@ -43,11 +43,11 @@ export default function Page() {
         >
           <div className="flex gap-3">
             <Icon icon="solar:map-point-add-linear" fontSize={24} />
-            Add New Location
+            Add Location
           </div>
         </Link>
       </div>
-      <div className="fixed sm:fixed lg:hidden bottom-0 right-0 z-40 flex items-center justify-center bg-base-100 w-full h-16">
+      <div className="fixed sm:fixed lg:hidden bottom-0 right-0 z-40 flex items-center justify-center bg-background w-full h-16">
         <div className="container mx-auto px-3 ">
           <Button
             size="lg"
@@ -57,7 +57,7 @@ export default function Page() {
             as={Link}
             href="/locations/create"
           >
-            Add New Location
+            Add Location
           </Button>
         </div>
       </div>

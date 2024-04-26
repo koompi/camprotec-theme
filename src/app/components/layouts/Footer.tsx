@@ -76,7 +76,7 @@ const Footer = () => {
   const { value } = useTheme();
 
   return (
-    <footer className="flex w-full flex-col bg-gradient-to-r from-primary/10 pb-12 sm:pb-12 lg:pb-0">
+    <footer className="flex w-full flex-col bg-gradient-to-l from-primary/10 pb-12 sm:pb-12 lg:pb-0">
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center px-6 py-12 lg:px-8">
         <div className="flex items-center justify-center">
           <Logo />

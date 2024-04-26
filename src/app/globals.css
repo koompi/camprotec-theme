@@ -18,6 +18,22 @@
   .text-balance {
     text-wrap: balance;
   }
+  .background-animate {
+    background-size: 200%;
+    -webkit-animation: AnimationName 3s ease infinite;
+    -moz-animation: AnimationName 3s ease infinite;
+    animation: AnimationName 3s ease infinite;
+  }
+
+  @keyframes AnimationName {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
 }
 
 .swiper {
@@ -26,7 +42,8 @@
   object-fit: cover;
 }
 .mySwiperBanner {
-  height: 90dvh !important;
+  /* height: 75dvh !important; */
+  border-radius: 18px;
 }
 
 .mySwiper {

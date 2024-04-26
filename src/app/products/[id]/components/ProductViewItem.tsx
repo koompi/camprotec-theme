@@ -195,7 +195,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 delay: 90000,
                 disableOnInteraction: false,
               }}
-              className="swiper-navigator swiperSlider2 bg-base-100 flex justify-center items-center px-0 rounded-3xl border "
+              className="swiper-navigator swiperSlider2 bg-background flex justify-center items-center px-0 rounded-3xl border "
             >
               {previews.map((preview, index) => (
                 <SwiperSlide key={index} className="swiperSlider2">

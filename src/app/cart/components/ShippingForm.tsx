@@ -13,6 +13,7 @@ import { useQuery } from "@apollo/client";
 import { CUSTOMER_ADDRESS, DELIVERIES } from "@/graphql/delivery";
 import { CustomerAddressType, DeliveryType } from "@/types/checkout";
 import CustomRadio from "./CustomRadio";
+import { Icon } from "@iconify/react";
 
 export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
   variant?: InputProps["variant"];
@@ -50,7 +51,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
             <RadioGroup
               aria-label="Select existing payment method"
               classNames={{ wrapper: "gap-3" }}
-              defaultValue={ship}
+              defaultValue="PERSONAL"
               onValueChange={(value) => {
                 setShip(value);
               }}
@@ -67,7 +68,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                         alt="delivery logo"
                         src={del?.logo ? del?.logo : "/images/shop.png"}
                         radius="none"
-                        className="w-12"
+                        className="h-16"
                       />
                     }
                     label={
@@ -88,7 +89,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                     alt="delivery logo"
                     src="/images/shop.png"
                     radius="none"
-                    className="w-12"
+                    className="w-24"
                   />
                 }
                 label="Shop Delivery"
@@ -138,8 +139,18 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
             </RadioGroup>
           </AccordionItem>
         </Accordion>
-        <Link href="/locations/create" underline="always">
+        {/* <Link href="/locations/create" underline="always">
           Add new delivery location?
+        </Link> */}
+        <Link
+          href="/locations/create"
+          className="w-full h-28 border border-dashed rounded-xl items-center justify-center "
+          underline="hover"
+        >
+          <div className="flex gap-3">
+            <Icon icon="solar:map-point-add-linear" fontSize={24} />
+            Add Location
+          </div>
         </Link>
       </>
     );
