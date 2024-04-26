@@ -68,4 +68,7 @@
   .swiperSlider2 {
     max-height: 30dvh !important;
   }
+  .mySwiperBanner {
+    height: 30dvh !important;
+  }
 }

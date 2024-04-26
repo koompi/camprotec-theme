@@ -274,7 +274,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               />
               <p>Reviews</p>
             </div>
-            <p className="text-5xl text-primary font-bold tracking-tight">
+            <p className="text-3xl sm:text-3xl lg:text-5xl text-primary font-bold tracking-tight">
               {formatToUSD(parseInt(variant.price.toString()))}
             </p>
             <div className="flex flex-col gap-1 my-4">

@@ -59,7 +59,7 @@ const Categories = () => {
           </div> */}
           <div className="flex flex-col bg-white m-auto p-auto">
             <div className="flex overflow-x-scroll hide-scroll-bar">
-              <div className="flex gap-3 flex-wrap sm:flex-wrap lg:flex-nowrap mx-auto">
+              <div className="flex gap-3 flex-nowrap mx-auto">
                 {categories?.storeOwnerCategories?.map(
                   (cat: Category, idx: number) => {
                     return (
@@ -69,7 +69,7 @@ const Categories = () => {
                       >
                         {cat?.logo ? (
                           <div className="inline-block">
-                            <div className="w-52 sm:w-52 lg:w-72   h-28 sm:h-28 lg:36 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                            <div className="w-52 sm:w-52 lg:w-72 h-28 sm:h-28 lg:36 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                               <CategoryCardItem {...cat} />
                             </div>
                           </div>

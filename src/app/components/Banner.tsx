@@ -61,7 +61,7 @@ const Banner = () => {
                   <Image
                     alt=""
                     src={
-                      !item
+                      item
                         ? `${process.env.NEXT_PUBLIC_DRIVE}/api/drive?hash=${item}`
                         : "images/banner-img-sample.png"
                     }
