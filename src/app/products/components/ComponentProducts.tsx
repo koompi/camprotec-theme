@@ -133,7 +133,7 @@ export default function ComponentProducts({
         ? totalPages
         : pages
       : totalPages;
-
+  
   return (
     <>
       <SidebarDrawer isOpen={isOpen} onOpenChange={onOpenChange}>

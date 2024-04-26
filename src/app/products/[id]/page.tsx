@@ -1,7 +1,7 @@
-import ProductViewInfo from "./components/ProductViewItem";
 import { GET_PRODUCT } from "@/graphql/product";
 import { Metadata, ResolvingMetadata } from "next";
 import { getClient } from "@/libs/client";
+import ProductDetail from "./components/ProductDetail";
 
 type Props = {
   params: { id: string };
@@ -61,15 +61,9 @@ export default async function ProductPage({
 }: {
   params: { id: string };
 }) {
-  const client = getClient();
-  const { data } = await client.query({
-    query: GET_PRODUCT,
-    variables: { slug: params.id },
-  });
-
   return (
     <section className="container mx-auto px-6 py-3 sm:py-3 lg:py-16">
-      <ProductViewInfo {...data?.storeProduct} />
+      <ProductDetail slug={params.id}/>
     </section>
   );
 }
