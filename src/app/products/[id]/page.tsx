@@ -1,7 +1,10 @@
-import ProductViewInfo from "./components/ProductViewItem";
 import { GET_PRODUCT } from "@/graphql/product";
 import { Metadata, ResolvingMetadata } from "next";
 import { getClient } from "@/libs/client";
+import dynamic from "next/dynamic";
+import { cache } from "react";
+
+const ProductViewInfo = dynamic(() => import("./components/ProductViewItem"));
 
 type Props = {
   params: { id: string };

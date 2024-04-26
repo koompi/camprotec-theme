@@ -15,7 +15,11 @@ const httpLink = createHttpLink({
 export const { getClient } = registerApolloClient(() => {
   return new ApolloClient({
     cache: new InMemoryCache(),
-    link: httpLink,
+    // link: httpLink,
+    link: new HttpLink({
+      uri: GRAPHQL_ENDPOINT,
+      fetchOptions: { cache: "no-store" },
+    }),
   });
 });
 import {
