@@ -22,13 +22,15 @@ const LatestProducts = ({
   return (
     <>
       {products?.length > 0 && (
-        <div className="container mx-auto">
+        <div className="container mx-auto px-4">
           <h1 className="text-primary font-extrabold text-lg sm:text-lg lg:text-4xl text-center md:py-12 py-8">
             CHECK THE CORE PRODUCT
           </h1>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 px-2">
+          <div className="grid grid-cols-2 sm:grid lg:flex flex-wrap items-center justify-center gap-3 place-items-center place-content-center">
             {products?.map((p) => (
-              <ProductCard key={p?.id} product={p} loading={false} />
+              <div className="w-full sm:w-full lg:w-72" key={p?.id}>
+                <ProductCard product={p} loading={false} />
+              </div>
             ))}
           </div>
           {products?.length >= 10 && (

@@ -13,19 +13,19 @@ type SocialIconProps = Omit<IconProps, "icon">;
 const navLinks = [
   {
     name: "Home",
-    href: "#",
+    href: "/",
   },
   {
     name: "Products",
-    href: "#products",
+    href: "/products",
   },
   {
-    name: "Categories",
-    href: "#categories",
+    name: "Contact",
+    href: "/contact",
   },
   {
     name: "About",
-    href: "#about",
+    href: "/about",
   },
 ];
 

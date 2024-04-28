@@ -18,7 +18,7 @@ const About = () => {
   }
 
   return (
-    <div className="container mx-auto py-6 sm:py-6 lg:py-20 px-6">
+    <div className=" py-6 sm:py-6 lg:py-20">
       <div className="mb-16 text-center">
         <h2 className="mb-4 text-lg sm:text-lg lg:text-4xl text-primary font-bold">
           {value?.about?.title ?? "ABOUT US"}

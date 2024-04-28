@@ -64,11 +64,12 @@ const NavbarLayout = () => {
           </Link>
         </NavbarItem> */}
           <NavbarItem>
-            <Link
-              className="text-default-500 font-semibold"
-              href={pathname == "/" ? "#about" : "/#about"}
-              // size="sm"
-            >
+            <Link className="text-default-500 font-semibold" href="/contact">
+              <p className="text-lg">Contact</p>
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link className="text-default-500 font-semibold" href="/about">
               <p className="text-lg">About</p>
             </Link>
           </NavbarItem>

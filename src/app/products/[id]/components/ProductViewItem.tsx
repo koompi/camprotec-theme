@@ -58,7 +58,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
   ) => {
     const searchParams = useSearchParams();
     const search = searchParams.get("search") || null;
-    const cat = searchParams.get("category") || null;
     const sortParam = searchParams.get("sort") || null;
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
     const { addToCart } = useCart();
@@ -157,22 +156,26 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           radius="lg"
         >
           <BreadcrumbItem href="/products">Products</BreadcrumbItem>
-          <BreadcrumbItem
-            href={`/products/?search${search ? search : ""}=&category=${
-              props?.category?.id ? props?.category?.id : ""
-            }&sort=${sortParam ? sortParam : ""}`}
-          >
-            {props?.category?.title?.en}
-          </BreadcrumbItem>
-          <BreadcrumbItem
-            href={`/products/?search${search ? search : ""}=&category=${
-              props?.category?.id ? props?.category?.id : ""
-            }&sub_category=${props?.subcategories[0]?.id ? props?.subcategories[0]?.id : ""}&sort=${
-              sortParam ? sortParam : ""
-            }`}
-          >
-            {props?.subcategories[0]?.title?.en}
-          </BreadcrumbItem>
+          {props?.category && (
+            <BreadcrumbItem
+              href={`/products/?search${search ? search : ""}=&category=${
+                props?.category?.id ? props?.category?.id : ""
+              }&sort=${sortParam ? sortParam : ""}`}
+            >
+              {props?.category?.title?.en}
+            </BreadcrumbItem>
+          )}
+          {props?.subcategories.length > 0 && (
+            <BreadcrumbItem
+              href={`/products/?search${search ? search : ""}=&category=${
+                props?.category?.id ? props?.category?.id : ""
+              }&sub_category=${props?.subcategories[0]?.id ? props?.subcategories[0]?.id : ""}&sort=${
+                sortParam ? sortParam : ""
+              }`}
+            >
+              {props?.subcategories[0]?.title?.en}
+            </BreadcrumbItem>
+          )}
           <BreadcrumbItem>{title}</BreadcrumbItem>
         </Breadcrumbs>
         <div
