@@ -8,8 +8,6 @@ import Logo from "../Logo";
 import { useTheme } from "@/context/useTheme";
 import { Social } from "@/types/global";
 
-type SocialIconProps = Omit<IconProps, "icon">;
-
 const navLinks = [
   {
     name: "Home",
@@ -29,49 +27,6 @@ const navLinks = [
   },
 ];
 
-const socialItems = [
-  {
-    name: "Facebook",
-    href: "#",
-    icon: (props: SocialIconProps) => (
-      <Icon {...props} icon="fontisto:facebook" />
-    ),
-  },
-  {
-    name: "Instagram",
-    href: "#",
-    icon: (props: SocialIconProps) => (
-      <Icon {...props} icon="fontisto:instagram" />
-    ),
-  },
-  {
-    name: "Twitter",
-    href: "#",
-    icon: (props: SocialIconProps) => (
-      <Icon {...props} icon="fontisto:twitter" />
-    ),
-  },
-  {
-    name: "YouTube",
-    href: "#",
-    icon: (props: SocialIconProps) => (
-      <Icon {...props} icon="fontisto:youtube-play" />
-    ),
-  },
-  {
-    name: "Telegram",
-    href: "#",
-    icon: (props: SocialIconProps) => (
-      <Icon {...props} icon="fontisto:telegram" />
-    ),
-  },
-  {
-    name: "TikTok",
-    href: "#",
-    icon: (props: SocialIconProps) => <Icon {...props} icon="bi:tiktok" />,
-  },
-];
-
 const Footer = () => {
   const { value } = useTheme();
 
@@ -84,14 +39,14 @@ const Footer = () => {
         {value?.footer?.contact && (
           <div>
             <Spacer y={6} />
-            <div className="flex items-center justify-center gap-3 font-bold text-primary text-xl">
-              <span>{value?.footer?.contact?.phone}</span>
+            <div className="flex items-center justify-center text-center gap-3 font-bold text-primary text-xl">
+              {value?.footer?.contact?.phone}
             </div>
-            <div className="flex items-center justify-center gap-3">
-              <span>{value?.footer?.contact?.email}</span>
+            <div className="flex items-center justify-center text-center gap-3">
+              {value?.footer?.contact?.email}
             </div>
-            <div className="flex items-center justify-center gap-3">
-              <span>{value?.footer?.contact?.address}</span>
+            <div className="flex items-center justify-center text-center gap-3">
+              {value?.footer?.contact?.address}
             </div>
           </div>
         )}
