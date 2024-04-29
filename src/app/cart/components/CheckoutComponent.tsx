@@ -91,6 +91,8 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
           "Congratulation! you've been order the product(s) successfully!"
         );
         router.push("/orders");
+      })
+      .then(() => {
         cleanCartItems();
       })
       .catch((err) => {
@@ -294,6 +296,9 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       </section>
     );
   }
+
+  // console.log("ahiop", ship);
+
   if (cartItems.length <= 0) {
     return (
       <section className="grid min-h-dvh place-items-center px-6 py-24 sm:py-32 lg:px-8">
@@ -341,9 +346,9 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   }
 
   return (
-    <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-4 sm:py-4 lg:py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 w-full gap-8">
+    <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-4 sm:py-4 lg:py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 w-full gap-8">
       {/* Left */}
-      <div className="col-span-1 w-full flex-none">
+      <div className="col-span-3 w-full flex-none">
         <div className="flex h-full flex-1 flex-col p-0">
           <div>
             <Button
@@ -444,60 +449,83 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
           </AnimatePresence>
         </div>
       </div>
-      {page <= 0 ? (
-        <RecommendProducts products={products} />
-      ) : (
-        <div className="h-[80dvh] sticky top-28 hidden sm:hidden lg:block">
-          <Card shadow="sm" isBlurred>
-            <CardHeader>Sumary</CardHeader>
-            <CardBody>
-              <dl className="flex flex-col gap-4 py-4">
-                <div className="flex justify-between">
-                  <dt className="text-small text-default-500">Subtotal</dt>
-                  <dd className="text-small font-semibold text-default-700">
-                    {formatToUSD(price)}
-                  </dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-small text-default-500 flex items-center gap-3">
-                    Delivery
-                    <Icon
-                      icon="streamline:transfer-motorcycle-solid"
-                      fontSize={16}
-                    />
-                  </dt>
-                  <dd className="text-small font-semibold text-default-700">
-                    {es_price?.estimatePrice?.data?.price
-                      ? formatToUSD(es_price?.estimatePrice?.data?.price)
-                      : formatToUSD(0)}
-                  </dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-small text-default-500">Tax</dt>
-                  <dd className="text-small font-semibold text-default-700">
-                    $0.00
-                  </dd>
-                </div>
+      <div className="col-span-2">
+        {page <= 0 ? (
+          <RecommendProducts products={products} />
+        ) : (
+          <div className="sticky top-28 hidden sm:hidden lg:block">
+            <Card shadow="sm" isBlurred>
+              <CardHeader>Sumary</CardHeader>
+              <CardBody>
+                <dl className="flex flex-col gap-4 py-4">
+                  <div className="flex justify-between">
+                    <dt className="text-small text-default-500">Subtotal</dt>
+                    <dd className="text-small font-semibold text-default-700">
+                      {formatToUSD(price)}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-small text-default-500 flex items-center gap-3">
+                      Delivery
+                      <Icon
+                        icon="streamline:transfer-motorcycle-solid"
+                        fontSize={16}
+                      />
+                    </dt>
 
-                <Divider />
-                <div className="flex justify-between">
-                  <dt className="text-small font-semibold text-default-500">
-                    Total
-                  </dt>
-                  <dd className="font-semibold text-primary text-xl">
-                    {formatToUSD(
-                      price +
-                        (es_price?.estimatePrice?.data?.price
-                          ? es_price?.estimatePrice?.data?.price
-                          : 0)
+                    {ship === "PERSONAL" ? (
+                      <dd className="text-small font-semibold text-default-700">
+                        Free
+                      </dd>
+                    ) : (
+                      <dd className="text-small font-semibold text-default-700">
+                        {es_price?.estimatePrice?.data?.price
+                          ? formatToUSD(es_price?.estimatePrice?.data?.price)
+                          : formatToUSD(0)}
+                      </dd>
                     )}
-                  </dd>
-                </div>
-              </dl>
-            </CardBody>
-          </Card>
-        </div>
-      )}
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-small text-default-500">Tax</dt>
+                    <dd className="text-small font-semibold text-default-700">
+                      $0.00
+                    </dd>
+                  </div>
+
+                  <Divider />
+                  <div className="flex justify-between">
+                    <dt className="text-small font-semibold text-default-500">
+                      Total
+                    </dt>
+                    {/* <dd className="font-semibold text-primary text-xl">
+                      {formatToUSD(
+                        price +
+                          (es_price?.estimatePrice?.data?.price
+                            ? es_price?.estimatePrice?.data?.price
+                            : 0)
+                      )}
+                    </dd> */}
+                    {ship === "PERSONAL" ? (
+                      <dd className="font-semibold text-primary text-xl">
+                        {formatToUSD(price)}
+                      </dd>
+                    ) : (
+                      <dd className="font-semibold text-primary text-xl">
+                        {formatToUSD(
+                          price +
+                            (es_price?.estimatePrice?.data?.price
+                              ? es_price?.estimatePrice?.data?.price
+                              : 0)
+                        )}
+                      </dd>
+                    )}
+                  </div>
+                </dl>
+              </CardBody>
+            </Card>
+          </div>
+        )}
+      </div>
     </section>
   );
 };

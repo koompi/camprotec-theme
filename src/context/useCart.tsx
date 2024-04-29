@@ -133,7 +133,7 @@ export function CartProvider(props: { children: JSX.Element }) {
         logout: logout,
       }}
     >
-      <Toaster position="top-center" />
+      <Toaster position="top-center" richColors />
       {props.children}
     </CartContext.Provider>
   );

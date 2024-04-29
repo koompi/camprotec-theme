@@ -2,7 +2,6 @@
 
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import CheckoutComponent from "./components/CheckoutComponent";
-import { Toaster } from "sonner";
 import { GET_ALL_PRODUCTS } from "@/graphql/product";
 
 export default function CartPage() {
@@ -18,7 +17,6 @@ export default function CartPage() {
 
   return (
     <>
-      {/* <Toaster position="top-right" />{" "} */}
       <CheckoutComponent products={products?.storeProducts} />
     </>
   );

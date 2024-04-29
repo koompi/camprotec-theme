@@ -17,7 +17,6 @@ export default function MessageBanner() {
         >
           {value?.banner?.message ? (
             <span>
-              Discover{" "}
               {value?.globals?.officialNameProducts
                 ? value?.globals?.officialName
                 : value?.globals?.name}
@@ -25,7 +24,6 @@ export default function MessageBanner() {
             </span>
           ) : (
             <span>
-              Discover{" "}
               {value?.globals?.officialNameProducts
                 ? value?.globals?.officialName
                 : value?.globals?.name}{" "}

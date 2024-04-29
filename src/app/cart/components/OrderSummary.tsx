@@ -16,7 +16,7 @@ const OrderSummary = React.forwardRef<HTMLDivElement, OrderSummaryProps>(
 
     return (
       <div ref={ref} {...props}>
-        <Toaster position="bottom-right" />
+        <Toaster position="top-center" richColors />
         {!hideTitle && (
           <>
             <h2 className="font-medium text-default-500">Your Order</h2>

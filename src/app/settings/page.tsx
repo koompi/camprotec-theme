@@ -84,7 +84,7 @@ export default function Component() {
 
   return (
     <>
-      <Toaster position="top-right" />
+      <Toaster position="top-center" richColors />
       <div className="flex items-center justify-center py-12">
         <form
           onSubmit={handleSubmit(onSubmit)}

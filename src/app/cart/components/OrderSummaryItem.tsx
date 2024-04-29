@@ -7,6 +7,7 @@ import { cn } from "@/utils/cn";
 import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
+import { formatToUSD } from "@/utils/usd";
 
 export type OrderSummaryItemProps = React.HTMLAttributes<HTMLLIElement> &
   CartItem;
@@ -44,7 +45,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
 
           <div className="mt-2 flex items-center gap-2">
             <span className="text-small font-semibold text-default-700">
-              ${product?.price}
+              {formatToUSD(product?.price)}
             </span>
             <span className="text-small text-danger">x {quantity}</span>
           </div>

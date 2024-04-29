@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Map from "../components/Map";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -77,34 +76,13 @@ export default function PageLocation() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormCreateLocation>();
 
   // mutation create address
 
   const [storeCreateAddress] = useMutation(CREATE_CUSTOMER_LOCATION);
-
-  const onSubmit = (data: FormCreateLocation) => {
-    const inputDelivery = {
-      input: {
-        ...data,
-        lat: position?.lat,
-        lng: position?.lng,
-        photos: photo ? [photo] : null,
-        label: addressLabel,
-      },
-    };
-
-    storeCreateAddress({ variables: inputDelivery })
-      .then(() => {
-        toast.success("New location has been created!");
-        // router.back();
-        router.push(`/cart?steps=shipping`);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   // phone validator
   useEffect(() => {
@@ -118,6 +96,11 @@ export default function PageLocation() {
       setColor("danger");
     }
   }, [operator]);
+
+  useEffect(() => {
+    setValue("addressName", addressName);
+    setValue("phoneNumber", newPhone.phoneNumber);
+  }, [addressName, newPhone]);
 
   useEffect(() => {
     if (newPhone.phoneNumber !== "") {
@@ -137,6 +120,27 @@ export default function PageLocation() {
       }
     }
   }, [newPhone.phoneNumber]);
+
+  const onSubmit = (data: FormCreateLocation) => {
+    const inputDelivery = {
+      input: {
+        ...data,
+        lat: position?.lat,
+        lng: position?.lng,
+        photos: photo ? [photo] : null,
+        label: addressLabel,
+      },
+    };
+    storeCreateAddress({ variables: inputDelivery })
+      .then(() => {
+        toast.success("New location has been created!");
+        // router.back();
+        router.push(`/cart?steps=shipping`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   function handleNewPhoneChange(e: any) {
     const { name, value } = e.target;
@@ -330,7 +334,7 @@ export default function PageLocation() {
             )}
           </div>
 
-          <div>
+          <div onClick={onOpen}>
             <Input
               variant="bordered"
               label="Delivery Address"
@@ -343,22 +347,10 @@ export default function PageLocation() {
               isRequired
               className="w-full"
               defaultValue={addressName}
-              value={addressName}
+              // value={addressName}
               key={addressName}
               type="text"
-              onClick={onOpen}
             />
-            {/* <label>Delivery Address</label>
-            <Button
-              fullWidth
-              size="lg"
-              variant="bordered"
-              className="mt-6"
-              onPress={onOpen}
-            >
-              <Icon icon="solar:point-on-map-bold" fontSize={30} />
-              {addressName}
-            </Button> */}
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

@@ -9,6 +9,7 @@ import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import ShuffleHero from "./components/BannerTwo";
 import BannerThree from "./components/BannerThree";
 import FAQs from "./components/FAQs";
+import Parterns from "./components/Parterns";
 
 export default function Home() {
   const { data: products, loading: loadingProduct } = useQuery(
@@ -40,9 +41,12 @@ export default function Home() {
       </section>
       <section
         id="about"
-        className="py-12 sm:py-12 lg:py-32 max-w-3xl mx-auto px-3 sm:px-3 lg:px-6"
+        className="py-6 sm:py-6 lg:py-12 max-w-3xl mx-auto px-3 sm:px-3 lg:px-6"
       >
         <FAQs />
+      </section>
+      <section className="pb-6 sm:pb-6 lg:pb-12 container mx-auto px-3 sm:px-3 lg:px-6">
+        <Parterns />
       </section>
     </main>
   );

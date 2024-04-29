@@ -14,6 +14,7 @@ import { CUSTOMER_ADDRESS, DELIVERIES } from "@/graphql/delivery";
 import { CustomerAddressType, DeliveryType } from "@/types/checkout";
 import CustomRadio from "./CustomRadio";
 import { Icon } from "@iconify/react";
+import { useTheme } from "@/context/useTheme";
 
 export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
   variant?: InputProps["variant"];
@@ -31,6 +32,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
       base: "data-[selected=true]:border-foreground",
       control: "bg-foreground",
     };
+    const { value } = useTheme();
 
     const { data, loading } = useQuery(DELIVERIES);
     const { data: address, loading: loadingAddress } =
@@ -51,7 +53,6 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
             <RadioGroup
               aria-label="Select existing payment method"
               classNames={{ wrapper: "gap-3" }}
-              defaultValue="PERSONAL"
               onValueChange={(value) => {
                 setShip(value);
               }}
@@ -60,15 +61,15 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                 return (
                   <CustomRadio
                     key={idx}
-                    isRecommended={del?.express !== "PERSONAL"}
                     classNames={deliveryRadioClasses}
                     description={del?.instruction}
                     icon={
                       <Image
                         alt="delivery logo"
-                        src={del?.logo ? del?.logo : "/images/shop.png"}
+                        // src={del?.logo ? del?.logo : "/images/shop.png"}
+                        src="/images/l192.svg"
                         radius="none"
-                        className="h-16"
+                        className="h-12"
                       />
                     }
                     label={
@@ -83,11 +84,16 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
               <CustomRadio
                 key={2}
                 classNames={deliveryRadioClasses}
+                isRecommended
                 description=""
                 icon={
                   <Image
                     alt="delivery logo"
-                    src="/images/shop.png"
+                    src={
+                      !value?.header?.logo
+                        ? "/images/shop.png"
+                        : value?.header?.logo
+                    }
                     radius="none"
                     className="w-24"
                   />
@@ -139,9 +145,6 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
             </RadioGroup>
           </AccordionItem>
         </Accordion>
-        {/* <Link href="/locations/create" underline="always">
-          Add new delivery location?
-        </Link> */}
         <Link
           href="/locations/create"
           className="w-full h-28 border border-dashed rounded-xl items-center justify-center "
