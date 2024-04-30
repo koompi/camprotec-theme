@@ -7,6 +7,13 @@
     scroll-behavior: smooth;
   }
 
+  .background-img {
+    background-image: url("../../public/images/banner-img.png");
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+
   .hide-scroll-bar {
     -ms-overflow-style: none;
     scrollbar-width: none;
