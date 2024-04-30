@@ -29,7 +29,7 @@ const StickyImage = ({ imgUrl }: { imgUrl: string }) => {
       className="sticky z-0 overflow-hidden rounded-none sm:rounded-none lg:rounded-3xl"
     >
       <motion.div
-        className="absolute inset-0 bg-neutral-950/60 z-10"
+        className="absolute inset-0 bg-black/60 z-30"
         style={{
           opacity,
         }}
