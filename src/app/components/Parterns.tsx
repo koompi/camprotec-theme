@@ -182,10 +182,10 @@ const Parterns = () => {
           ))}
         </ScrollingBanner>
       </section>
-      <section className="mx-auto w-full max-w-6xl px-6 grid sm:grid lg:hidden">
+      <section className="mx-auto w-full max-w-6xl px-0 grid sm:grid lg:hidden">
         <div className="flex flex-col m-auto p-auto">
           <div className="flex overflow-x-scroll hide-scroll-bar">
-            <div className="flex gap-3 items-center flex-nowrap mx-auto max-w-80">
+            <div className="flex gap-3 items-center flex-nowrap mx-auto max-w-96">
               {topLogo.map((_res: LogoType, idx: number) => (
                 <div className="inline-block" key={idx}>
                   <Image
@@ -201,7 +201,7 @@ const Parterns = () => {
         </div>
         <div className="flex flex-col m-auto p-auto">
           <div className="flex overflow-x-scroll hide-scroll-bar">
-            <div className="flex gap-3 items-center flex-nowrap mx-auto max-w-80">
+            <div className="flex gap-3 items-center flex-nowrap mx-auto max-w-96">
               {bottomLogo.map((_res: LogoType, idx: number) => (
                 <div className="inline-block" key={idx}>
                   <Image

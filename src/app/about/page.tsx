@@ -9,29 +9,24 @@ const AboutPage = () => {
   return (
     <div className="bg-white">
       <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        imgUrl="https://images.unsplash.com/photo-1499540633125-484965b60031?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         subheading="Behind"
         heading="CAM Professional Technology"
       >
-        <TextSupportContent title="We Are CAM Professional Technology">
+        <TextSupportContent title="We are CAM Professional Technology">
           <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
-            We are trying our best service for you with the best quality and
-            trust. Finding the best solutions, fixing and solve issues with all
-            our ability.
-          </p>
-          <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
-            We choose the best parts of consumables to make the whole toner
-            cartridge.
-          </p>
-          <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
-            We test each toner cartridge before delivery to make sure quality.
+            Our company strives to deliver high-quality products and build trust
+            with clients. Our team resolves issues with expertise. We
+            manufacture toner cartridges with selected parts to ensure quality.
+            Each toner cartridge undergoes rigorous testing before delivery to
+            guarantee its performance and reliability.
           </p>
         </TextSupportContent>
       </TextParallaxContent>
       <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1503694978374-8a2fa686963a?q=80&w=3869&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        imgUrl="https://images.unsplash.com/photo-1577580529485-d39b28695fdf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         subheading=""
-        heading="We Believe In Hard Work "
+        heading="We believe in hard work "
       >
         <TextSupportContent title="Vision">
           <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
@@ -41,9 +36,9 @@ const AboutPage = () => {
         </TextSupportContent>
       </TextParallaxContent>
       <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1532186773960-85649e5cb70b?q=80&w=3871&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        imgUrl="https://images.unsplash.com/photo-1510078344547-e481316148ba?q=80&w=1500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         subheading=""
-        heading="And Commitment"
+        heading="Commitment"
       >
         <TextSupportContent title="Mission">
           <p className="mb-8 text-xl text-neutral-600 md:text-2xl">
@@ -53,29 +48,30 @@ const AboutPage = () => {
         </TextSupportContent>
       </TextParallaxContent>
       <TextParallaxContent
-        imgUrl="https://images.unsplash.com/photo-1553605292-f32d804b2743?q=80&w=3499&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        imgUrl="https://images.unsplash.com/photo-1593510987331-18f58133c76d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         subheading=""
         heading="Policies"
       >
         <TextSupportContent title="Our Policies">
-          <ul className="list-disc text-xl text-neutral-600 md:text-2xl">
+          <ul className="list-disc text-xl text-neutral-600 md:text-2xl px-6">
             <li className="mb-8 ">
-              All company employees and professionals are the number one
-              property, then customers.
+              The primary asset of a company is its employees and professionals,
+              followed by its customers.
             </li>
             <li className="mb-8 ">
-              Serve customers to be the most perfect and sincere.
+              Customers should be served with utmost perfection and sincerity.
             </li>
             <li className="mb-8 ">
-              End the problem by finding the central and best solutions.
+              Central and optimal solutions should be sought to resolve
+              problems.
             </li>
             <li className="mb-8 ">
-              Self-respect, respect others is the foundation of the company’s
-              morality.
+              Self-respect and respect for others are the cornerstone of the
+              company&apos;s ethics.
             </li>
             <li className="mb-8 ">
-              Help thinking about every method, enabling the company to grow, we
-              will grow the same.
+              We will grow in tandem with the company by contributing ideas and
+              strategies that enable its growth.
             </li>
           </ul>
         </TextSupportContent>

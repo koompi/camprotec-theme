@@ -39,14 +39,14 @@ export default function Home() {
           loading={loadingProduct}
         />
       </section>
+      <section className="py-6 sm:py-6 lg:py-12 container mx-auto px-3 sm:px-3 lg:px-6">
+        <Parterns />
+      </section>
       <section
         id="about"
-        className="py-6 sm:py-6 lg:py-12 max-w-3xl mx-auto px-3 sm:px-3 lg:px-6"
+        className=" max-w-3xl mx-auto px-3 sm:px-3 lg:px-6 pb-6 sm:pb-6 lg:pb-12"
       >
         <FAQs />
-      </section>
-      <section className="pb-6 sm:pb-6 lg:pb-12 container mx-auto px-3 sm:px-3 lg:px-6">
-        <Parterns />
       </section>
     </main>
   );

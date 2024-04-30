@@ -26,8 +26,7 @@ export default function MessageBanner() {
             <span>
               {value?.globals?.officialNameProducts
                 ? value?.globals?.officialName
-                : value?.globals?.name}{" "}
-              , a trusted supplier of essential products
+                : value?.globals?.name}
             </span>
           )}
         </Link>

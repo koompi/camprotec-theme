@@ -32,7 +32,7 @@ const About = () => {
         {value?.about?.members.map((mem: Member, idx: number) => (
           <div key={idx} className="flex flex-col items-center">
             <Avatar
-              className="h-24 sm:h-24 lg:h-40 w-24 sm:w-24 lg:w-40"
+              className="h-36 sm:h-36 lg:h-40 w-36 sm:w-36 lg:w-40"
               src={mem?.photo}
             />
             <h3 className="mt-2 font-medium text-lg">{mem?.name}</h3>
