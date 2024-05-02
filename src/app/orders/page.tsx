@@ -7,7 +7,7 @@ import { GET_ORDERS } from "@/graphql/orders";
 import { OrdersType } from "@/types/checkout";
 import { Skeleton } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
-import { PaginationProduct } from "../components/Pagination";
+// import { PaginationProduct } from "../components/Pagination";
 
 const OrderPage = () => {
   const offset = useSearchParams().get("page") ?? "1";
@@ -84,24 +84,14 @@ const OrderPage = () => {
           );
         })}
       </div>
-      <div className="w-full flex justify-end mt-8 space-x-2">
+      {/* <div className="w-full flex justify-end mt-8 space-x-2">
         <PaginationProduct
           page={page}
           total={data?.storeOrders?.pages}
           rowsPerPage={parseInt(limit)}
           setPage={setPage}
         />
-      </div>
-      {/* <Pagination
-        disableCursorAnimation
-        showControls
-        total={10}
-        initialPage={1}
-        className="gap-2 mt-9 mx-auto w-full flex items-center text-center justify-center"
-        radius="full"
-        renderItem={renderItem}
-        variant="light"
-      /> */}
+      </div> */}
     </section>
   );
 };

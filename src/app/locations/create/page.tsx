@@ -30,14 +30,6 @@ const DynamicMap = dynamic(() => import("../components/Map"), {
   ssr: false,
 });
 
-const initialNewPhone = {
-  phoneNumber: "",
-  isInternal: false,
-  isVerified: false,
-  isActived: false,
-  isBanned: false,
-};
-
 interface FormCreateLocation {
   addressName: string;
   email: string;
@@ -51,12 +43,21 @@ interface FormCreateLocation {
 }
 
 export default function PageLocation() {
+  const { user } = useAuth();
+
+  const initialNewPhone = {
+    phoneNumber: user?.phone_number ? user?.phone_number : "",
+    isInternal: false,
+    isVerified: false,
+    isActived: false,
+    isBanned: false,
+  };
+
   const [position, setPosition] = useState<L.LatLngExpression | any>([
     11.562108, 104.888535,
   ]);
   const [addressName, setAddressName] = useState<string>("");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { user } = useAuth();
   const [newPhone, setNewPhone] = useState(initialNewPhone);
   // const [isBlurred, setIsBlurred] = useState(false);
   const [isValid, setIsValid] = useState(false);
@@ -100,7 +101,7 @@ export default function PageLocation() {
   useEffect(() => {
     setValue("addressName", addressName);
     setValue("phoneNumber", newPhone.phoneNumber);
-  }, [addressName, newPhone]);
+  }, [addressName, newPhone, setValue]);
 
   useEffect(() => {
     if (newPhone.phoneNumber !== "") {
@@ -121,6 +122,7 @@ export default function PageLocation() {
     }
   }, [newPhone.phoneNumber]);
 
+  //  onSubmit to create location
   const onSubmit = (data: FormCreateLocation) => {
     const inputDelivery = {
       input: {
@@ -131,6 +133,7 @@ export default function PageLocation() {
         label: addressLabel,
       },
     };
+
     storeCreateAddress({ variables: inputDelivery })
       .then(() => {
         toast.success("New location has been created!");
@@ -359,6 +362,7 @@ export default function PageLocation() {
               label="First Name"
               labelPlacement="outside"
               size="lg"
+              defaultValue={user?.first_name}
               placeholder="First name is required"
               {...register("firstName", { required: true })}
               isRequired
@@ -368,6 +372,7 @@ export default function PageLocation() {
               label="Last Name"
               labelPlacement="outside"
               size="lg"
+              defaultValue={user?.last_name}
               placeholder="Last name is required"
               {...register("lastName", { required: true })}
               isRequired
@@ -410,6 +415,7 @@ export default function PageLocation() {
               isInvalid={isInvalidEmail}
               errorMessage={isInvalidEmail && "Your email is invalid!"}
               onValueChange={setEmail}
+              defaultValue={user?.email}
             />
           </div>
 

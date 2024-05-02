@@ -83,7 +83,12 @@
   --swiper-pagination-color: #fff;
 }
 .swiperSlider2 {
-  max-height: 60dvh !important;
+  height: 60dvh !important;
+}
+.iiz {
+  width: 100% !important;
+  display: grid !important;
+  place-items: center !important;
 }
 
 /* ------responsive for product details ------- */

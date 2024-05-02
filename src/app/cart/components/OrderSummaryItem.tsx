@@ -1,12 +1,11 @@
 "use client";
 
 import React from "react";
-import { Button, Chip, Image, Link, Tooltip } from "@nextui-org/react";
+import { Button, Chip, Image, Link } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { cn } from "@/utils/cn";
 import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
-import { toast } from "sonner";
 import { formatToUSD } from "@/utils/usd";
 
 export type OrderSummaryItemProps = React.HTMLAttributes<HTMLLIElement> &
@@ -28,7 +27,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
         <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center">
           <Image
             alt={product?.name}
-            src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${product?.preview}`}
+            src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backend.riverbase.org"}/api/drive?hash=${product?.preview}`}
             isZoomed
           />
         </div>

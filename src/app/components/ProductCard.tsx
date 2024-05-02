@@ -45,7 +45,7 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
         <CardBody className="p-0 flex justify-center items-center mx-auto ">
           <Image
             className="h-36 sm:h-36 lg:h-52 bg-repeat-round rounded-2xl mx-auto object-cover object-center "
-            src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${props?.product?.thumbnail}`}
+            src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backend.riverbase.org"}/api/drive?hash=${props?.product?.thumbnail}`}
             alt="product image"
             radius="lg"
             isZoomed

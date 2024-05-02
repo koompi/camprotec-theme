@@ -17,7 +17,7 @@ const CategoryCardItem: FC<Category> = (props) => {
         isZoomed
         alt="Card background"
         className="z-0 w-full h-full brightness-75 object-cover"
-        src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${props?.logo}`}
+        src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backend.riverbase.org"}/api/drive?hash=${props?.logo}`}
       />
     </Card>
   );

@@ -39,14 +39,14 @@ export async function generateMetadata(
         {
           url:
             process.env.NEXT_PUBLIC_DRIVE ??
-            `https://drive.backnd.riverbase.org/api/drive?hash=${data?.storeProduct?.previews[0]}`,
+            `https://drive.backend.riverbase.org/api/drive?hash=${data?.storeProduct?.previews[0]}`,
           width: 800,
           height: 600,
         },
         {
           url:
             process.env.NEXT_PUBLIC_DRIVE ??
-            `https://drive.backnd.riverbase.org/api/drive?hash=${data?.storeProduct?.previews[0]}`,
+            `https://drive.backend.riverbase.org/api/drive?hash=${data?.storeProduct?.previews[0]}`,
           width: 1800,
           height: 1600,
         },
@@ -70,7 +70,7 @@ export default async function ProductPage({
   });
 
   return (
-    <section className="container mx-auto px-6 py-3 sm:py-3 lg:py-16">
+    <section className="container px-0 sm:px-0 lg:px-6 mx-auto py-3 sm:py-3 lg:py-16">
       <ProductViewInfo {...data?.storeProduct} />
     </section>
   );
@@ -115,14 +115,14 @@ export default async function ProductPage({
 //         {
 //           url:
 //             process.env.NEXT_PUBLIC_DRIVE ??
-//             `https://drive.backnd.riverbase.org/api/drive?hash=${data?.storeProduct?.previews[0]}`,
+//             `https://drive.backend.riverbase.org/api/drive?hash=${data?.storeProduct?.previews[0]}`,
 //           width: 800,
 //           height: 600,
 //         },
 //         {
 //           url:
 //             process.env.NEXT_PUBLIC_DRIVE ??
-//             `https://drive.backnd.riverbase.org/api/drive?hash=${data?.storeProduct?.previews[0]}`,
+//             `https://drive.backend.riverbase.org/api/drive?hash=${data?.storeProduct?.previews[0]}`,
 //           width: 1800,
 //           height: 1600,
 //         },

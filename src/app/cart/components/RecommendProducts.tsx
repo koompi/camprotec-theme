@@ -10,14 +10,14 @@ import RatingRadioGroup from "@/app/products/components/RatingRadioGroup";
 
 const RecommendProducts = ({ products }: { products: ProductType[] }) => {
   return (
-    <>
+    <div className="hidden sm:hidden lg:block">
       <h1 className="text-2xl font-medium mb-3">Recomended Products</h1>
-      <div className="sticky top-28 hidden sm:hidden lg:flex flex-col gap-3">
+      <div className="sticky top-28 flex flex-col gap-3">
         {products?.slice(0, 5)?.map((res: ProductType, idx: number) => {
           return <RecommendCard props={res} key={idx} />;
         })}
       </div>
-    </>
+    </div>
   );
 };
 
@@ -41,7 +41,7 @@ const RecommendCard: FC<{ props: ProductType }> = ({ props }) => {
                   width="100%"
                   shadow="none"
                   isBlurred
-                  src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backnd.riverbase.org"}/api/drive?hash=${props?.thumbnail}`}
+                  src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backend.riverbase.org"}/api/drive?hash=${props?.thumbnail}`}
                 />
               </div>
 
