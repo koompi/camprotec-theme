@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import { siteConfig } from "../config/site";
+import siteConfig from "../../config/site.json";
 import { ApolloWrapper } from "@/libs/apollo-wrapper";
 import ThemeProvider, { useTheme } from "@/context/useTheme";
 import NavbarLayout from "./components/layouts/Navbar";
