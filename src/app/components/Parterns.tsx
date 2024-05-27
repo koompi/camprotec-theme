@@ -57,7 +57,7 @@ const Parterns = () => {
     },
     {
       name: "PRASAC",
-      src: "prasac.avif",
+      src: "prasac.png",
     },
     {
       name: "PRINCE",
