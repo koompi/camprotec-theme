@@ -39,7 +39,11 @@ export default function ProductsPage() {
     {
       variables: {
         tagId: brands
-          ? brands
+          ? cat
+            ? sub
+              ? [...brands?.split(","), cat, sub]
+              : [...brands?.split(","), cat]
+            : [...brands?.split(",")]
           : cat
             ? sub
               ? [sub]

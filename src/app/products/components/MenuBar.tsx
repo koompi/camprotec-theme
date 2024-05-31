@@ -7,7 +7,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 const MenuBar = ({ onOpen }: { onOpen: () => void }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const search = useSearchParams();
+  const brands = searchParams.get("brands") || null;
+
   const sort = search.get("sort") as string;
   const selected = sort?.length > 0 ? sort : "all";
   return (
@@ -35,7 +38,7 @@ const MenuBar = ({ onOpen }: { onOpen: () => void }) => {
             </Button>
             <div className="hidden items-center gap-1 md:flex">
               <SearchProduct
-                routeBack={`?search=&category=${
+                routeBack={`?search=&brands=${brands ? brands : ""}&category=${
                   search.get("category") ? search.get("category") : ""
                 }&sub_category=${
                   search.get("sub_category") ? search.get("sub_category") : ""
@@ -64,7 +67,7 @@ const MenuBar = ({ onOpen }: { onOpen: () => void }) => {
               router.push(
                 `?search=${
                   search.get("search") ? search.get("search") : ""
-                }&category=${
+                }&brands=${brands ? brands : ""}&category=${
                   search.get("category") ? search.get("category") : ""
                 }&sub_category=${
                   search.get("sub_category") ? search.get("sub_category") : ""

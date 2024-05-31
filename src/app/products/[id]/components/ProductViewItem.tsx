@@ -59,6 +59,8 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     const searchParams = useSearchParams();
     const search = searchParams.get("search") || null;
     const sortParam = searchParams.get("sort") || null;
+    const brands = searchParams.get("brands") || null;
+
     const [selectedImage, setSelectedImage] = React.useState(previews[0]);
     const { addToCart } = useCart();
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -158,7 +160,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           <BreadcrumbItem href="/products">Products</BreadcrumbItem>
           {props?.category && (
             <BreadcrumbItem
-              href={`/products/?search${search ? search : ""}=&category=${
+              href={`/products/?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                 props?.category?.id ? props?.category?.id : ""
               }&sort=${sortParam ? sortParam : ""}`}
             >
@@ -167,7 +169,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           )}
           {props?.subcategories.length > 0 && (
             <BreadcrumbItem
-              href={`/products/?search${search ? search : ""}=&category=${
+              href={`/products/?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                 props?.category?.id ? props?.category?.id : ""
               }&sub_category=${props?.subcategories[0]?.id ? props?.subcategories[0]?.id : ""}&sort=${
                 sortParam ? sortParam : ""

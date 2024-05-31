@@ -24,6 +24,7 @@ export default function SearchPage() {
   const price =
     ["price_low_to_high", "price_high_to_low"].includes(sortParam as string) ||
     null;
+  const brands = searchParams.get("brands") || null;
 
   let skip =
     parseInt(page as string) > 1
@@ -39,7 +40,7 @@ export default function SearchPage() {
 
   const { data: products } = useQuery(GLOBAL_PRODUCT_FILTERING, {
     variables: {
-      tagId: cat ? (sub ? [sub] : [cat]) : search ? [] : null,
+      tagId: brands ? brands : cat ? (sub ? [sub] : [cat]) : search ? [] : null,
       keyword: search ? search : search,
       status: price ? "price" : null,
       range: rangePrice,

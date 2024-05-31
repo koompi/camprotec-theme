@@ -87,7 +87,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                       className="text-start w-full justify-start"
                       onClick={() => {
                         router.push(
-                          `?search${search ? search : ""}=&category=${
+                          `?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                             cat ? cat : ""
                           }&sub_category=${sub?.id ? sub?.id : ""}&sort=${
                             sortParam ? sortParam : ""
@@ -163,7 +163,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                 color="default"
                 onChange={(value) => {
                   router.push(
-                    `?search${search ? search : ""}=&brands=${value}&category=${
+                    `?search=${search ? search : ""}&brands=${value ? value : ""}&category=${
                       cat ? cat : ""
                     }&sort=${sortParam ? sortParam : ""}`
                   );
@@ -208,7 +208,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                         }
                         onPress={() => {
                           router.push(
-                            `?search${search ? search : ""}=&category=${
+                            `?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                               cat?.id ? cat?.id : ""
                             }&sort=${sortParam ? sortParam : ""}`
                           );
@@ -223,7 +223,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                           onValueChange={(value) => {
                             setSelected(value),
                               router.push(
-                                `?search${search ? search : ""}=&category=${
+                                `?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                                   cat?.id ? cat?.id : ""
                                 }&sub_category=${value ? value : ""}&sort=${
                                   sortParam ? sortParam : ""
@@ -258,7 +258,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                       onClick={() => {
                         onOpen();
                         router.push(
-                          `?search${search ? search : ""}=&category=${
+                          `?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                             cat?.id ? cat?.id : ""
                           }&sort=${sortParam ? sortParam : ""}`
                         );

@@ -9,6 +9,7 @@ export const SearchProduct = ({ routeBack }: { routeBack: string }) => {
   const cat = searchParams.get("category") || null;
   const sub = searchParams.get("sub_category") || null;
   const sortParam = searchParams.get("sort") || null;
+  const brands = searchParams.get("brands") || null;
 
   const [filterValue, setFilterValue] = useState("");
 
@@ -32,7 +33,7 @@ export const SearchProduct = ({ routeBack }: { routeBack: string }) => {
     if (e.key == "Enter") {
       if (filterValue) {
         router.push(
-          `?search=${filterValue ? filterValue : ""}&category=${
+          `?search=${filterValue ? filterValue : ""}&brands=${brands ? brands : ""}&category=${
             cat ? cat : ""
           }&sub_category=${sub ? sub : ""}&sort=${sortParam ? sortParam : ""}`
         );

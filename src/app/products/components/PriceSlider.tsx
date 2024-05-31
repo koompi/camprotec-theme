@@ -87,6 +87,7 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
     const sortParam = searchParams.get("sort") || null;
     const min = searchParams.get("min_price") || null;
     const max = searchParams.get("max_price") || null;
+    const brands = searchParams.get("brands") || null;
 
     const defaultValue = React.useMemo<RangeValue>(
       () => range?.defaultValue || [0, 5000],
@@ -134,7 +135,7 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
           const clampedValue = clampValue(newValue, minValue, value[1]);
           setValue([clampedValue, value[1]]),
             router.push(
-              `?search=${search ? search : ""}&category=${
+              `?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                 cat ? cat : ""
               }&sub_category=${sub ? sub : ""}&sort=${
                 sortParam ? sortParam : ""
@@ -150,6 +151,7 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
         value,
         router,
         search,
+        brands,
         cat,
         sub,
         sortParam,
@@ -165,7 +167,7 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
         if (!isNaN(newValue) && newValue <= maxValue) {
           setValue([value[0], newValue]),
             router.push(
-              `?search=${search ? search : ""}&category=${
+              `?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                 cat ? cat : ""
               }&sub_category=${sub ? sub : ""}&sort=${
                 sortParam ? sortParam : ""
@@ -181,6 +183,7 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
         value,
         router,
         search,
+        brands,
         cat,
         sub,
         sortParam,
@@ -208,7 +211,7 @@ const PriceSlider = React.forwardRef<HTMLDivElement, PriceSliderProps>(
 
               setValue(value as RangeValue),
                 router.push(
-                  `?search=${search ? search : ""}&category=${
+                  `?search=${search ? search : ""}&brands=${brands ? brands : ""}&category=${
                     cat ? cat : ""
                   }&sub_category=${sub ? sub : ""}&sort=${
                     sortParam ? sortParam : ""
