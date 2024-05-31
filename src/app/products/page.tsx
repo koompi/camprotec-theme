@@ -20,6 +20,8 @@ export default function ProductsPage() {
     ["price_low_to_high", "price_high_to_low"].includes(sortParam as string) ||
     null;
 
+  const brands = searchParams.get("brands") || null;
+
   let skip =
     parseInt(page as string) > 1
       ? (parseInt(size as string) / 2) * parseInt(page as string) + 1
@@ -36,7 +38,15 @@ export default function ProductsPage() {
     GLOBAL_PRODUCT_FILTERING,
     {
       variables: {
-        tagId: cat ? (sub ? [sub] : [cat]) : search ? [] : null,
+        tagId: brands
+          ? brands
+          : cat
+            ? sub
+              ? [sub]
+              : [cat]
+            : search
+              ? []
+              : null,
         keyword: search ? search : search,
         status: price ? "price" : null,
         range: rangePrice,

@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionItem,
   Button,
+  Checkbox,
+  CheckboxGroup,
   Chip,
   Divider,
   Radio,
   RadioGroup,
+  Skeleton,
   useDisclosure,
 } from "@nextui-org/react";
-import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 
 import { cn } from "@/utils/cn";
@@ -22,6 +24,9 @@ import { Filter } from "@/types/filterTypes";
 import { Category, SubCategory } from "@/types/category";
 import { useSearchParams } from "next/navigation";
 import SidebarDrawer from "./SidebarDrawer";
+import { BRANDS } from "@/graphql/brands";
+import { useQuery } from "@apollo/client";
+import { BrandsType } from "@/types/product";
 
 export type FiltersWrapperProps = React.HTMLAttributes<HTMLDivElement> & {
   items: Filter[];
@@ -55,10 +60,14 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
     const sortParam = searchParams.get("sort") || null;
     const min = searchParams.get("min_price") || null;
     const max = searchParams.get("max_price") || null;
+    const brands = searchParams.get("brands") || null;
 
     const [selected, setSelected] = useState(sub);
     const [subcat, setSubCat] = useState<SubCategory[]>();
+
     const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
+
+    const { data, loading } = useQuery(BRANDS);
 
     return (
       <>
@@ -112,9 +121,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
         >
           {showTitle && (
             <>
-              <h2 className="text-large font-medium text-foreground">
-                {title}
-              </h2>
+              <h2 className="text-xl font-semibold text-foreground">{title}</h2>
               <Divider className="my-3 bg-default-100" />
             </>
           )}
@@ -133,12 +140,53 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
             }}
           />
 
+          {/* Brands */}
+
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold leading-8 text-default-600">
+              Brands
+            </h3>
+            {loading ? (
+              <div className="flex flex-col gap-6 mt-3">
+                <Skeleton isLoaded={loading} className="w-full rounded-lg">
+                  <div className="h-3 w-full rounded-lg bg-secondary-200"></div>
+                </Skeleton>
+                <Skeleton isLoaded={loading} className="w-full rounded-lg">
+                  <div className="h-3 w-full rounded-lg bg-secondary-200"></div>
+                </Skeleton>
+                <Skeleton isLoaded={loading} className="w-full rounded-lg">
+                  <div className="h-3 w-full rounded-lg bg-secondary-200"></div>
+                </Skeleton>
+              </div>
+            ) : (
+              <CheckboxGroup
+                color="default"
+                onChange={(value) => {
+                  router.push(
+                    `?search${search ? search : ""}=&brands=${value}&category=${
+                      cat ? cat : ""
+                    }&sort=${sortParam ? sortParam : ""}`
+                  );
+                }}
+                defaultValue={brands?.split(",")}
+              >
+                {data?.storeOwnerBrands.map((b: BrandsType) => {
+                  return (
+                    <Checkbox key={b?.id} value={b?.title?.en}>
+                      {b?.title?.en}
+                    </Checkbox>
+                  );
+                })}
+              </CheckboxGroup>
+            )}
+          </div>
+
           {/* Categories */}
 
           {categories && (
-            <>
+            <div className="mt-6">
               <div className="hidden sm:hidden lg:block">
-                <h3 className="text-medium font-medium leading-8 text-default-600">
+                <h3 className="text-lg font-semibold leading-8 text-default-600">
                   Categories
                 </h3>
                 <Accordion>
@@ -229,7 +277,7 @@ const FiltersWrapper = React.forwardRef<HTMLDivElement, FiltersWrapperProps>(
                   );
                 })}
               </div>
-            </>
+            </div>
           )}
 
           <>

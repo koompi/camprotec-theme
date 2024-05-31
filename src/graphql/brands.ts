@@ -7,8 +7,8 @@ export const BRANDS = gql`
       logo
       title {
         en
+        kh
       }
-      createdAt
     }
   }
 `;

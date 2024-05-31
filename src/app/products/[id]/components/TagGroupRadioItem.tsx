@@ -4,13 +4,10 @@ import type { RadioProps } from "@nextui-org/react";
 
 import React from "react";
 import {
-  Button,
-  Chip,
   VisuallyHidden,
   useRadio,
   useRadioGroupContext,
 } from "@nextui-org/react";
-import { Icon } from "@iconify/react";
 
 import { cn } from "@/utils/cn";
 

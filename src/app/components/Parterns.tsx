@@ -55,10 +55,10 @@ const Parterns = () => {
       name: "ORKIDE",
       src: "orkide.avif",
     },
-    {
-      name: "PRASAC",
-      src: "prasac.png",
-    },
+    // {
+    //   name: "PRASAC",
+    //   src: "prasac.png",
+    // },
     {
       name: "PRINCE",
       src: "prince-bank.jpg",
@@ -137,6 +137,10 @@ const Parterns = () => {
       name: "ZUELING",
       src: "zueling-pharma.avif",
     },
+    {
+      name: "PRASAC",
+      src: "prasak.png",
+    },
   ];
 
   return (
@@ -152,7 +156,7 @@ const Parterns = () => {
           {topLogo.map((_res: LogoType, idx: number) => (
             <div
               key={idx}
-              className="flex items-center justify-center text-foreground"
+              className="flex items-center justify-center text-foreground w-[9rem]"
             >
               <Image
                 alt={_res?.name}
@@ -169,7 +173,7 @@ const Parterns = () => {
           {bottomLogo.map((_res, idx: number) => (
             <div
               key={idx}
-              className="flex items-center justify-center text-foreground"
+              className="flex items-center justify-center text-foreground w-[12rem]"
             >
               <Image
                 alt="logo"

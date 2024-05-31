@@ -61,3 +61,14 @@ export type HeaderType = {
   name: string;
   type: boolean;
 };
+
+export type BrandTitleType = {
+  en: string;
+  kh: string;
+};
+
+export type BrandsType = {
+  id: string;
+  logo: string;
+  title: BrandTitleType;
+};
