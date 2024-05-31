@@ -1,6 +1,7 @@
 import { GET_PRODUCT } from "@/graphql/product";
 import { Metadata, ResolvingMetadata } from "next";
 import { getClient } from "@/libs/client";
+
 import dynamic from "next/dynamic";
 
 const ProductViewInfo = dynamic(() => import("./components/ProductViewItem"));
