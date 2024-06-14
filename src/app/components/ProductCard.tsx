@@ -34,14 +34,20 @@ const ProductCard: FC<{
   let price =
     props.type == "PERCENTAGE"
       ? props?.product?.currencyPrice?.usd -
-      (props?.product?.currencyPrice?.usd *
-        (props?.discount ? props.discount : 0)) /
-      100
+        (props?.product?.currencyPrice?.usd *
+          (props?.discount ? props.discount : 0)) /
+          100
       : props.product.currencyPrice.usd - (props.discount ? props.discount : 0);
 
   return (
     <div className="relative">
-      {props.type && <div className="absolute -top-2 right-0 bg-danger rounded-lg text-semibold z-50 w-16 h-8 flex items-center justify-center text-white">{props.type == "PERCENTAGE" ? `${props.discount}%` : `$${props.discount}`}</div>}
+      {props.type && (
+        <div className="absolute -top-2 right-0 bg-danger rounded-lg text-semibold z-50 w-16 h-8 flex items-center justify-center text-white">
+          {props.type == "PERCENTAGE"
+            ? `${props.discount}%`
+            : `$${props.discount}`}
+        </div>
+      )}
       <Card
         as={Link}
         href={`/products/${props?.product?.slug}`}
@@ -97,22 +103,30 @@ const ProductCard: FC<{
               </p>
 
               <div className="mt-1 flex justify-between items-center">
-                {props.discount ? <div className="flex space-x-2">
-                  <span className="text-primary lg:text-lg text-sm font-bold line-through">
+                {props.discount ? (
+                  <div>
+                    <div>
+                      <span className="text-primary lg:text-sm text-sm font-bold line-through">
+                        $
+                        {parseFloat(
+                          props?.product?.currencyPrice?.usd.toString()
+                        ).toFixed(2)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-primary lg:text-xl text-sm font-bold">
+                        ${parseFloat(price.toString()).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <span className="text-primary lg:text-xl text-sm font-bold">
                     $
                     {parseFloat(
                       props?.product?.currencyPrice?.usd.toString()
                     ).toFixed(2)}
                   </span>
-                  <span className="text-primary lg:text-xl text-sm font-bold">
-                    ${parseFloat(price.toString()).toFixed(2)}
-                  </span>
-                </div> : <span className="text-primary lg:text-xl text-sm font-bold">
-                  $
-                  {parseFloat(
-                    props?.product?.currencyPrice?.usd.toString()
-                  ).toFixed(2)}
-                </span>}
+                )}
 
                 {props?.product?.stocks?.status !== "OUT-STOCK" && (
                   <Button
