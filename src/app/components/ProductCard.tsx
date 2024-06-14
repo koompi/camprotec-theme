@@ -41,7 +41,7 @@ const ProductCard: FC<{
 
   return (
     <div className="relative">
-      <div className="absolute -top-2 right-0 bg-danger rounded-lg text-semibold z-50 w-16 h-8 flex items-center justify-center text-white">{props.type == "PERCENTAGE" ? `${props.discount}%` : `$${props.discount}`}</div>
+      {props.type && <div className="absolute -top-2 right-0 bg-danger rounded-lg text-semibold z-50 w-16 h-8 flex items-center justify-center text-white">{props.type == "PERCENTAGE" ? `${props.discount}%` : `$${props.discount}`}</div>}
       <Card
         as={Link}
         href={`/products/${props?.product?.slug}`}
@@ -107,7 +107,7 @@ const ProductCard: FC<{
                   <span className="text-primary lg:text-xl text-sm font-bold">
                     ${parseFloat(price.toString()).toFixed(2)}
                   </span>
-                </div> : <span className="text-primary lg:text-xl text-sm font-bold line-through">
+                </div> : <span className="text-primary lg:text-xl text-sm font-bold">
                   $
                   {parseFloat(
                     props?.product?.currencyPrice?.usd.toString()

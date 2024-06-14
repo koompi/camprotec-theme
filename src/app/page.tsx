@@ -24,7 +24,7 @@ export default function Home() {
       },
     }
   );
-
+  const membershipCard = products?.storeProducts?.membershipCard;
   return (
     <main>
       <section className="bg-gradient-to-r from-primary/10 via-white to-primary/10 background-animate">
@@ -35,8 +35,8 @@ export default function Home() {
       </section>
       <section id="products" className="pt-8 ">
         <LatestProducts
-          discount={products?.storeProducts?.membershipCard?.discountPercentage}
-          type={products?.storeProducts?.membershipCard?.discountType}
+          discount={membershipCard ? membershipCard?.discountPercentage : null}
+          type={membershipCard ? membershipCard?.discountType : null}
           products={products?.storeProducts?.products}
           loading={loadingProduct}
         />
