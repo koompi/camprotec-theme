@@ -1,12 +1,12 @@
 "use client";
 
-import Banner from "./components/Banner";
+// import Banner from "./components/Banner";
 import LatestProducts from "./components/LatestProducts";
 import Categories from "./components/Categories";
-import About from "./components/About";
+// import About from "./components/About";
 import { GET_ALL_PRODUCTS } from "@/graphql/product";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
-import ShuffleHero from "./components/BannerTwo";
+// import ShuffleHero from "./components/BannerTwo";
 import BannerThree from "./components/BannerThree";
 import FAQs from "./components/FAQs";
 import Parterns from "./components/Parterns";
@@ -35,7 +35,9 @@ export default function Home() {
       </section>
       <section id="products" className="pt-8 ">
         <LatestProducts
-          products={products?.storeProducts}
+          discount={products?.storeProducts?.membershipCard?.discountPercentage}
+          type={products?.storeProducts?.membershipCard?.discountType}
+          products={products?.storeProducts?.products}
           loading={loadingProduct}
         />
       </section>

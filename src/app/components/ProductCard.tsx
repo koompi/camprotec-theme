@@ -2,14 +2,7 @@
 
 import { ItemProduct, ProductType } from "@/types/product";
 import React, { useState, FC } from "react";
-import {
-  Card,
-  Image,
-  CardBody,
-  Button,
-  Spacer,
-  Skeleton,
-} from "@nextui-org/react";
+import { Card, Image, CardBody, Button, Skeleton } from "@nextui-org/react";
 import { formatToUSD } from "@/utils/usd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
@@ -17,7 +10,12 @@ import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 
-const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
+const ProductCard: FC<{
+  product: ProductType;
+  discount?: number;
+  type?: string;
+  loading: boolean;
+}> = (props) => {
   const { addToCart } = useCart();
 
   const handleAddToCart = (product: ItemProduct) => {
@@ -33,14 +31,23 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
     addToCart(p);
   };
 
+  let price =
+    props.type == "PERCENTAGE"
+      ? props?.product?.currencyPrice?.usd -
+      (props?.product?.currencyPrice?.usd *
+        (props?.discount ? props.discount : 0)) /
+      100
+      : props.product.currencyPrice.usd - (props.discount ? props.discount : 0);
+
   return (
-    <div>
+    <div className="relative">
+      <div className="absolute -top-2 right-0 bg-danger rounded-lg text-semibold z-50 w-16 h-8 flex items-center justify-center text-white">{props.type == "PERCENTAGE" ? `${props.discount}%` : `$${props.discount}`}</div>
       <Card
         as={Link}
         href={`/products/${props?.product?.slug}`}
         isPressable
         shadow="sm"
-        className="p-0 "
+        className="p-0 z-40"
       >
         <CardBody className="p-0 flex justify-center items-center mx-auto ">
           <Image
@@ -90,9 +97,23 @@ const ProductCard: FC<{ product: ProductType; loading: boolean }> = (props) => {
               </p>
 
               <div className="mt-1 flex justify-between items-center">
-                <span className="text-primary lg:text-xl text-sm font-bold">
-                  {formatToUSD(props?.product.price)}
-                </span>
+                {props.discount ? <div className="flex space-x-2">
+                  <span className="text-primary lg:text-lg text-sm font-bold line-through">
+                    $
+                    {parseFloat(
+                      props?.product?.currencyPrice?.usd.toString()
+                    ).toFixed(2)}
+                  </span>
+                  <span className="text-primary lg:text-xl text-sm font-bold">
+                    ${parseFloat(price.toString()).toFixed(2)}
+                  </span>
+                </div> : <span className="text-primary lg:text-xl text-sm font-bold line-through">
+                  $
+                  {parseFloat(
+                    props?.product?.currencyPrice?.usd.toString()
+                  ).toFixed(2)}
+                </span>}
+
                 {props?.product?.stocks?.status !== "OUT-STOCK" && (
                   <Button
                     variant="flat"

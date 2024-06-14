@@ -10,9 +10,13 @@ import Link from "next/link";
 
 const LatestProducts = ({
   products,
+  discount,
+  type,
   loading,
 }: {
   products: ProductType[];
+  discount?: number,
+  type?: string,
   loading: boolean;
 }) => {
   if (loading) {
@@ -29,7 +33,7 @@ const LatestProducts = ({
           <div className="grid grid-cols-2 sm:grid lg:flex flex-wrap items-center justify-center gap-3 place-items-center place-content-center">
             {products?.map((p) => (
               <div className="w-full sm:w-full lg:w-72" key={p?.id}>
-                <ProductCard product={p} loading={false} />
+                <ProductCard product={p} type={type} discount={discount} loading={false} />
               </div>
             ))}
           </div>

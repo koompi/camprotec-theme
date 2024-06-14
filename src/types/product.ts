@@ -43,6 +43,10 @@ export type ProductType = {
   price: number;
   slug: string;
   previews: string[];
+  currencyPrice: {
+    khr: number
+    usd: number
+  }
   tags: string[];
   quantity: number;
   variants: Variants[];

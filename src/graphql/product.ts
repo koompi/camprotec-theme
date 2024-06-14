@@ -5,7 +5,6 @@ export const GET_PRODUCT = gql`
     storeProduct(slug: $slug) {
       id
       ownerId
-      storeId
       title
       thumbnail
       brand
@@ -52,6 +51,13 @@ export const GET_PRODUCT = gql`
       }
       createdAt
       updatedAt
+      currencyPrice {
+        khr
+        usd
+      }
+      store {
+        name
+      }
     }
   }
 `;
@@ -59,37 +65,53 @@ export const GET_PRODUCT = gql`
 export const GET_ALL_PRODUCTS = gql`
   query ($filter: OrderBy) {
     storeProducts(filter: $filter) {
-      id
-      ownerId
-      storeId
-      title
-      thumbnail
-      brand
-      desc
-      price
-      slug
-      rating
-      previews
-      currency
-      status
-      detail
-      stocks {
-        amount
-        status
-      }
-      variants {
+      membershipCard {
         id
-        default
-        price
-        previews
-        attributes {
-          type
-          option
-        }
         label
+        discountType
+        discountPrice
+        discountPercentage
+        status
+        membershipType
+        description
       }
-      createdAt
-      updatedAt
+      products {
+        id
+        ownerId
+        storeId
+        title
+        thumbnail
+        brand
+        desc
+        price
+        slug
+        rating
+        previews
+        currency
+        status
+        detail
+        stocks {
+          amount
+          status
+        }
+        variants {
+          id
+          default
+          price
+          previews
+          attributes {
+            type
+            option
+          }
+          label
+        }
+        currencyPrice {
+          khr
+          usd
+        }
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -125,6 +147,10 @@ export const PRODUCTS = gql`
           option
         }
         label
+      }
+      currencyPrice {
+        khr
+        usd
       }
       createdAt
       updatedAt
