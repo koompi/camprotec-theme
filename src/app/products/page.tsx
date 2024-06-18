@@ -29,9 +29,9 @@ export default function ProductsPage() {
   let limit = parseInt(size as string);
   let rangePrice = minPice
     ? {
-        start: parseInt(minPice as string),
-        end: parseInt(maxPice as string),
-      }
+      start: parseInt(minPice as string),
+      end: parseInt(maxPice as string),
+    }
     : null;
 
   const { data: products, loading: loadingProduct } = useQuery(
@@ -69,10 +69,14 @@ export default function ProductsPage() {
     },
   });
 
+  const membershipCard = products?.storeGlobalFilterProducts?.membershipCard;
+
   return (
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-3 sm:py-3 lg:py-9">
       <div className="flex gap-x-6">
         <ComponentProducts
+          discount={membershipCard ? membershipCard.discountType == "PERCENTAGE" ? membershipCard?.discountPercentage : membershipCard?.discountPrice : null}
+          discount_type={membershipCard ? membershipCard?.discountType : null}
           categories={categories?.storeOwnerCategories}
           {...products?.storeGlobalFilterProducts}
           searchParams={searchParams}

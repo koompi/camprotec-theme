@@ -58,6 +58,16 @@ export const GET_PRODUCT = gql`
       store {
         name
       }
+      promotion {
+        isMemershipCart
+        normalPromotion {
+          promotionType
+          promotionStatus
+          promotionPrice
+          discountType
+          discountPercentage
+        }
+      }
     }
   }
 `;
@@ -108,6 +118,16 @@ export const GET_ALL_PRODUCTS = gql`
         currencyPrice {
           khr
           usd
+        }
+        promotion {
+          isMemershipCart
+          promotion {
+            promotionType
+            promotionStatus
+            promotionPrice
+            discountType
+            discountPercentage
+          }
         }
         createdAt
         updatedAt
@@ -198,11 +218,23 @@ export const GLOBAL_PRODUCT_FILTERING = gql`
             type
             option
           }
-          previews
+          previews 
         }
+        currencyPrice {
+          khr
+          usd
+        }
+        \
       }
       total
       pages
+      membershipCard {
+        id
+        discountType
+        discountPrice
+        discountPercentage
+        promotionPrice
+      }
     }
   }
 `;

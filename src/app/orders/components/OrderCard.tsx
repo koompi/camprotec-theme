@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody, Divider, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, Chip, Divider, Image } from "@nextui-org/react";
 import React, { FC } from "react";
 import { Icon } from "@iconify/react";
 import Steps from "@uiw/react-steps";
@@ -29,6 +29,9 @@ const OrderCard: FC<OrdersType> = (props) => {
         console.log(err);
       });
   };
+
+  console.log("order", props);
+  
 
   return (
     <Card
@@ -89,8 +92,13 @@ const OrderCard: FC<OrdersType> = (props) => {
                 </p>
                 <p className="text-sm font-light">Qty: {props.carts[0]?.qty}</p>
                 <p className="text-sm font-light">
-                  {formatToUSD(parseFloat(props?.totalPrice.toString()))}
+                  {props?.totalUnitPrice.usd.toFixed(2)}
                 </p>
+                <div>
+                  <Chip>
+                    {/* {props.} */}
+                  </Chip>
+                </div>
               </div>
             </div>
           ) : (

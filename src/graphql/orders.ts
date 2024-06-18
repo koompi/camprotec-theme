@@ -9,7 +9,6 @@ export const GET_ORDERS = gql`
         carts {
           productId
           qty
-          unitPrice
           product {
             brand
             previews
@@ -19,6 +18,15 @@ export const GET_ORDERS = gql`
             rating
             thumbnail
           }
+          unitPrice {
+            khr
+            usd
+          }
+          discountPrice {
+            khr
+            usd
+          }
+          discountPercentage
         }
         code
         createdAt
@@ -26,8 +34,14 @@ export const GET_ORDERS = gql`
         ownerId
         status
         tax
-        totalDiscount
-        totalPrice
+        discountUnitPrice {
+          khr
+          usd
+        }
+        totalUnitPrice {
+          khr
+          usd
+        }
       }
     }
   }

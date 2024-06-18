@@ -14,6 +14,14 @@ export type OrderSummaryItemProps = React.HTMLAttributes<HTMLLIElement> &
 const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
   ({ children, quantity, product, className, ...props }, ref) => {
     const { addToCart, minusCart, removeFromCart } = useCart();
+    const promotionPrice = product.promotion ?
+      product?.promotion?.type == "PERCENTAGE"
+        ? product?.price -
+        (product?.price *
+          (product.promotion?.discount ? product.promotion?.discount : 0)) /
+        100
+        : product?.price - (product.promotion?.discount ? product.promotion?.discount : 0) :
+      product?.price;
 
     return (
       <li
@@ -43,10 +51,19 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
           </h4>
 
           <div className="mt-2 flex items-center gap-2">
-            <span className="text-small font-semibold text-default-700">
-              {formatToUSD(product?.price)}
-            </span>
-            <span className="text-small text-danger">x {quantity}</span>
+            {promotionPrice ?
+              <div className="space-x-2 flex items-center">
+                <div className="font-bold">
+                  <div className="line-through text-sm">${product?.price.toFixed(2)}</div>
+                  <div>${(promotionPrice).toFixed(2)}</div>
+                </div>
+                <div className="font-bold">
+                  <div className="line-through text-sm">${(product?.price * quantity).toFixed(2)} x {quantity}</div>
+                  <div>${(promotionPrice * quantity).toFixed(2)} x {quantity}</div>
+                </div>
+              </div>
+              :
+              <div>{formatToUSD(product?.price)}</div>}
           </div>
 
           <div className="flex space-x-2 mt-2">
@@ -55,6 +72,13 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
                 Default
               </Chip>
             )}
+            {product.promotion && product.promotion.type == "PERCENTAGE" ? (
+              <Chip radius="sm" size="sm" variant="flat" color="danger">
+                {product.promotion?.discount}%
+              </Chip>
+            ) : <Chip radius="sm" size="sm" variant="flat" color="danger">
+              ${product.promotion?.discount}
+            </Chip>}
             {product?.variant?.attributes.map((atr, idx: number) => {
               return (
                 <Chip

@@ -4,8 +4,8 @@ import React, { FC } from "react";
 import { Card, CardBody, Image, Link } from "@nextui-org/react";
 import { ProductType } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
-import { useCart } from "@/context/useCart";
-import { useRouter } from "next/navigation";
+// import { useCart } from "@/context/useCart";
+// import { useRouter } from "next/navigation";
 import RatingRadioGroup from "@/app/products/components/RatingRadioGroup";
 
 const RecommendProducts = ({ products }: { products: ProductType[] }) => {
@@ -24,8 +24,8 @@ const RecommendProducts = ({ products }: { products: ProductType[] }) => {
 export default RecommendProducts;
 
 const RecommendCard: FC<{ props: ProductType }> = ({ props }) => {
-  const { addToCart } = useCart();
-  const router = useRouter();
+  // const { addToCart } = useCart();
+  // const router = useRouter();
 
   return (
     <>

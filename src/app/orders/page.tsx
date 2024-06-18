@@ -56,6 +56,8 @@ const OrderPage = () => {
     );
   }
 
+  console.log("data", data);
+  
   return (
     <section className="container max-w-full sm:max-w-full lg:max-w-5xl py-9 px-3 sm:px-3 lg:px-6 mx-auto">
       <div className="my-6">
@@ -70,15 +72,16 @@ const OrderPage = () => {
           return (
             <OrderCard
               key={idx}
-              carts={order?.carts}
-              code={order?.code}
-              createdAt={order?.createdAt}
-              id={order?.id}
-              ownerId={order?.ownerId}
-              status={order?.status}
-              tax={order?.tax}
-              totalDiscount={order?.totalDiscount}
-              totalPrice={order?.totalPrice}
+              {...order}
+              // carts={order?.carts}
+              // code={order?.code}
+              // createdAt={order?.createdAt}
+              // id={order?.id}
+              // ownerId={order?.ownerId}
+              // status={order?.status}
+              // tax={order?.tax}
+              // totalDiscount={order?.totalDiscount}
+              // totalPrice={order?.totalPrice}
               refetch={refetch}
             />
           );

@@ -1,12 +1,12 @@
 "use client";
 
-import { ItemProduct, ProductType } from "@/types/product";
+import { ItemProduct, ProductType, Promotion } from "@/types/product";
 import React, { useState, FC } from "react";
 import { Card, Image, CardBody, Button, Skeleton } from "@nextui-org/react";
-import { formatToUSD } from "@/utils/usd";
+// import { formatToUSD } from "@/utils/usd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
-import { CartItem } from "@/types/global";
+// import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
 import { toast } from "sonner";
 
@@ -19,26 +19,31 @@ const ProductCard: FC<{
   const { addToCart } = useCart();
 
   const handleAddToCart = (product: ItemProduct) => {
-    let p: ItemProduct = {
-      id: product?.id,
-      variantId: null,
-      name: product?.name,
-      price: product?.price,
-      currency: product?.currency,
-      preview: product?.preview,
-      productId: product?.id,
-    };
-    addToCart(p);
+    // let p: ItemProduct = {
+    //   id: product?.id,
+    //   variantId: null,
+    //   name: product?.name,
+    //   promotion: {},
+    //   price: product?.price,
+    //   currency: product?.currency,
+    //   preview: product?.preview,
+    //   productId: product?.id,
+    // };
+    addToCart(product);
   };
 
-  let price =
+  const price =
     props.type == "PERCENTAGE"
       ? props?.product?.currencyPrice?.usd -
-        (props?.product?.currencyPrice?.usd *
-          (props?.discount ? props.discount : 0)) /
-          100
+      (props?.product?.currencyPrice?.usd *
+        (props?.discount ? props.discount : 0)) /
+      100
       : props.product.currencyPrice.usd - (props.discount ? props.discount : 0);
 
+  const promotion = props.discount ? {
+    discount: props.discount,
+    type: props.type
+  } as Promotion : null; 
   return (
     <div className="relative">
       {props.type && (
@@ -141,6 +146,7 @@ const ProductCard: FC<{
                       const product: ItemProduct = {
                         id: props?.product.id,
                         name: props?.product?.title,
+                        promotion: promotion,
                         variant: {
                           id: null,
                           label: "Default",

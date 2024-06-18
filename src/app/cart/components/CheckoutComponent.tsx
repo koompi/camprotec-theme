@@ -26,7 +26,7 @@ import OrderSummary from "./OrderSummary";
 import PaymentMethodRadio from "./PaymentMethodRadio";
 import { useCart } from "@/context/useCart";
 import { useAuth } from "@/context/useAuth";
-import { ProductType } from "@/types/product";
+import { ItemProduct, ProductType } from "@/types/product";
 import { formatToUSD } from "@/utils/usd";
 import { CustomerAddressType } from "@/types/checkout";
 import { useQuery } from "@apollo/client";
@@ -35,6 +35,7 @@ import { useMutation } from "@apollo/client";
 import { CHECKOUT } from "@/graphql/mutation/checkout";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { CartItem } from "@/types/global";
 
 const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
   const { user } = useAuth();
@@ -42,6 +43,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
 
   const { cartItems, cleanCartItems, loading } = useCart();
   const [price, setPrice] = useState(0);
+  const [priceDiscount, setPriceDiscount] = useState(0);
   const [ship, setShip] = useState<string>("");
   const [toDelivery, setToDelivery] = useState<CustomerAddressType | null>();
 
@@ -63,11 +65,15 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
     const totalPrice = (price + es_price?.estimatePrice?.data?.price).toFixed(
       2
     );
-
     const newCart = cartItems?.map((item) => {
+      const discountPercentage = item.product.promotion ? item.product.promotion.discount : null;
+      const discountPrice = item.product.promotion ? item.product.promotion.price : null;
+
       return {
         productId: item?.product.productId,
         qty: item?.quantity,
+        discountPercentage: discountPercentage,
+        discountPrice: discountPrice,
         unitPrice: parseFloat(item?.product?.price.toString()),
         variantId: item?.product?.variant?.id,
       };
@@ -77,7 +83,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       input: {
         carts: newCart,
         currency: "USD",
-        totalPrice: parseFloat(totalPrice.toString()),
+        // totalPrice: parseFloat(totalPrice.toString()),
       },
       deliveryId: ship == "PERSONAL" ? null : ship,
       addressId: toDelivery?.id,
@@ -122,13 +128,30 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
 
   useEffect(() => {
     const subtotal: number[] = [];
+    const subtotal_discount: number[] = [];
     cartItems.map((product: any) =>
       subtotal.push(product.quantity * product.product.price)
     );
+    cartItems.map(({ product, quantity }: CartItem) => {
+      const discountPrice = product.promotion ?
+        product?.promotion?.type == "PERCENTAGE"
+          ? product?.price -
+          (product?.price *
+            (product.promotion?.discount ? product.promotion?.discount : 0)) /
+          100
+          : product?.price - (product.promotion?.discount ? product.promotion?.discount : 0) :
+        product?.price;
+        subtotal_discount.push(discountPrice * quantity);
+    });
+    
     const Subtotal: any = subtotal.reduce((accumulator, value) => {
       return accumulator + value;
     }, 0);
+    const PriceDiscount: any = subtotal_discount.reduce((accumulator, value) => {
+      return accumulator + value;
+    }, 0);
     setPrice(Subtotal);
+    setPriceDiscount(PriceDiscount);
   }, [cartItems]);
 
   const paginate = (newDirection: number) => {
@@ -137,14 +160,15 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
     setPage([page + newDirection, newDirection]);
   };
 
+
   const ctaLabel = React.useMemo(() => {
     switch (page) {
       case 0:
         return `Delivery (${formatToUSD(
           price +
-            (es_price?.estimatePrice?.data?.price
-              ? es_price?.estimatePrice?.data?.price
-              : 0)
+          (es_price?.estimatePrice?.data?.price
+            ? es_price?.estimatePrice?.data?.price
+            : 0)
         )})`;
       case 1:
         return "Continue to payment";
@@ -153,9 +177,9 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       default:
         return `Delivery (${formatToUSD(
           price +
-            (es_price?.estimatePrice?.data?.price
-              ? es_price?.estimatePrice?.data?.price
-              : 0)
+          (es_price?.estimatePrice?.data?.price
+            ? es_price?.estimatePrice?.data?.price
+            : 0)
         )})`;
     }
   }, [es_price?.estimatePrice?.data?.price, page, price]);
@@ -296,8 +320,6 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       </section>
     );
   }
-
-  // console.log("ahiop", ship);
 
   if (cartItems.length <= 0) {
     return (
@@ -461,9 +483,16 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   <div className="flex justify-between">
                     <dt className="text-small text-default-500">Subtotal</dt>
                     <dd className="text-small font-semibold text-default-700">
-                      {formatToUSD(price)}
+                      ${price.toFixed(2)}
                     </dd>
                   </div>
+                  <div className="flex justify-between">
+                    <dt className="text-small text-default-500">Discount</dt>
+                    <dd className="text-small font-semibold text-default-700">
+                      ${(price - priceDiscount).toFixed(2)} 
+                    </dd>
+                  </div>
+
                   <div className="flex justify-between">
                     <dt className="text-small text-default-500 flex items-center gap-3">
                       Delivery
@@ -507,16 +536,15 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                     </dd> */}
                     {ship === "PERSONAL" ? (
                       <dd className="font-semibold text-primary text-xl">
-                        {formatToUSD(price)}
+                        {/* {formatToUSD(price)} */}
+                        ${priceDiscount.toFixed(2)} 
                       </dd>
                     ) : (
                       <dd className="font-semibold text-primary text-xl">
-                        {formatToUSD(
-                          price +
-                            (es_price?.estimatePrice?.data?.price
-                              ? es_price?.estimatePrice?.data?.price
-                              : 0)
-                        )}
+                        ${priceDiscount +
+                          (es_price?.estimatePrice?.data?.price
+                            ? es_price?.estimatePrice?.data?.price
+                            : 0)}
                       </dd>
                     )}
                   </div>

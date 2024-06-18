@@ -415,6 +415,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                     const product: ItemProduct = {
                       id: variant.id ? variant.id : props.id,
                       name: title,
+                      promotion: null,
                       variant: variant,
                       price: variant ? variant.price : price,
                       currency: "USD",

@@ -24,7 +24,9 @@ export default function Home() {
       },
     }
   );
-  const membershipCard = products?.storeProducts?.membershipCard;
+
+  const membershipCard = products?.storeProducts?.membershipCard ? products?.storeProducts?.promotion?.isMemershipCart ? products?.storeProducts?.promotion?.promotion : products?.storeProducts?.membershipCard : products?.storeProducts?.promotion?.promotion;
+  
   return (
     <main>
       <section className="bg-gradient-to-r from-primary/10 via-white to-primary/10 background-animate">

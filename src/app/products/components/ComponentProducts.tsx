@@ -18,9 +18,13 @@ export default function ComponentProducts({
   products,
   total,
   pages,
+  discount,
+  discount_type,
   loading,
 }: {
   categories: Category[];
+  discount?: number;
+  discount_type?: string;
   products: ProductType[];
   total: number;
   pages: number;
@@ -83,7 +87,7 @@ export default function ComponentProducts({
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {mostPopularSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
+            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
           })}
         </div>
       );
@@ -92,7 +96,7 @@ export default function ComponentProducts({
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {newestSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
+            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
           })}
         </div>
       );
@@ -101,7 +105,7 @@ export default function ComponentProducts({
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {topRated().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
+            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
           })}
         </div>
       );
@@ -110,7 +114,7 @@ export default function ComponentProducts({
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {products.map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
+            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
           })}
         </div>
       );
@@ -118,7 +122,7 @@ export default function ComponentProducts({
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
           {brandSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} loading={false} />;
+            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
           })}
         </div>
       );

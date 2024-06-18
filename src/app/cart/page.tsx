@@ -17,7 +17,7 @@ export default function CartPage() {
 
   return (
     <>
-      <CheckoutComponent products={products?.storeProducts} />
+      <CheckoutComponent products={products?.storeProducts?.products} />
     </>
   );
 }

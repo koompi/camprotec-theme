@@ -13,10 +13,17 @@ export interface Variants {
   attributes: Attribute[];
 }
 
+export interface Promotion {
+  type: string;
+  discount: number;
+  price: number;
+}
+
 export type ItemProduct = {
   thumbnail?: any;
   variant?: Variants;
   title?: string;
+  promotion: Promotion | null;
   id: string;
   name: string;
   price: number;
@@ -47,6 +54,16 @@ export type ProductType = {
     khr: number
     usd: number
   }
+  promotion: {
+    isMemershipCart: boolean;
+    promotion: {
+      promotionType: string;
+      promotionStatus: string;
+      promotionPrice: number;
+      discountType: string;
+      discountPercentage: number;
+    };
+  };
   tags: string[];
   quantity: number;
   variants: Variants[];
