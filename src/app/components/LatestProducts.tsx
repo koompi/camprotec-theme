@@ -11,12 +11,14 @@ import Link from "next/link";
 const LatestProducts = ({
   products,
   discount,
+  isMembership,
   type,
   loading,
 }: {
   products: ProductType[];
   discount?: number,
   type?: string,
+  isMembership: boolean,
   loading: boolean;
 }) => {
   if (loading) {
@@ -31,11 +33,18 @@ const LatestProducts = ({
             CHECK THE CORE PRODUCT
           </h1>
           <div className="grid grid-cols-2 sm:grid lg:flex flex-wrap items-center justify-center gap-3 place-items-center place-content-center">
-            {products?.map((p) => (
-              <div className="w-full sm:w-full lg:w-72" key={p?.id}>
-                <ProductCard product={p} type={type} discount={discount} loading={false} />
-              </div>
-            ))}
+            {products?.map((p) => {
+              const promotion = p.promotion.isMemershipCart ? { type: p.promotion.promotion.discountType, discount: p.promotion.promotion.discountType == "PRICE" ? p.promotion.promotion.promotionPrice : p.promotion.promotion.discountPercentage } : (isMembership ? { type: type, discount: discount } : p.promotion.promotion ? { type: p.promotion.promotion.discountType, discount: p.promotion.promotion.discountType == "PRICE" ? p.promotion.promotion.promotionPrice : p.promotion.promotion.discountPercentage } : null)
+              const promotionType = p.promotion.promotion ? (p.promotion.promotion.discountType === "PRICE" ? p.promotion?.promotion?.discountType : p.promotion?.promotion?.discountPercentage.toString()) : null;
+              const promotionDiscount = 0.0;
+              // const promotion = p.promotion?.isMemershipCart ? p.promotion?.promotion?.discountType : (type ? type : p.promotion?.promotion?.discountType);
+              // const promotion = p.promotion.isMemershipCart ? p.promotion?.promotion.discountPercentage : type ? discount : promotionDiscount;
+              return (
+                <div className="w-full sm:w-full lg:w-72" key={p?.id}>
+                  <ProductCard product={p} {...promotion} loading={false} />
+                </div>
+              )
+            })}
           </div>
           {products?.length >= 10 && (
             <Button

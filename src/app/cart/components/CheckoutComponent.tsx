@@ -141,9 +141,9 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
           100
           : product?.price - (product.promotion?.discount ? product.promotion?.discount : 0) :
         product?.price;
-        subtotal_discount.push(discountPrice * quantity);
+      subtotal_discount.push(discountPrice * quantity);
     });
-    
+
     const Subtotal: any = subtotal.reduce((accumulator, value) => {
       return accumulator + value;
     }, 0);
@@ -367,6 +367,8 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
     );
   }
 
+  console.log("cartItems", cartItems);
+
   return (
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-4 sm:py-4 lg:py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 w-full gap-8">
       {/* Left */}
@@ -489,7 +491,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                   <div className="flex justify-between">
                     <dt className="text-small text-default-500">Discount</dt>
                     <dd className="text-small font-semibold text-default-700">
-                      ${(price - priceDiscount).toFixed(2)} 
+                      ${(price - priceDiscount).toFixed(2)}
                     </dd>
                   </div>
 
@@ -537,7 +539,7 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                     {ship === "PERSONAL" ? (
                       <dd className="font-semibold text-primary text-xl">
                         {/* {formatToUSD(price)} */}
-                        ${priceDiscount.toFixed(2)} 
+                        ${priceDiscount.toFixed(2)}
                       </dd>
                     ) : (
                       <dd className="font-semibold text-primary text-xl">

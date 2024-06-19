@@ -51,7 +51,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
           </h4>
 
           <div className="mt-2 flex items-center gap-2">
-            {promotionPrice ?
+            {product.promotion ?
               <div className="space-x-2 flex items-center">
                 <div className="font-bold">
                   <div className="line-through text-sm">${product?.price.toFixed(2)}</div>
@@ -72,13 +72,13 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
                 Default
               </Chip>
             )}
-            {product.promotion && product.promotion.type == "PERCENTAGE" ? (
+            {product.promotion && (product.promotion.type == "PERCENTAGE" ? (
               <Chip radius="sm" size="sm" variant="flat" color="danger">
                 {product.promotion?.discount}%
               </Chip>
             ) : <Chip radius="sm" size="sm" variant="flat" color="danger">
               ${product.promotion?.discount}
-            </Chip>}
+            </Chip>)}
             {product?.variant?.attributes.map((atr, idx: number) => {
               return (
                 <Chip
