@@ -115,7 +115,7 @@ export const GET_ALL_PRODUCTS = gql`
           }
           label
         }
-        currencyPrice {
+      currencyPrice {
           khr
           usd
         }
