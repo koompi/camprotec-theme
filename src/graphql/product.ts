@@ -3,70 +3,72 @@ import { gql } from "@apollo/client";
 export const GET_PRODUCT = gql`
   query ($slug: String!) {
     storeProduct(slug: $slug) {
-      id
-      ownerId
-      title
-      thumbnail
-      brand
-      desc
-      price
-      slug
-      rating
-      previews
-      status
-      detail
-      currency
-      stocks {
-        amount
-        status
-      }
-      category {
+      product {
         id
-        title {
-          en
+        ownerId
+        title
+        thumbnail
+        brand
+        desc
+        price
+        slug
+        rating
+        previews
+        status
+        detail
+        currency
+        stocks {
+          amount
+          status
         }
-        children {
+        category {
+          id
+          title {
+            en
+          }
+          children {
+            id
+            title {
+              en
+            }
+          }
+        }
+        subcategories {
           id
           title {
             en
           }
         }
-      }
-      subcategories {
-        id
-        title {
-          en
+        variants {
+          id
+          default
+          attributes {
+            type
+            option
+          }
+          label
+          previews
+          price
         }
-      }
-      variants {
-        id
-        default
-        attributes {
-          type
-          option
+        createdAt
+        updatedAt
+        currencyPrice {
+          khr
+          usd
         }
-        label
-        previews
-        price
-      }
-      createdAt
-      updatedAt
-      currencyPrice {
-        khr
-        usd
-      }
-      store {
-        name
+        store {
+          name
+        }
       }
       promotion {
-        isMemershipCart
-        normalPromotion {
-          promotionType
-          promotionStatus
-          promotionPrice
-          discountType
+        discount {
           discountPercentage
+          discountPrice
+          discountType
+          originalPrice
+          totalDiscount
         }
+        isMembership
       }
     }
   }
@@ -86,51 +88,51 @@ export const GET_ALL_PRODUCTS = gql`
         description
       }
       products {
-        id
-        ownerId
-        storeId
-        title
-        thumbnail
-        brand
-        desc
-        price
-        slug
-        rating
-        previews
-        currency
-        status
-        detail
-        stocks {
-          amount
-          status
-        }
-        variants {
+        product {
           id
-          default
+          ownerId
+          storeId
+          title
+          thumbnail
+          brand
+          desc
           price
+          slug
+          rating
           previews
-          attributes {
-            type
-            option
+          currency
+          status
+          detail
+          stocks {
+            amount
+            status
           }
-          label
-        }
-      currencyPrice {
-          khr
-          usd
+          variants {
+            id
+            default
+            price
+            previews
+            attributes {
+              type
+              option
+            }
+            label
+          }
+          currencyPrice {
+            khr
+            usd
+          }
         }
         promotion {
-          isMemershipCart
-          promotion {
-            promotionType
-            promotionStatus
-            promotionPrice
-            discountType
+          isMembership
+          discount {
             discountPercentage
+            discountPrice
+            discountType
+            originalPrice
+            totalDiscount
           }
         }
-        createdAt
-        updatedAt
       }
     }
   }
@@ -179,7 +181,7 @@ export const PRODUCTS = gql`
 `;
 
 export const GLOBAL_PRODUCT_FILTERING = gql`
-  query storeGlobalFilterProducts(
+  query (
     $tagId: [String!]
     $keyword: String
     $status: String
@@ -194,47 +196,51 @@ export const GLOBAL_PRODUCT_FILTERING = gql`
       filter: $filter
     ) {
       products {
-        id
-        createdAt
-        thumbnail
-        title
-        brand
-        price
-        previews
-        slug
-        sell
-        rating
-        status
-        stocks {
-          amount
-          status
-        }
-        variants {
-          default
+        product {
           id
-          label
+          createdAt
+          thumbnail
+          title
+          brand
           price
-          attributes {
-            type
-            option
+          previews
+          slug
+          sell
+          rating
+          status
+          stocks {
+            amount
+            status
           }
-          previews 
+          variants {
+            default
+            id
+            label
+            price
+            attributes {
+              type
+              option
+            }
+            previews
+          }
+          currencyPrice {
+            khr
+            usd
+          }
         }
-        currencyPrice {
-          khr
-          usd
+        promotion {
+          isMembership
+          discount {
+            discountPercentage
+            discountPrice
+            discountType
+            originalPrice
+            totalDiscount
+          }
         }
-        \
       }
       total
       pages
-      membershipCard {
-        id
-        discountType
-        discountPrice
-        discountPercentage
-        promotionPrice
-      }
     }
   }
 `;

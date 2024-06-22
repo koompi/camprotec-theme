@@ -1,4 +1,5 @@
 import { Category, SubCategory } from "./category";
+import { PromotionType } from "./promotion";
 
 export interface Attribute {
   type: string;
@@ -23,7 +24,7 @@ export type ItemProduct = {
   thumbnail?: any;
   variant?: Variants;
   title?: string;
-  promotion: Promotion | null;
+  promotion: PromotionType | null;
   id: string;
   name: string;
   price: number;
@@ -38,6 +39,11 @@ export type StockType = {
   amount: number;
   status: string;
 };
+
+export type MessageProduct = {
+  product: ProductType,
+  promotion: PromotionType
+}
 
 export type ProductType = {
   id: string;
@@ -54,16 +60,7 @@ export type ProductType = {
     khr: number
     usd: number
   }
-  promotion: {
-    isMemershipCart: boolean;
-    promotion: {
-      promotionType: string;
-      promotionStatus: string;
-      promotionPrice: number;
-      discountType: string;
-      discountPercentage: number;
-    };
-  };
+  promotion: PromotionType;
   tags: string[];
   quantity: number;
   variants: Variants[];

@@ -8,17 +8,26 @@ import { Button } from "@nextui-org/react";
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
 
+type PromotionType = {
+  isMembership: boolean;
+  discount: {
+    discountPercentage?: number;
+    discountPrice: number;
+    discountType?: "PRICE" | "PERCENTAGE";
+    originalPrice: number;
+    totalDiscount: number;
+  };
+};
+
+interface Product {
+  product: ProductType;
+  promotion: PromotionType;
+}
 const LatestProducts = ({
   products,
-  discount,
-  isMembership,
-  type,
   loading,
 }: {
-  products: ProductType[];
-  discount?: number,
-  type?: string,
-  isMembership: boolean,
+  products: Product[];
   loading: boolean;
 }) => {
   if (loading) {
@@ -33,13 +42,31 @@ const LatestProducts = ({
             CHECK THE CORE PRODUCT
           </h1>
           <div className="grid grid-cols-2 sm:grid lg:flex flex-wrap items-center justify-center gap-3 place-items-center place-content-center">
-            {products?.map((p) => {
-              const promotion = p.promotion.isMemershipCart ? { type: p.promotion.promotion.discountType, discount: p.promotion.promotion.discountType == "PRICE" ? p.promotion.promotion.promotionPrice : p.promotion.promotion.discountPercentage } : (isMembership ? { type: type, discount: discount } : p.promotion.promotion ? { type: p.promotion.promotion.discountType, discount: p.promotion.promotion.discountType == "PRICE" ? p.promotion.promotion.promotionPrice : p.promotion.promotion.discountPercentage } : null)
+            {products?.map((p: Product, idx: number) => {
+              // const promotion = p.promotion.isMemershipCart
+              //   ? {
+              //       type: p.promotion.promotion.discountType,
+              //       discount:
+              //         p.promotion.promotion.discountType == "PRICE"
+              //           ? p.promotion.promotion.promotionPrice
+              //           : p.promotion.promotion.promotioPercentage,
+              //     }
+              //   : isMembership
+              //     ? { type: type, discount: discount }
+              //     : p.promotion.promotion
+              //       ? {
+              //           type: p.promotion.promotion.discountType,
+              //           discount:
+              //             p.promotion.promotion.discountType == "PRICE"
+              //               ? p.promotion.promotion.promotionPrice
+              //               : p.promotion.promotion.promotioPercentage,
+              //         }
+              //       : null;
               return (
-                <div className="w-full sm:w-full lg:w-72" key={p?.id}>
-                  <ProductCard product={p} {...promotion} loading={false} />
+                <div className="w-full sm:w-full lg:w-72" key={idx}>
+                  <ProductCard product={p.product} promotion={p.promotion} loading={false} />
                 </div>
-              )
+              );
             })}
           </div>
           {products?.length >= 10 && (

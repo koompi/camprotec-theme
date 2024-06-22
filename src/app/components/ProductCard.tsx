@@ -1,6 +1,7 @@
 "use client";
 
-import { ItemProduct, ProductType, Promotion } from "@/types/product";
+import { ItemProduct, ProductType } from "@/types/product";
+import { PromotionType } from "@/types/promotion";
 import React, { useState, FC } from "react";
 import { Card, Image, CardBody, Button, Skeleton } from "@nextui-org/react";
 // import { formatToUSD } from "@/utils/usd";
@@ -12,8 +13,7 @@ import { toast } from "sonner";
 
 const ProductCard: FC<{
   product: ProductType;
-  discount?: number;
-  type?: string;
+  promotion: PromotionType;
   loading: boolean;
 }> = (props) => {
   const { addToCart } = useCart();
@@ -32,25 +32,15 @@ const ProductCard: FC<{
     addToCart(product);
   };
 
-  const price =
-    props.type == "PERCENTAGE"
-      ? props?.product?.currencyPrice?.usd -
-      (props?.product?.currencyPrice?.usd *
-        (props?.discount ? props.discount : 0)) /
-      100
-      : props.product.currencyPrice.usd - (props.discount ? props.discount : 0);
-
-  const promotion = props.discount ? {
-    discount: props.discount,
-    type: props.type
-  } as Promotion : null; 
+  console.log("");
+  
   return (
     <div className="relative">
-      {props.type && (
+      {props.promotion.discount && (
         <div className="absolute -top-2 right-0 bg-danger rounded-lg text-semibold z-50 w-16 h-8 flex items-center justify-center text-white">
-          {props.type == "PERCENTAGE"
-            ? `${props.discount}%`
-            : `$${props.discount}`}
+          {props.promotion.discount.discountType == "PERCENTAGE"
+            ? `${props.promotion.discount.discountPercentage}%`
+            : `$${props.promotion.discount.discountPrice}`}
         </div>
       )}
       <Card
@@ -108,7 +98,7 @@ const ProductCard: FC<{
               </p>
 
               <div className="mt-1 flex justify-between items-center">
-                {props.discount ? (
+                {props.promotion.discount ? (
                   <div>
                     <div>
                       <span className="text-primary lg:text-sm text-sm font-bold line-through">
@@ -120,7 +110,7 @@ const ProductCard: FC<{
                     </div>
                     <div>
                       <span className="text-primary lg:text-xl text-sm font-bold">
-                        ${parseFloat(price.toString()).toFixed(2)}
+                        ${props.promotion.discount.totalDiscount.toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -146,7 +136,7 @@ const ProductCard: FC<{
                       const product: ItemProduct = {
                         id: props?.product.id,
                         name: props?.product?.title,
-                        promotion: promotion,
+                        promotion: props.promotion,
                         variant: {
                           id: null,
                           label: "Default",

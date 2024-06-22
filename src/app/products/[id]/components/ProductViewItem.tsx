@@ -147,6 +147,9 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
 
     //   return 0;
     // }, [selections]);
+    // const promotion = props.promotion.isMemershipCart ?
+
+    // const promotion = props.promotion.isMemershipCart ? { discountType: props.promotion.promotion.discountType, discountPrice: props.promotion.promotion.promotionPrice, discountPercentage: props.promotion.promotion.promotioPercentage } : (isMembership ? { discountType: props.discountType, discountPercentage: props.discountPercentage, discountPrice: props.discountPrice } : null)
 
     return (
       <>
@@ -279,7 +282,15 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
           {/* Product Info */}
           <div className="px-3">
             <div className="relative sm:relative lg:sticky top-3 sm:top-3 lg:top-28 col-span-1 flex flex-col py-6 px-3 border rounded-3xl">
-              <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+              <h1 className="text-2xl font-bold tracking-tight">
+                {title}
+                {props.promotion.discount &&
+                  `- (${
+                    props.promotion?.discount.discountType == "PRICE"
+                      ? `$${props.promotion?.discount.discountPrice}`
+                      : `${props.promotion?.discount.discountPercentage}%`
+                  })`}
+              </h1>
               <h2 className="sr-only">Product information</h2>
               <div className="my-2 flex items-center gap-2">
                 <RatingRadioGroup
@@ -290,7 +301,30 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                 <p>Reviews</p>
               </div>
               <p className="text-3xl sm:text-3xl lg:text-5xl text-primary font-bold tracking-tight">
-                {formatToUSD(parseInt(variant.price.toString()))}
+                {props.promotion?.discount ? (
+                  <>
+                    <div className="line-through text-xl">
+                      ${props?.promotion?.discount.originalPrice.toFixed(2)}
+                    </div>
+                    <label>
+                      $
+                      {props?.promotion?.discount.discountType === "PRICE"
+                        ? (
+                            variant.price -
+                            (props.promotion.discount.discountPrice ?? 0)
+                          ).toFixed(2)
+                        : (
+                            variant.price -
+                            ((props.promotion?.discount.discountPercentage ??
+                              0) *
+                              variant.price) /
+                              100
+                          ).toFixed(2)}
+                    </label>
+                  </>
+                ) : (
+                  `$${variant.price.toFixed(2)}`
+                )}
               </p>
               <div className="flex flex-col gap-1 my-4">
                 <div className="flex items-center gap-2 text-default-700">

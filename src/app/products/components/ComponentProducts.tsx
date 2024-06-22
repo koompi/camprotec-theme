@@ -7,7 +7,7 @@ import SidebarDrawer from "./SidebarDrawer";
 import { useDisclosure, Image } from "@nextui-org/react";
 import MenuBar from "./MenuBar";
 import ProductCard from "@/app/components/ProductCard";
-import { ProductType } from "@/types/product";
+import { MessageProduct, ProductType } from "@/types/product";
 import { PaginationProduct } from "@/app/components/Pagination";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -18,14 +18,10 @@ export default function ComponentProducts({
   products,
   total,
   pages,
-  discount,
-  discount_type,
   loading,
 }: {
   categories: Category[];
-  discount?: number;
-  discount_type?: string;
-  products: ProductType[];
+  products: MessageProduct[];
   total: number;
   pages: number;
   loading: boolean;
@@ -45,40 +41,40 @@ export default function ComponentProducts({
 
   const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
 
-  const mostPopularSort = (): ProductType[] => {
+  const mostPopularSort = (): MessageProduct[] => {
     if (!products) {
       return [];
     }
 
-    return [...products].sort((a: ProductType, b: ProductType) =>
-      a.sell > b.sell ? -1 : 1
+    return [...products].sort((a: MessageProduct, b: MessageProduct) =>
+      a.product.sell > b.product.sell ? -1 : 1
     );
   };
 
-  const brandSort = (): ProductType[] => {
+  const brandSort = (): MessageProduct[] => {
     if (!products) {
       return [];
     }
-    return [...products].sort((a: ProductType, b: ProductType) =>
-      a.brand > b.brand ? -1 : 1
+    return [...products].sort((a: MessageProduct, b: MessageProduct) =>
+      a.product.brand > b.product.brand ? -1 : 1
     );
   };
 
-  const topRated = (): ProductType[] => {
+  const topRated = (): MessageProduct[] => {
     if (!products) {
       return [];
     }
-    return [...products].sort((a: ProductType, b: ProductType) =>
-      a.rating > b.rating ? -1 : 1
+    return [...products].sort((a: MessageProduct, b: MessageProduct) =>
+      a.product.rating > b.product.rating ? -1 : 1
     );
   };
 
-  const newestSort = (): ProductType[] => {
+  const newestSort = (): MessageProduct[] => {
     if (!products) {
       return [];
     }
-    return [...products].sort((a: ProductType, b: ProductType) =>
-      a.createdAt > b.createdAt ? -1 : 1
+    return [...products].sort((a: MessageProduct, b: MessageProduct) =>
+      a.product.createdAt > b.product.createdAt ? -1 : 1
     );
   };
 
@@ -86,8 +82,8 @@ export default function ComponentProducts({
     if (sort === "most_popular") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {mostPopularSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
+          {mostPopularSort().map((res: MessageProduct, idx: number) => {
+            return <ProductCard key={idx} product={res.product} promotion={res.promotion} loading={false} />;
           })}
         </div>
       );
@@ -95,8 +91,8 @@ export default function ComponentProducts({
     if (sort === "newest") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {newestSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
+          {newestSort().map((res: MessageProduct, idx: number) => {
+            return <ProductCard key={idx} product={res.product} promotion={res.promotion} loading={false} />;
           })}
         </div>
       );
@@ -104,8 +100,8 @@ export default function ComponentProducts({
     if (sort === "top_rated") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {topRated().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
+          {topRated().map((res: MessageProduct, idx: number) => {
+            return <ProductCard key={idx} product={res.product} promotion={res.promotion} loading={false} />;
           })}
         </div>
       );
@@ -113,16 +109,16 @@ export default function ComponentProducts({
     if (sort === "price_low_to_high" || sort === "price_high_to_low") {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {products.map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
+          {products.map((res: MessageProduct, idx: number) => {
+            return <ProductCard key={idx} product={res.product} promotion={res.promotion} loading={false} />;
           })}
         </div>
       );
     } else {
       return (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
-          {brandSort().map((res: ProductType, idx: number) => {
-            return <ProductCard key={idx} product={res} discount={discount} type={discount_type} loading={false} />;
+          {brandSort().map((res: MessageProduct, idx: number) => {
+            return <ProductCard key={idx} product={res.product} promotion={res.promotion} loading={false} />;
           })}
         </div>
       );

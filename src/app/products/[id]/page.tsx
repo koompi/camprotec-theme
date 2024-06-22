@@ -4,7 +4,7 @@ import { getClient } from "@/libs/client";
 
 import dynamic from "next/dynamic";
 
-const ProductViewInfo = dynamic(() => import("./components/ProductViewItem"));
+const ProductDetail = dynamic(() => import("./components/ProductDetail"));
 
 type Props = {
   params: { id: string };
@@ -64,15 +64,15 @@ export default async function ProductPage({
 }: {
   params: { id: string };
 }) {
-  const client = getClient();
-  const { data } = await client.query({
-    query: GET_PRODUCT,
-    variables: { slug: params.id },
-  });
+  // const client = getClient();
+  // const { data } = await client.query({
+  //   query: GET_PRODUCT,
+  //   variables: { slug: params.id },
+  // });
 
   return (
     <section className="container px-0 sm:px-0 lg:px-6 mx-auto py-3 sm:py-3 lg:py-16">
-      <ProductViewInfo {...data?.storeProduct} />
+      <ProductDetail slug={params.id} />
     </section>
   );
 }

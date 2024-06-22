@@ -18,7 +18,7 @@ export default function ProductDetail(props: { slug: string }) {
             {loading ? (
                 <div>loading...</div>
             ) : (
-                <ProductViewInfo {...data?.storeProduct} />
+                <ProductViewInfo {...data?.storeProduct?.product} promotion={data?.storeProduct?.promotion} />
             )}
         </>
     );

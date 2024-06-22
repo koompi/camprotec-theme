@@ -75,8 +75,8 @@ export default function ProductsPage() {
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-3 sm:py-3 lg:py-9">
       <div className="flex gap-x-6">
         <ComponentProducts
-          discount={membershipCard ? membershipCard.discountType == "PERCENTAGE" ? membershipCard?.discountPercentage : membershipCard?.discountPrice : null}
-          discount_type={membershipCard ? membershipCard?.discountType : null}
+          // discount={membershipCard ? membershipCard.discountType == "PERCENTAGE" ? membershipCard?.discountPercentage : membershipCard?.discountPrice : null}
+          // discount_type={membershipCard ? membershipCard?.discountType : null}
           categories={categories?.storeOwnerCategories}
           {...products?.storeGlobalFilterProducts}
           searchParams={searchParams}

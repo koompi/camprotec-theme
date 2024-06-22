@@ -25,7 +25,9 @@ export default function Home() {
     }
   );
 
-  const membershipCard = products?.storeProducts.membershipCard;
+  console.log("products", products);
+  
+  // const membershipCard = products?.storeProducts.membershipCard;
 
   return (
     <main>
@@ -37,9 +39,9 @@ export default function Home() {
       </section>
       <section id="products" className="pt-8 ">
         <LatestProducts
-          isMembership={membershipCard ? true : false}
-          discount={membershipCard ? membershipCard?.discountPercentage : null}
-          type={membershipCard ? membershipCard?.discountType : null}
+          // isMembership={membershipCard ? true : false}
+          // discount={membershipCard ? membershipCard?.discountPercentage : null}
+          // type={membershipCard ? membershipCard?.discountType : null}
           products={products?.storeProducts?.products}
           loading={loadingProduct}
         />
