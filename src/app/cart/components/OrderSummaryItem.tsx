@@ -4,24 +4,23 @@ import React from "react";
 import { Button, Chip, Image, Link } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { cn } from "@/utils/cn";
-import { CartItem } from "@/types/global";
+// import { CartItem } from "@/types/global";
 import { useCart } from "@/context/useCart";
-import { formatToUSD } from "@/utils/usd";
+// import { formatToUSD } from "@/utils/usd";
+import { ProductType } from "@/types/product";
+import { PromotionType } from "@/types/promotion";
 
+interface Product {
+  product: ProductType;
+  promotion: PromotionType;
+  qty: number;
+}
 export type OrderSummaryItemProps = React.HTMLAttributes<HTMLLIElement> &
-  CartItem;
+  Product;
 
 const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
-  ({ children, quantity, product, className, ...props }, ref) => {
+  ({ children, product, promotion, qty, className, ...props }, ref) => {
     const { addToCart, minusCart, removeFromCart } = useCart();
-    const promotionPrice = product.promotion ?
-      product?.promotion?.type == "PERCENTAGE"
-        ? product?.price -
-        (product?.price *
-          (product.promotion?.discount ? product.promotion?.discount : 0)) /
-        100
-        : product?.price - (product.promotion?.discount ? product.promotion?.discount : 0) :
-      product?.price;
 
     return (
       <li
@@ -32,10 +31,11 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
         )}
         {...props}
       >
+        {/* {productId} */}
         <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center">
           <Image
-            alt={product?.name}
-            src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backend.riverbase.org"}/api/drive?hash=${product?.preview}`}
+            alt={product?.title}
+            src={`${process.env.NEXT_PUBLIC_DRIVE ?? "https://drive.backend.riverbase.org"}/api/drive?hash=${product?.thumbnail}`}
             isZoomed
           />
         </div>
@@ -46,40 +46,59 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
               href="#"
               underline="hover"
             >
-              {product?.name || children}
+              {product?.title || children}
             </Link>
           </h4>
 
           <div className="mt-2 flex items-center gap-2">
-            {product.promotion ?
+            {promotion.discount ? (
               <div className="space-x-2 flex items-center">
+                {/* <div className="font-bold">
+                  <div className="line-through text-sm">${promotion.discount.originalPrice.toFixed(2)}</div>
+                  <div>${(promotion?.discount.originalPrice).toFixed(2)}</div>
+                </div> */}
                 <div className="font-bold">
-                  <div className="line-through text-sm">${product?.price.toFixed(2)}</div>
-                  <div>${(promotionPrice).toFixed(2)}</div>
-                </div>
-                <div className="font-bold">
-                  <div className="line-through text-sm">${(product?.price * quantity).toFixed(2)} x {quantity}</div>
-                  <div>${(promotionPrice * quantity).toFixed(2)} x {quantity}</div>
+                  <div className="line-through text-sm">
+                    ${(promotion?.discount.originalPrice * qty).toFixed(2)} x{" "}
+                    {qty}
+                  </div>
+                  <div>
+                    (
+                    {promotion?.discount &&
+                      (promotion?.discount.discountType == "PERCENTAGE" ? (
+                        <label color="danger">
+                          {promotion?.discount.discountPercentage}% OFF
+                        </label>
+                      ) : (
+                        <label color="danger">
+                          ${promotion?.discount.discountPrice} OFF
+                        </label>
+                      ))}
+                    ) - ${(promotion?.discount.totalDiscount * qty).toFixed(2)}{" "}
+                    x ({qty} QTY)
+                  </div>
+                  <div className="text-danger">
+                    ${product?.price.toFixed(2)}
+                  </div>
                 </div>
               </div>
-              :
-              <div>{formatToUSD(product?.price)}</div>}
+            ) : (
+              <div>{product?.price.toFixed(2)}</div>
+            )}
           </div>
 
           <div className="flex space-x-2 mt-2">
-            {!product.variant?.id && (
-              <Chip radius="sm" size="sm" variant="flat" color="secondary">
-                Default
-              </Chip>
-            )}
-            {product.promotion && (product.promotion.type == "PERCENTAGE" ? (
-              <Chip radius="sm" size="sm" variant="flat" color="danger">
-                {product.promotion?.discount}%
-              </Chip>
-            ) : <Chip radius="sm" size="sm" variant="flat" color="danger">
-              ${product.promotion?.discount}
-            </Chip>)}
-            {product?.variant?.attributes.map((atr, idx: number) => {
+            {product?.promotion &&
+              (promotion?.discount.discountType == "PERCENTAGE" ? (
+                <Chip radius="sm" size="sm" variant="flat" color="danger">
+                  {promotion?.discount.discountPercentage}%
+                </Chip>
+              ) : (
+                <Chip radius="sm" size="sm" variant="flat" color="danger">
+                  ${promotion?.discount.discountPrice}
+                </Chip>
+              ))}
+            {/* {product?.variant?.attributes.map((atr, idx: number) => {
               return (
                 <Chip
                   radius="sm"
@@ -91,7 +110,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
                   {atr.option}
                 </Chip>
               );
-            })}
+            })} */}
           </div>
         </div>
         <div className="flex gap-3">
@@ -100,8 +119,8 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
             className="h-6 w-6 min-w-[1.5rem]"
             radius="full"
             variant="flat"
-            isDisabled={quantity <= 1}
-            onPress={() => minusCart(product)}
+            isDisabled={qty <= 1}
+            onPress={() => minusCart(product.id)}
           >
             <Icon icon="lucide:minus" width={14} />
           </Button>
@@ -111,7 +130,7 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
             radius="full"
             variant="flat"
             color="success"
-            onPress={() => addToCart(product)}
+            onPress={() => addToCart(product.id)}
           >
             <Icon icon="lucide:plus" width={14} />
           </Button>
@@ -128,53 +147,6 @@ const OrderSummaryItem = React.forwardRef<HTMLLIElement, OrderSummaryItemProps>(
             <Icon icon="lucide:x" width={14} />
           </Button>
         </div>
-        {/* <div className="flex gap-3">
-          <Tooltip content="Minus" placement="top">
-            <Button
-              isIconOnly
-              className="h-6 w-6 min-w-[1.5rem]"
-              radius="full"
-              variant="flat"
-              isDisabled={quantity <= 1}
-              onPress={() =>
-                minusCart(product, product.variant?.id != "1" ? true : false)
-              }
-            >
-              <Icon icon="lucide:minus" width={14} />
-            </Button>
-          </Tooltip>
-          <Tooltip content="Add" placement="top">
-            <Button
-              isIconOnly
-              className="h-6 w-6 min-w-[1.5rem]"
-              radius="full"
-              variant="flat"
-              color="success"
-              onPress={() =>
-                addToCart(product, product.variant?.id ? true : false)
-              }
-            >
-              <Icon icon="lucide:plus" width={14} />
-            </Button>
-          </Tooltip>
-          <Tooltip content="Remove" placement="top">
-            <Button
-              isIconOnly
-              className="h-6 w-6 min-w-[1.5rem]"
-              radius="full"
-              variant="flat"
-              color="danger"
-              onPress={() => {
-                removeFromCart(
-                  product.variant?.id ? product.variant?.id : product.id,
-                  product.variant?.id ? true : false
-                );
-              }}
-            >
-              <Icon icon="lucide:x" width={14} />
-            </Button>
-          </Tooltip>
-        </div> */}
       </li>
     );
   }

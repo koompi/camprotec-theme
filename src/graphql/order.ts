@@ -65,3 +65,29 @@ export const ORDER_BY_ID = gql`
     }
   }
 `;
+
+export const ESTIMATION_PRICE = gql`
+  query(
+    $input: [InputEstimationOrder!]!
+    $membershipId: String
+  ) {
+    estimationOrders(input: $input, membershipId: $membershipId) {
+      qty
+      promotion {
+        discount {
+          discountPercentage
+          discountPrice
+          discountType
+          originalPrice
+          totalDiscount
+        }
+        isMembership
+      }
+      product {
+        id
+        title
+        price
+      }
+    }
+  }
+`;

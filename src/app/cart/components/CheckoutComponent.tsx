@@ -34,16 +34,24 @@ import { ESTIMATE_PRICE } from "@/graphql/delivery";
 import { useMutation } from "@apollo/client";
 import { CHECKOUT } from "@/graphql/mutation/checkout";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CartItem } from "@/types/global";
+import { PromotionType } from "@/types/promotion";
+import { ESTIMATION_PRICE } from "@/graphql/order";
 
-const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
+interface OrderCart {
+  product: ProductType;
+  promotion: PromotionType;
+  qty: number;
+}
+
+const CheckoutComponent = () => {
   const { user } = useAuth();
   const router = useRouter();
+  const params = useSearchParams();
 
-  const { cartItems, cleanCartItems, loading } = useCart();
-  const [price, setPrice] = useState(0);
-  const [priceDiscount, setPriceDiscount] = useState(0);
+  const { cartItems, cleanCartItems, membershipId } = useCart();
+  const [loading, setLoading] = useState(false);
   const [ship, setShip] = useState<string>("");
   const [toDelivery, setToDelivery] = useState<CustomerAddressType | null>();
 
@@ -59,47 +67,35 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
     },
   });
 
-  //  function checkout
+  const { data: orders } = useQuery(ESTIMATION_PRICE, {
+    variables: {
+      input: [...cartItems],
+      membershipId: membershipId,
+    },
+  });
 
+  // checkout orders product
   const onSubmitCheckout = () => {
-    const totalPrice = (price + es_price?.estimatePrice?.data?.price).toFixed(
-      2
-    );
-    const newCart = cartItems?.map((item) => {
-      const discountPercentage = item.product.promotion ? item.product.promotion.discount : null;
-      const discountPrice = item.product.promotion ? item.product.promotion.price : null;
-
-      return {
-        productId: item?.product.productId,
-        qty: item?.quantity,
-        discountPercentage: discountPercentage,
-        discountPrice: discountPrice,
-        unitPrice: parseFloat(item?.product?.price.toString()),
-        variantId: item?.product?.variant?.id,
-      };
-    });
-
     const variables = {
       input: {
-        carts: newCart,
-        currency: "USD",
-        // totalPrice: parseFloat(totalPrice.toString()),
+        carts: [...cartItems],
       },
       deliveryId: ship == "PERSONAL" ? null : ship,
       addressId: toDelivery?.id,
       express: ship == "PERSONAL" ? "PERSONAL" : "L192",
       payment: "CASH",
     };
-
+    setLoading(true);
     storeCreateCheckouts({ variables: variables })
       .then((_) => {
         toast.success(
           "Congratulation! you've been order the product(s) successfully!"
         );
-        router.push("/orders");
+        setLoading(false);
       })
       .then(() => {
         cleanCartItems();
+        router.push("/orders");
       })
       .catch((err) => {
         toast.error("Your transaction order is failed!");
@@ -126,33 +122,41 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
     }),
   };
 
-  useEffect(() => {
-    const subtotal: number[] = [];
-    const subtotal_discount: number[] = [];
-    cartItems.map((product: any) =>
-      subtotal.push(product.quantity * product.product.price)
-    );
-    cartItems.map(({ product, quantity }: CartItem) => {
-      const discountPrice = product.promotion ?
-        product?.promotion?.type == "PERCENTAGE"
-          ? product?.price -
-          (product?.price *
-            (product.promotion?.discount ? product.promotion?.discount : 0)) /
-          100
-          : product?.price - (product.promotion?.discount ? product.promotion?.discount : 0) :
-        product?.price;
-      subtotal_discount.push(discountPrice * quantity);
-    });
+  // useEffect(() => {
+  //   if (!orders) {
+  //     return;
+  //   }
+  //   const subtotal: number[] = [];
+  //   const subtotal_discount: number[] = [];
+  //   // cartItems.map((product: any) =>
+  //   //   subtotal.push(product.quantity * product.product.price)
+  //   // );
+  //   cartItems.map(({ productId, qty }: CartItem) => {
+  //     // const discountPrice = product.promotion ?
+  //     //   product?.promotion?.type == "PERCENTAGE"
+  //     //     ? product?.price -
+  //     //     (product?.price *
+  //     //       (product.promotion?.discount ? product.promotion?.discount : 0)) /
+  //     //     100
+  //     //     : product?.price - (product.promotion?.discount ? product.promotion?.discount : 0) :
+  //     //   product?.price;
+  //     // subtotal_discount.push(discountPrice * quantity);
+  //   });
 
-    const Subtotal: any = subtotal.reduce((accumulator, value) => {
-      return accumulator + value;
-    }, 0);
-    const PriceDiscount: any = subtotal_discount.reduce((accumulator, value) => {
-      return accumulator + value;
-    }, 0);
-    setPrice(Subtotal);
-    setPriceDiscount(PriceDiscount);
-  }, [cartItems]);
+  //   const Subtotal: number = orders?.estimationOrders
+  //     ?.reduce((accumulator: number, currentObject: OrderCart) => {
+  //       return (
+  //         accumulator +
+  //         currentObject?.promotion?.discount?.totalDiscount * currentObject?.qty
+  //       );
+  //     }, 0)
+  //     .toFixed(2);
+  //   // const PriceDiscount: any = subtotal_discount.reduce((accumulator, value) => {
+  //   //   return accumulator + value;
+  //   // }, 0);
+  //   setPrice(Subtotal);
+  //   // setPriceDiscount(PriceDiscount);
+  // }, [orders]);
 
   const paginate = (newDirection: number) => {
     if (page + newDirection < 0 || page + newDirection > 2) return;
@@ -160,29 +164,26 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
     setPage([page + newDirection, newDirection]);
   };
 
-
   const ctaLabel = React.useMemo(() => {
     switch (page) {
       case 0:
-        return `Delivery (${formatToUSD(
-          price +
-          (es_price?.estimatePrice?.data?.price
-            ? es_price?.estimatePrice?.data?.price
-            : 0)
-        )})`;
+        return `Delivery ($${orders?.estimationOrders
+          ?.reduce((accumulator: number, currentObject: OrderCart) => {
+            return (
+              accumulator +
+              currentObject?.promotion?.discount?.totalDiscount *
+                currentObject?.qty
+            );
+          }, 0)
+          .toFixed(2)})`;
       case 1:
         return "Continue to payment";
       case 2:
         return "Place order";
       default:
-        return `Delivery (${formatToUSD(
-          price +
-          (es_price?.estimatePrice?.data?.price
-            ? es_price?.estimatePrice?.data?.price
-            : 0)
-        )})`;
+        return `Delivery ()`;
     }
-  }, [es_price?.estimatePrice?.data?.price, page, price]);
+  }, [page, orders]);
 
   const stepTitle = React.useMemo(() => {
     switch (page) {
@@ -206,7 +207,12 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
 
     switch (page) {
       case 0:
-        return <OrderSummary hideTitle />;
+        return (
+          <OrderSummary
+            hideTitle
+            orders={orders?.estimationOrders && orders?.estimationOrders}
+          />
+        );
       case 1:
         return (
           <div className="mt-0 sm:mt-0 lg:mt-4 flex flex-col gap-6">
@@ -311,17 +317,17 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       default:
         return null;
     }
-  }, [page, ship, toDelivery]);
+  }, [page, orders, ship, toDelivery]);
 
-  if (loading) {
-    return (
-      <section className="grid min-h-dvh place-items-center px-6 py-24 sm:py-32 lg:px-8">
-        <Spinner label="Loading..." color="primary" />
-      </section>
-    );
-  }
+  // if (order_loading) {
+  //   return (
+  //     <section className="grid min-h-dvh place-items-center px-6 py-24 sm:py-32 lg:px-8">
+  //       <Spinner label="Loading..." color="primary" />
+  //     </section>
+  //   );
+  // }
 
-  if (cartItems.length <= 0) {
+  if (!orders) {
     return (
       <section className="grid min-h-dvh place-items-center px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
@@ -366,8 +372,6 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       </section>
     );
   }
-
-  console.log("cartItems", cartItems);
 
   return (
     <section className="container mx-auto px-3 sm:px-3 lg:px-6 py-4 sm:py-4 lg:py-9 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 w-full gap-8">
@@ -451,9 +455,11 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                     if (page === 2) {
                       onSubmitCheckout();
                     }
+                    router.push("?query=delivery");
                     paginate(1);
                   }}
                   isDisabled={page === 1 && !(ship && toDelivery)}
+                  isLoading={loading}
                 >
                   {ctaLabel}
                 </Button>
@@ -475,23 +481,53 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
       </div>
       <div className="col-span-2">
         {page <= 0 ? (
-          <RecommendProducts products={products} />
+          // <RecommendProducts products={products} />
+          <div>hello</div>
         ) : (
           <div className="sticky top-28 hidden sm:hidden lg:block">
             <Card shadow="sm" isBlurred>
-              <CardHeader>Sumary</CardHeader>
+              <CardHeader>Summary</CardHeader>
               <CardBody>
                 <dl className="flex flex-col gap-4 py-4">
                   <div className="flex justify-between">
                     <dt className="text-small text-default-500">Subtotal</dt>
                     <dd className="text-small font-semibold text-default-700">
-                      ${price.toFixed(2)}
+                      $
+                      {orders?.estimationOrders
+                        ?.reduce(
+                          (accumulator: number, currentObject: OrderCart) => {
+                            return (
+                              accumulator +
+                              currentObject?.promotion?.discount
+                                ?.originalPrice *
+                                currentObject?.qty
+                            );
+                          },
+                          0
+                        )
+                        .toFixed(2)}
                     </dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="text-small text-default-500">Discount</dt>
                     <dd className="text-small font-semibold text-default-700">
-                      ${(price - priceDiscount).toFixed(2)}
+                      {/* ${(price - priceDiscount).toFixed(2)} */}$
+                      {orders?.estimationOrders
+                        ?.reduce(
+                          (accumulator: number, currentObject: OrderCart) => {
+                            return (
+                              accumulator +
+                              (currentObject?.promotion?.discount
+                                ?.originalPrice *
+                                currentObject?.qty -
+                                currentObject?.promotion?.discount
+                                  ?.totalDiscount *
+                                  currentObject?.qty)
+                            );
+                          },
+                          0
+                        )
+                        .toFixed(2)}
                     </dd>
                   </div>
 
@@ -510,9 +546,9 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                       </dd>
                     ) : (
                       <dd className="text-small font-semibold text-default-700">
-                        {es_price?.estimatePrice?.data?.price
+                        {/* {es_price?.estimatePrice?.data?.price
                           ? formatToUSD(es_price?.estimatePrice?.data?.price)
-                          : formatToUSD(0)}
+                          : formatToUSD(0)} */}
                       </dd>
                     )}
                   </div>
@@ -538,15 +574,36 @@ const CheckoutComponent = ({ products }: { products: ProductType[] }) => {
                     </dd> */}
                     {ship === "PERSONAL" ? (
                       <dd className="font-semibold text-primary text-xl">
-                        {/* {formatToUSD(price)} */}
-                        ${priceDiscount.toFixed(2)}
+                        ${orders?.estimationOrders
+                          ?.reduce(
+                            (accumulator: number, currentObject: OrderCart) => {
+                              return (
+                                accumulator +
+                                currentObject?.promotion?.discount
+                                  ?.totalDiscount *
+                                  currentObject?.qty
+                              );
+                            },
+                            0
+                          )
+                          .toFixed(2)}
                       </dd>
                     ) : (
                       <dd className="font-semibold text-primary text-xl">
-                        ${priceDiscount +
-                          (es_price?.estimatePrice?.data?.price
-                            ? es_price?.estimatePrice?.data?.price
-                            : 0)}
+                        $
+                        {orders?.estimationOrders
+                          ?.reduce(
+                            (accumulator: number, currentObject: OrderCart) => {
+                              return (
+                                accumulator +
+                                currentObject?.promotion?.discount
+                                  ?.totalDiscount *
+                                  currentObject?.qty
+                              );
+                            },
+                            0
+                          )
+                          .toFixed(2)}
                       </dd>
                     )}
                   </div>

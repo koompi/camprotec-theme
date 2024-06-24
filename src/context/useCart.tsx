@@ -12,15 +12,16 @@ import { Toaster, toast } from "sonner";
 // import { useAuth } from "./useAuth";
 // import { useRouter } from "next/navigation";
 import { CartContextType, CartItem } from "@/types/global";
-import { ItemProduct } from "@/types/product";
+import { useQuery } from "@apollo/client";
+import { GET_STORE_USER } from "@/graphql/store";
+// import { ItemProduct } from "@/types/product";
 
 export const CartContext = createContext({});
 
 export function CartProvider(props: { children: JSX.Element }) {
-  // const router = useRouter();
-  // const { getUser } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { data: userStore, loading: loading_store } = useQuery(GET_STORE_USER);
 
   useEffect(() => {
     const carts = localStorage.getItem("cartItems");
@@ -51,39 +52,39 @@ export function CartProvider(props: { children: JSX.Element }) {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
 
-  const addToCart = (product: ItemProduct) => {
+  const addToCart = (product_id: string) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
-        (item) => item.product.id === product.id
+        (item) => item.productId === product_id
       );
       if (existingItem) {
         return prevItems.map((res) =>
-          res.product?.id === product?.id
-            ? { ...res, quantity: res.quantity + 1 }
+          res.productId === product_id
+            ? { ...res, qty: res.qty + 1 }
             : res
         );
       }
-      const newItem: CartItem = { product, quantity: 1 };
+      const newItem: CartItem = { productId: product_id, qty: 1 };
       const updatedItems = [...prevItems, newItem];
       localStorage.setItem("cartItems", JSON.stringify(updatedItems));
       return updatedItems;
     });
   };
 
-  const minusCart = (product: ItemProduct) => {
+  const minusCart = (product_id: string) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems?.find(
-        (item) => item.product?.id === product?.id
+        (item) => item.productId === product_id
       );
       if (existingItem) {
         return prevItems?.map((res) =>
-          res.product?.id === product?.id
-            ? { ...res, quantity: res.quantity - 1 }
+          res.productId === product_id
+            ? { ...res, qty: res.qty - 1 }
             : res
         );
       }
       const updatedItems = prevItems?.filter(
-        (item: CartItem) => item.product?.id === product?.id
+        (item: CartItem) => item.productId === product_id
       );
       localStorage.setItem("cartItems", JSON.stringify(updatedItems));
       return updatedItems;
@@ -92,7 +93,7 @@ export function CartProvider(props: { children: JSX.Element }) {
 
   const removeFromCart = (id: String) => {
     setCartItems((prevItems) => {
-      const item = prevItems.filter((item) => item.product.id != id);
+      const item = prevItems.filter((item) => item.productId != id);
       localStorage.setItem("cartItems", JSON.stringify(item));
       return item;
     });
@@ -116,15 +117,17 @@ export function CartProvider(props: { children: JSX.Element }) {
     }
   };
 
-  if (loading) {
+  if (loading || loading_store) {
     return null;
   }
+
 
   return (
     <CartContext.Provider
       value={{
         loading: loading,
         cartItems: cartItems,
+        membershipId: userStore?.customer,
         addToCart: addToCart,
         addCarts: addCarts,
         removeFromCart: removeFromCart,

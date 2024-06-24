@@ -17,22 +17,6 @@ const ProductCard: FC<{
   loading: boolean;
 }> = (props) => {
   const { addToCart } = useCart();
-
-  const handleAddToCart = (product: ItemProduct) => {
-    // let p: ItemProduct = {
-    //   id: product?.id,
-    //   variantId: null,
-    //   name: product?.name,
-    //   promotion: {},
-    //   price: product?.price,
-    //   currency: product?.currency,
-    //   preview: product?.preview,
-    //   productId: product?.id,
-    // };
-    addToCart(product);
-  };
-
-  console.log("");
   
   return (
     <div className="relative">
@@ -133,26 +117,26 @@ const ProductCard: FC<{
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      const product: ItemProduct = {
-                        id: props?.product.id,
-                        name: props?.product?.title,
-                        promotion: props.promotion,
-                        variant: {
-                          id: null,
-                          label: "Default",
-                          default: true,
-                          previews: props?.product.thumbnail,
-                          price: props?.product.price,
-                          attributes: [],
-                        },
-                        price: props?.product.price,
-                        currency: "USD",
-                        preview: props?.product.thumbnail,
-                        productId: props?.product.id,
-                        variantId: null,
-                      };
+                      // const product: ItemProduct = {
+                      //   id: props?.product.id,
+                      //   name: props?.product?.title,
+                      //   promotion: props.promotion,
+                      //   variant: {
+                      //     id: null,
+                      //     label: "Default",
+                      //     default: true,
+                      //     previews: props?.product.thumbnail,
+                      //     price: props?.product.price,
+                      //     attributes: [],
+                      //   },
+                      //   price: props?.product.price,
+                      //   currency: "USD",
+                      //   preview: props?.product.thumbnail,
+                      //   productId: props?.product.id,
+                      //   variantId: null,
+                      // };
 
-                      handleAddToCart(product);
+                      addToCart(props?.product?.id);
                       toast.success("The product is added into the cart!");
                     }}
                   >

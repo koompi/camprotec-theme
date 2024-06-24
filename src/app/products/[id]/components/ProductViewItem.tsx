@@ -6,7 +6,6 @@ import {
   Breadcrumbs,
   Button,
   Image,
-  Input,
   RadioGroup,
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
@@ -61,10 +60,10 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
     const sortParam = searchParams.get("sort") || null;
     const brands = searchParams.get("brands") || null;
 
-    const [selectedImage, setSelectedImage] = React.useState(previews[0]);
+    // const [selectedImage, setSelectedImage] = React.useState(previews[0]);
     const { addToCart } = useCart();
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
-    const [previewType, setPreviewType] = useState<string | null>(null);
+    // const [previewType, setPreviewType] = useState<string | null>(null);
     const video_files = ["video/mp4", "video/mov", "video/webm"];
 
     const cartVariants = [
@@ -86,71 +85,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
       price: price,
       attributes: [],
     });
-
-    // const [items, setItems] = useState<CartItem[]>([]);
-    // const [selections, setSelections] = useState();
-
-    // const handleAddToCart = (product: ItemProduct) => {
-    //   let p: ItemProduct = {
-    //     id: product?.id,
-    //     variantId: null,
-    //     name: product?.name,
-    //     price: product?.price,
-    //     currency: product?.currency,
-    //     preview: product?.preview,
-    //   };
-    //   addToCart(p, false);
-    // };
-
-    // function to group items by date
-    // const groupItemsByVariant = useCallback(() => {
-    //   const groups = [] as any;
-    //   variants?.forEach((item) => {
-    //     if (!groups[item.attribute.split(" ")[0]]) {
-    //       groups[item.attribute.split(" ")[0]] = [];
-    //     }
-    //     groups[item.attribute.split(" ")[0]].push(item);
-    //   });
-
-    //   return groups;
-    // }, [variants]);
-
-    // const groups = useMemo(() => {
-    //   return groupItemsByVariant();
-    // }, [groupItemsByVariant]);
-
-    // console.log("groups", JSON.stringify(variants, null, 4));
-    // const variantObjet = useMemo(() => {
-    //   let result = {};
-    //   variants.forEach((v) => {
-    //     if (typeof result[v.attribute] === "undefined") {
-    //       result[v.attribute] = { [v.label]: parseInt(v.price) };
-    //     } else {
-    //       result[v.attribute] = {
-    //         ...result[v.attribute],
-    //         [v.label]: parseInt(v.price),
-    //       };
-    //     }
-    //   });
-
-    //   return result;
-    // }, [variants]);
-
-    // const totalPrice = useMemo(() => {
-    //   if (typeof selections !== "undefined") {
-    //     let total = Object.entries<number>(selections)
-    //       .map((e: [string, number]) => e[1])
-    //       .reduce((a, b) => a + b);
-
-    //     return total;
-    //   }
-
-    //   return 0;
-    // }, [selections]);
-    // const promotion = props.promotion.isMemershipCart ?
-
-    // const promotion = props.promotion.isMemershipCart ? { discountType: props.promotion.promotion.discountType, discountPrice: props.promotion.promotion.promotionPrice, discountPercentage: props.promotion.promotion.promotioPercentage } : (isMembership ? { discountType: props.discountType, discountPercentage: props.discountPercentage, discountPrice: props.discountPrice } : null)
-
     return (
       <>
         <Breadcrumbs
@@ -285,7 +219,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               <h1 className="text-2xl font-bold tracking-tight">
                 {title}
                 {props.promotion.discount &&
-                  `- (${
+                  ` - (${
                     props.promotion?.discount.discountType == "PRICE"
                       ? `$${props.promotion?.discount.discountPrice}`
                       : `${props.promotion?.discount.discountPercentage}%`
@@ -424,15 +358,6 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
               </div>
 
               <div className="mt-12 flex gap-3">
-                {/* <Input
-                variant="bordered"
-                defaultValue="1"
-                min={1}
-                color="primary"
-                size="lg"
-                type="number"
-                className="w-1/4"
-              /> */}
                 <Button
                   fullWidth
                   className="text-medium font-medium text-background"
@@ -458,7 +383,7 @@ const ProductViewInfo = React.forwardRef<HTMLDivElement, ProductViewInfoProps>(
                       variantId: variant.id ? variant.id : null,
                     };
 
-                    addToCart(product);
+                    addToCart(variant.id ? variant.id : props.id);
                     toast.success("The product is added into the cart!");
                   }}
                 >
