@@ -4,35 +4,26 @@ import React from "react";
 import { Link, Button } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import MyLocation from "./components/MyLocation";
-import { CUSTOMER_ADDRESS } from "@/graphql/delivery";
 import { useQuery } from "@apollo/client";
-import { CustomerAddressType } from "@/types/checkout";
+import { LocationType } from "@/types/location";
+import { GET_ALL_LOCATIONS } from "@/graphql/location";
 
 export default function Page() {
-  const { data, loading } = useQuery(CUSTOMER_ADDRESS);
+  const { data, loading } = useQuery(GET_ALL_LOCATIONS);
 
   if (loading) {
     return null;
   }
-
+  
   return (
     <section className="container mx-auto px-6 py-12">
       <h1 className="text-xl font-medium">My Locations</h1>
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-3 mt-3">
-        {data?.storeAddress?.map((ad: CustomerAddressType, idx: number) => {
+        {data?.storeLocations?.map((localtion: LocationType, idx: number) => {
           return (
             <MyLocation
               key={idx}
-              id={ad?.id}
-              lat={ad?.lat}
-              lng={ad.lng}
-              firstName={ad.firstName}
-              lastName={ad.lastName}
-              addressName={ad.addressName}
-              phoneNumber={ad.phoneNumber}
-              photos={ad.photos}
-              storeId={ad.storeId}
-              label={ad.label}
+              {...localtion}
             />
           );
         })}

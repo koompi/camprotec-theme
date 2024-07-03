@@ -34,7 +34,12 @@ import { ESTIMATE_PRICE } from "@/graphql/delivery";
 import { useMutation } from "@apollo/client";
 import { CHECKOUT } from "@/graphql/mutation/checkout";
 import { toast } from "sonner";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { CartItem } from "@/types/global";
 import { PromotionType } from "@/types/promotion";
 import { ESTIMATION_PRICE } from "@/graphql/order";
@@ -48,24 +53,27 @@ interface OrderCart {
 const CheckoutComponent = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const params = useSearchParams();
+  // const params = useSearchParams();
 
   const { cartItems, cleanCartItems, membershipId } = useCart();
   const [loading, setLoading] = useState(false);
-  const [ship, setShip] = useState<string>("");
-  const [toDelivery, setToDelivery] = useState<CustomerAddressType | null>();
+
+  const [delivery, setDelivery] = useState<"PERSIONAL" | "L192" | "CP">(
+    "PERSIONAL"
+  );
+  const [location, setLocation] = useState<string | null>(null);
 
   const [storeCreateCheckouts] = useMutation(CHECKOUT);
 
   // estimate price
-  const { data: es_price, refetch } = useQuery(ESTIMATE_PRICE, {
-    variables: {
-      adr: {
-        lat: toDelivery?.lat,
-        lng: toDelivery?.lng,
-      },
-    },
-  });
+  // const { data: es_price, refetch } = useQuery(ESTIMATE_PRICE, {
+  //   variables: {
+  //     adr: {
+  //       lat: toDelivery?.lat,
+  //       lng: toDelivery?.lng,
+  //     },
+  //   },
+  // });
 
   const { data: orders } = useQuery(ESTIMATION_PRICE, {
     variables: {
@@ -77,14 +85,15 @@ const CheckoutComponent = () => {
   // checkout orders product
   const onSubmitCheckout = () => {
     const variables = {
-      input: {
+      body: {
         carts: [...cartItems],
       },
-      deliveryId: ship == "PERSONAL" ? null : ship,
-      addressId: toDelivery?.id,
-      express: ship == "PERSONAL" ? "PERSONAL" : "L192",
+      membershipId: membershipId,
+      deliveryType: delivery,
+      locationId: location,
       payment: "CASH",
     };
+    
     setLoading(true);
     storeCreateCheckouts({ variables: variables })
       .then((_) => {
@@ -121,6 +130,11 @@ const CheckoutComponent = () => {
       opacity: 0,
     }),
   };
+
+  useEffect(() => {
+    setDelivery("L192");
+    setLocation("6682154adedc3297b9dbe265");
+  }, []);
 
   // useEffect(() => {
   //   if (!orders) {
@@ -219,10 +233,10 @@ const CheckoutComponent = () => {
             <ShippingForm
               hideTitle
               variant="bordered"
-              ship={ship}
-              setShip={setShip}
-              toDelivery={toDelivery as any}
-              setToDelivery={setToDelivery}
+              delivery={delivery}
+              setDelivery={setDelivery}
+              location={location}
+              setLocation={setLocation}
             />
           </div>
         );
@@ -317,7 +331,7 @@ const CheckoutComponent = () => {
       default:
         return null;
     }
-  }, [page, orders, ship, toDelivery]);
+  }, [page, orders, delivery, location]);
 
   // if (order_loading) {
   //   return (
@@ -386,9 +400,9 @@ const CheckoutComponent = () => {
               variant="flat"
               onPress={() => {
                 if (page <= 1) {
-                  refetch();
-                  setToDelivery(null);
-                  setShip("");
+                  // refetch();
+                  // setToDelivery(null);
+                  // setShip("");
                 }
                 paginate(-1);
               }}
@@ -458,7 +472,7 @@ const CheckoutComponent = () => {
                     router.push("?query=delivery");
                     paginate(1);
                   }}
-                  isDisabled={page === 1 && !(ship && toDelivery)}
+                  isDisabled={page === 1 && !(delivery && location)}
                   isLoading={loading}
                 >
                   {ctaLabel}
@@ -540,7 +554,7 @@ const CheckoutComponent = () => {
                       />
                     </dt>
 
-                    {ship === "PERSONAL" ? (
+                    {delivery === "PERSIONAL" ? (
                       <dd className="text-small font-semibold text-default-700">
                         Free
                       </dd>
@@ -572,9 +586,10 @@ const CheckoutComponent = () => {
                             : 0)
                       )}
                     </dd> */}
-                    {ship === "PERSONAL" ? (
+                    {delivery === "PERSIONAL" ? (
                       <dd className="font-semibold text-primary text-xl">
-                        ${orders?.estimationOrders
+                        $
+                        {orders?.estimationOrders
                           ?.reduce(
                             (accumulator: number, currentObject: OrderCart) => {
                               return (

@@ -13,10 +13,13 @@ import {
 } from "@nextui-org/react";
 import React, { FC } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { CustomerAddressType } from "@/types/checkout";
+import { LocationType } from "@/types/location";
 
-const MyLocation: FC<CustomerAddressType> = (props) => {
+const MyLocation: FC<LocationType> = (props) => {
   return (
+    // <div>
+    //   {JSON.stringify(props)}
+    // </div>
     <Card
       isBlurred
       className="border-none bg-background/60 dark:bg-default-100/50 max-w-full"
@@ -55,24 +58,24 @@ const MyLocation: FC<CustomerAddressType> = (props) => {
         <div className="grid grid-cols-3 space-x-6 items-center justify-center">
           <div className="relative col-span-1">
             <Image
-              alt={props?.addressName}
+              alt={props?.address?.streetValue}
               className="object-cover w-full h-full"
               shadow="none"
               src={
-                props.photos.length > 0 ? props.photos[0] : "/images/shop.png"
+                props?.address?.photos.length > 0 ? props?.address?.photos[0] : "/images/shop.png"
               }
             />
           </div>
           <div className="flex flex-col col-span-2">
             <div className="flex justify-between items-start">
               <div className="flex flex-col gap-0">
-                {props.label && (
+                {props?.address?.streetNo && (
                   <Chip color="primary" variant="flat" size="sm">
-                    {props.label}
+                    {props?.address?.streetNo}
                   </Chip>
                 )}
                 <h3 className="font-semibold text-foreground/90 mt-2 line-clamp-3">
-                  {props?.addressName}
+                  {props?.address?.streetValue}
                 </h3>
                 <div className="flex gap-3 mt-2">
                   <p className=" text-sm font-light">

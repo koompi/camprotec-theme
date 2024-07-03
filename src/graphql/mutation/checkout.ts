@@ -2,18 +2,16 @@ import { gql } from "@apollo/client";
 
 export const CHECKOUT = gql`
   mutation (
-    $input: InputOrder!
-    $deliveryId: String
-    $addressId: String!
+    $locationId: String!
+    $deliveryType: DeliveryType!
     $payment: PaymentType!
-    $express: ExpressType!
+    $body: BodyOrder!
   ) {
-    storeCreateCheckouts(
-      input: $input
-      deliveryId: $deliveryId
-      addressId: $addressId
+    storeCreateCheckout(
+      locationId: $locationId
+      deliveryType: $deliveryType
       payment: $payment
-      express: $express
+      body: $body
     )
   }
 `;
