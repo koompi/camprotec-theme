@@ -26,7 +26,7 @@ import { validateNumber } from "@/utils/phone";
 import axios, { AxiosResponse } from "axios";
 import { toast } from "sonner";
 import { useMutation } from "@apollo/client";
-import { CREATE_CUSTOMER_LOCATION } from "@/graphql/mutation/delivery";
+import { CREATE_CUSTOMER_LOCATION } from "@/graphql/mutation/location";
 import { useAuth } from "@/context/useAuth";
 import dynamic from "next/dynamic";
 import LocationLabel from "../components/LocationLabel";
@@ -36,15 +36,16 @@ const MyMap = dynamic(() => import("../components/Map"), {
 });
 
 interface FormCreateLocation {
-  addressName: string;
-  email: string;
   firstName: string;
   lastName: string;
-  lat: number;
-  lng: number;
   phoneNumber: string;
-  photos?: string[] | null;
-  label?: string;
+  email: string;
+  salutation: string;
+  countryId: string;
+  communeId: string;
+  districtId: string;
+  provinceId: string;
+  label: string;
 }
 
 export default function PageLocation() {
@@ -89,7 +90,7 @@ export default function PageLocation() {
     formState: { errors },
   } = useForm<FormCreateLocation>();
 
-  const [storeCreateAddress] = useMutation(CREATE_CUSTOMER_LOCATION);
+  const [storeCreateLocation] = useMutation(CREATE_CUSTOMER_LOCATION);
 
   useEffect(() => {
     if (operator.toLocaleLowerCase() === "cellcard") {
@@ -102,11 +103,6 @@ export default function PageLocation() {
       setColor("danger");
     }
   }, [operator]);
-
-  useEffect(() => {
-    setValue("addressName", addressName);
-    setValue("phoneNumber", newPhone.phoneNumber);
-  }, [addressName, newPhone, setValue]);
 
   useEffect(() => {
     if (newPhone.phoneNumber !== "") {
@@ -128,18 +124,26 @@ export default function PageLocation() {
   }, [newPhone.phoneNumber]);
 
   //  onSubmit to create location
-  const onSubmit = (data: FormCreateLocation) => {
-    const inputDelivery = {
-      input: {
-        ...data,
-        lat: position?.lat,
-        lng: position?.lng,
-        photos: photo ? [photo] : null,
-        label: addressLabel,
-      },
+  const onSubmit = (values: FormCreateLocation) => {
+    let bodyLocation = {
+      ...values,
+      ...position,
+      photos: photo ? [photo] : null,
+      map: address,
     };
 
-    storeCreateAddress({ variables: inputDelivery })
+    let bodyAddress = {
+      streetValue: addressName,
+      zipCode: parseInt(address?.postcode),
+      addressTypeId: "1",
+    };
+
+    storeCreateLocation({
+      variables: {
+        bodyLocation: bodyLocation,
+        bodyAddress: bodyAddress,
+      },
+    })
       .then(() => {
         toast.success("New location has been created!");
         router.push(`/cart?steps=shipping`);
@@ -149,41 +153,41 @@ export default function PageLocation() {
       });
   };
 
-  function handleNewPhoneChange(e: any) {
-    const { name, value } = e.target;
-    const object = {
-      ...newPhone,
-      [name]: value,
-    };
-    setNewPhone(() => object);
-  }
+  // function handleNewPhoneChange(e: any) {
+  //   const { name, value } = e.target;
+  //   const object = {
+  //     ...newPhone,
+  //     [name]: value,
+  //   };
+  //   setNewPhone(() => object);
+  // }
 
-  //  function to upload img
-  async function handleChange(e: any) {
-    e.preventDefault();
+  // //  function to upload img
+  // async function handleChange(e: any) {
+  //   e.preventDefault();
 
-    const body = {
-      upload: e.target?.files[0],
-    };
+  //   const body = {
+  //     upload: e.target?.files[0],
+  //   };
 
-    axios
-      .post(
-        `https://backend.riverbase.org/api/upload/image/${user?.id}`,
-        body,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((res: AxiosResponse<any, any>) => {
-        setPhoto(res.data.path);
-        toast.success("File has been added");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+  //   axios
+  //     .post(
+  //       `https://backend.riverbase.org/api/upload/image/${user?.id}`,
+  //       body,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     )
+  //     .then((res: AxiosResponse<any, any>) => {
+  //       setPhoto(res.data.path);
+  //       toast.success("File has been added");
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }
 
   // email verify partern
   const validateEmail = (value: string) =>

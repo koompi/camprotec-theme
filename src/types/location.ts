@@ -3,7 +3,6 @@ interface Address {
   houseNo: string;
   floorNo: string;
   addressTypeId: string;
-  photos: string[];
   poBoxNo: string;
   streetNo: string;
   streetValue: string;
@@ -31,4 +30,5 @@ export type LocationType = {
   createdAt: string;
   updatedAt: string;
   address: Address;
+  photos: string[];
 }

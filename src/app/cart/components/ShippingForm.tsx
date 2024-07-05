@@ -1,31 +1,28 @@
 "use client";
 
 import type { InputProps } from "@nextui-org/react";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
+  Button,
   Card,
   Divider,
   Image,
-  Link,
   RadioGroup,
 } from "@nextui-org/react";
 import { useQuery } from "@apollo/client";
-import { CUSTOMER_ADDRESS, DELIVERIES } from "@/graphql/delivery";
-import { CustomerAddressType, DeliveryType } from "@/types/checkout";
-import CustomRadio from "./CustomRadio";
-import { Icon } from "@iconify/react";
-import { useTheme } from "@/context/useTheme";
 import { GET_ALL_LOCATIONS } from "@/graphql/location";
 import { LocationType } from "@/types/location";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import CustomRadio from "./CustomRadio";
 
 export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
   variant?: InputProps["variant"];
   hideTitle?: boolean;
-  delivery: "PERSIONAL" | "L192" | "CP";
+  delivery: "PERSONAL" | "L192" | "CP";
   setDelivery: Function;
-  location: string | null;
+  location: string;
   setLocation: Function;
 };
 
@@ -36,53 +33,219 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
       base: "data-[selected=true]:border-foreground",
       control: "bg-foreground",
     };
-    const { value } = useTheme();
-
-    const { data, loading } = useQuery(DELIVERIES);
+    const [address, setAddress] = useState(false);
     const { data: locations, loading: loadingAddress } =
       useQuery(GET_ALL_LOCATIONS);
 
-    if (loading || loadingAddress) {
+    if (loadingAddress) {
       return "Loading...";
     }
+
+    const myLocation = locations?.storeLocations?.find(
+      (l: LocationType) => l.id == location
+    );
+
+    const changeLocation = () => {
+      setAddress(true);
+    };
 
     return (
       <div>
         <h1 className="font-semibold text-xl pb-4">Delivery address</h1>
         <Card shadow="sm" className="p-8">
-          {locations?.storeLocations?.map((location: LocationType) => {
-            return (
-              <div className="space-y-1 pb-4 leading-normal">
-                <div className="text-xl font-semibold">
-                  {location?.firstName} {location?.lastName}
-                </div>
-                <div className="leading-snug">
-                  <div>{location?.email}</div>
-                  <div>{location?.phoneNumber}</div>
-                </div>
+          {/* <div className="flex items-center justify-between">
+            <div className="space-y-1 pb-4 leading-normal">
+              <div className="text-xl font-semibold">
+                {myLocation?.firstName} {myLocation?.lastName}
               </div>
-            );
-          })}
+              <div className="leading-snug">
+                <div>{myLocation?.email}</div>
+                <div>{myLocation?.phoneNumber}</div>
+              </div>
+            </div>
+            <div>
+              <Button onClick={changeLocation}>Change Address</Button>
+            </div>
+          </div> */}
+
+          <Accordion>
+            <AccordionItem
+              key="delivery"
+              aria-label="Theme"
+              indicator={(_) => (
+                <div className="flex items-center font-semibold cursor-pointer">
+                  <Icon
+                    icon="solar:alt-arrow-right-line-duotone"
+                    style={{ color: "#000", fontSize: "24px" }}
+                  />
+                </div>
+              )}
+              title={
+                <div className="space-y-1 pb-4 leading-normal">
+                  <div className="text-xl font-semibold">
+                    {myLocation?.firstName} {myLocation?.lastName}
+                  </div>
+                  <div className="leading-snug">
+                    <div>{myLocation?.email}</div>
+                    <div>{myLocation?.phoneNumber}</div>
+                  </div>
+                </div>
+              }
+            >
+              <Divider />
+              <div className="my-4">
+                <RadioGroup
+                  aria-label="Select existing payment method"
+                  classNames={{ wrapper: "gap-3" }}
+                  defaultValue={location}
+                  onValueChange={(value) => {
+                    setDelivery(value);
+                  }}
+                >
+                  {locations?.storeLocations?.map(
+                    (location: LocationType, idx: number) => {
+                      return (
+                        <CustomRadio
+                          key={idx}
+                          classNames={deliveryRadioClasses}
+                          description={
+                            <div className="space-y-0.5">
+                              <div className="font-semibold text-black text-lg">
+                                {myLocation?.firstName} {myLocation?.lastName}
+                              </div>
+                              <div className="leading-snug">
+                                <div>{myLocation?.email}</div>
+                                <div>{myLocation?.phoneNumber}</div>
+                              </div>
+                              <div>{location?.address?.streetValue}</div>
+                            </div>
+                          }
+                          value={myLocation.id}
+                        />
+                      );
+                    }
+                  )}
+                </RadioGroup>
+              </div>
+            </AccordionItem>
+          </Accordion>
+
           <Divider />
-          <div className="mt-6 flex space-x-4">
-            {delivery === "CP" && (
-              <>
-                <Image src="/images/logo_v1.png" className="h-12" />
-                <div>
-                  <div className="font-semibold">Delivery: 1.2$</div>
-                  <div>Cambodia POS</div>
+          <div className="mt-6 flex space-x-4 justify-between">
+            <Accordion>
+              <AccordionItem
+                key="delivery"
+                aria-label="Theme"
+                indicator={(_) => (
+                  <div className="flex items-center font-semibold cursor-pointer">
+                    <Icon
+                      icon="solar:alt-arrow-right-line-duotone"
+                      style={{ color: "#000", fontSize: "24px" }}
+                    />
+                  </div>
+                )}
+                title={
+                  <div className="flex space-x-4">
+                    {delivery === "CP" && (
+                      <>
+                        <Image
+                          src="/images/logo_v1.png"
+                          className="h-12"
+                          alt=""
+                        />
+                        <div>
+                          <div className="font-semibold">Delivery: 1.2$</div>
+                          <div>Cambodia POS</div>
+                        </div>
+                      </>
+                    )}
+                    {delivery === "L192" && (
+                      <>
+                        <Image src="/images/l192.png" className="h-12" alt="" />
+                        <div>
+                          <div className="font-semibold">Delivery: 1.2$</div>
+                          <div>L912 Delivery</div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                }
+              >
+                <Divider />
+                <div className="mt-4">
+                  <RadioGroup
+                    aria-label="Select existing payment method"
+                    classNames={{ wrapper: "gap-3" }}
+                    defaultValue={delivery}
+                    onValueChange={(value) => {
+                      setDelivery(value);
+                    }}
+                  >
+                    {["CP", "L192"]?.map((delivery: string, idx: number) => {
+                      return (
+                        <CustomRadio
+                          key={idx}
+                          classNames={deliveryRadioClasses}
+                          description={
+                            <div className="space-y-0.5">
+                              <div className="font-semibold text-black text-lg">
+                                {delivery}
+                              </div>
+                              <div className="font-semibold text-black text-md">
+                                Fee: $1.5
+                              </div>
+                              <div>(Delivery within 2-3 days)</div>
+                            </div>
+                          }
+                          icon={
+                            <Image
+                              alt="delivery"
+                              src={
+                                delivery === "CP"
+                                  ? "/images/logo_v1.png"
+                                  : "/images/l192.png"
+                              }
+                              radius="none"
+                              className="w-20"
+                            />
+                          }
+                          // label={delivery}
+                          value={delivery}
+                        />
+                      );
+                    })}
+                  </RadioGroup>
                 </div>
-              </>
-            )}
-            {delivery === "L192" && (
-              <>
-                <Image src="/images/l192.png" className="h-12" />
-                <div>
-                  <div className="font-semibold">Delivery: 1.2$</div>
-                  <div>L912 Delivery</div>
-                </div>
-              </>
-            )}
+              </AccordionItem>
+            </Accordion>
+
+            {/* <div className="flex space-x-4">
+              {delivery === "CP" && (
+                <>
+                  <Image src="/images/logo_v1.png" className="h-12" alt="" />
+                  <div>
+                    <div className="font-semibold">Delivery: 1.2$</div>
+                    <div>Cambodia POS</div>
+                  </div>
+                </>
+              )}
+              {delivery === "L192" && (
+                <>
+                  <Image src="/images/l192.png" className="h-12" alt="" />
+                  <div>
+                    <div className="font-semibold">Delivery: 1.2$</div>
+                    <div>L912 Delivery</div>
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="flex items-center font-semibold cursor-pointer">
+              <div>More</div>
+              <Icon
+                icon="solar:alt-arrow-right-line-duotone"
+                style={{ color: "#000", fontSize: "24px" }}
+              />
+            </div> */}
           </div>
         </Card>
       </div>
@@ -152,41 +315,41 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
       //       aria-label="Delivery to address"
       //       title="Delivery to address"
       //     >
-      //       <RadioGroup
-      //         aria-label="Select existing payment method"
-      //         classNames={{ wrapper: "gap-3" }}
-      //         defaultValue={toDelivery as any}
-      //         onValueChange={async (value) => {
-      //           setToDelivery(value as unknown as CustomerAddressType);
-      //         }}
-      //       >
-      //         {/* {address?.storeAddress?.map(
-      //           (ad: CustomerAddressType, idx: number) => {
-      //             return (
-      //               <CustomRadio
-      //                 key={idx}
-      //                 classNames={deliveryRadioClasses}
-      //                 description={`${ad.firstName} ${ad.lastName}, ${ad.phoneNumber}`}
-      //                 chip={ad.label}
-      //                 icon={
-      //                   <Image
-      //                     alt="shop"
-      //                     src={
-      //                       ad.photos.length > 0
-      //                         ? ad.photos[0]
-      //                         : "/images/shop.png"
-      //                     }
-      //                     radius="none"
-      //                     className="w-12"
-      //                   />
-      //                 }
-      //                 label={ad.addressName}
-      //                 value={ad as any}
-      //               />
-      //             );
+      // <RadioGroup
+      //   aria-label="Select existing payment method"
+      //   classNames={{ wrapper: "gap-3" }}
+      //   defaultValue={toDelivery as any}
+      //   onValueChange={async (value) => {
+      //     setToDelivery(value as unknown as CustomerAddressType);
+      //   }}
+      // >
+      //   {/* {address?.storeAddress?.map(
+      //     (ad: CustomerAddressType, idx: number) => {
+      //       return (
+      //         <CustomRadio
+      //           key={idx}
+      //           classNames={deliveryRadioClasses}
+      //           description={`${ad.firstName} ${ad.lastName}, ${ad.phoneNumber}`}
+      //           chip={ad.label}
+      //           icon={
+      //             <Image
+      //               alt="shop"
+      //               src={
+      //                 ad.photos.length > 0
+      //                   ? ad.photos[0]
+      //                   : "/images/shop.png"
+      //               }
+      //               radius="none"
+      //               className="w-12"
+      //             />
       //           }
-      //         )} */}
-      //       </RadioGroup>
+      //           label={ad.addressName}
+      //           value={ad as any}
+      //         />
+      //       );
+      //     }
+      //   )} */}
+      // </RadioGroup>
       //     </AccordionItem>
       //   </Accordion>
       //   <Link

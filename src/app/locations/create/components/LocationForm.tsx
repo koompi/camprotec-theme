@@ -24,6 +24,7 @@ type LocationForm = {
   communeId: string;
   districtId: string;
   provinceId: string;
+  label: string,
 };
 
 export const LocationForm: FC<{
@@ -204,6 +205,7 @@ export const LocationForm: FC<{
             label="Country"
             labelPlacement="outside"
             size="lg"
+            placeholder="Country"
             // defaultSelectedKeys={[parseInt(store?.location?.countryId)]}
           >
             <SelectItem key="1">Cambodia</SelectItem>
@@ -214,6 +216,7 @@ export const LocationForm: FC<{
             {...register("provinceId", {
               required: "Salutation is required",
             })}
+            placeholder="Province"
             variant="flat"
             label="Province"
             labelPlacement="outside"
@@ -249,6 +252,7 @@ export const LocationForm: FC<{
             {...register("districtId", {
               required: "District is required",
             })}
+            placeholder="District"
             variant="flat"
             label="District"
             labelPlacement="outside"
@@ -287,6 +291,7 @@ export const LocationForm: FC<{
             {...register("communeId", {
               required: "Commune is required",
             })}
+            placeholder="Commune"
             variant="flat"
             label="Commune"
             labelPlacement="outside"

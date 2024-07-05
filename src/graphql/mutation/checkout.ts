@@ -6,12 +6,14 @@ export const CHECKOUT = gql`
     $deliveryType: DeliveryType!
     $payment: PaymentType!
     $body: BodyOrder!
+    $membershipId: String
   ) {
     storeCreateCheckout(
       locationId: $locationId
       deliveryType: $deliveryType
       payment: $payment
       body: $body
+      membershipId: $membershipId
     )
   }
 `;

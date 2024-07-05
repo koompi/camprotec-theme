@@ -17,32 +17,22 @@ import {
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import { AnimatePresence, motion } from "framer-motion";
-import RecommendProducts from "./RecommendProducts";
 import { VisaIcon, MasterCardIcon, PayPalIcon } from "./Providers";
 
 import ShippingForm from "./ShippingForm";
 import OrderSummary from "./OrderSummary";
-// import PaymentForm from "./PaymentForm";
 import PaymentMethodRadio from "./PaymentMethodRadio";
 import { useCart } from "@/context/useCart";
 import { useAuth } from "@/context/useAuth";
-import { ItemProduct, ProductType } from "@/types/product";
-import { formatToUSD } from "@/utils/usd";
-import { CustomerAddressType } from "@/types/checkout";
 import { useQuery } from "@apollo/client";
-import { ESTIMATE_PRICE } from "@/graphql/delivery";
 import { useMutation } from "@apollo/client";
 import { CHECKOUT } from "@/graphql/mutation/checkout";
 import { toast } from "sonner";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-import { CartItem } from "@/types/global";
+import { useRouter } from "next/navigation";
 import { PromotionType } from "@/types/promotion";
 import { ESTIMATION_PRICE } from "@/graphql/order";
+import { ProductType } from "@/types/product";
+import { GET_ALL_LOCATIONS } from "@/graphql/location";
 
 interface OrderCart {
   product: ProductType;
@@ -53,15 +43,14 @@ interface OrderCart {
 const CheckoutComponent = () => {
   const { user } = useAuth();
   const router = useRouter();
-  // const params = useSearchParams();
 
   const { cartItems, cleanCartItems, membershipId } = useCart();
   const [loading, setLoading] = useState(false);
 
-  const [delivery, setDelivery] = useState<"PERSIONAL" | "L192" | "CP">(
-    "PERSIONAL"
+  const [delivery, setDelivery] = useState<"PERSONAL" | "L192" | "CP">(
+    "PERSONAL"
   );
-  const [location, setLocation] = useState<string | null>(null);
+  const [location, setLocation] = useState<string>("");
 
   const [storeCreateCheckouts] = useMutation(CHECKOUT);
 
@@ -74,6 +63,8 @@ const CheckoutComponent = () => {
   //     },
   //   },
   // });
+  const { data: locations, loading: loadingAddress } =
+    useQuery(GET_ALL_LOCATIONS);
 
   const { data: orders } = useQuery(ESTIMATION_PRICE, {
     variables: {
@@ -93,7 +84,7 @@ const CheckoutComponent = () => {
       locationId: location,
       payment: "CASH",
     };
-    
+
     setLoading(true);
     storeCreateCheckouts({ variables: variables })
       .then((_) => {
@@ -132,9 +123,12 @@ const CheckoutComponent = () => {
   };
 
   useEffect(() => {
+    if (!locations) {
+      return;
+    }
     setDelivery("L192");
-    setLocation("6682154adedc3297b9dbe265");
-  }, []);
+    setLocation(locations?.storeLocations[0].id);
+  }, [locations]);
 
   // useEffect(() => {
   //   if (!orders) {
@@ -554,7 +548,7 @@ const CheckoutComponent = () => {
                       />
                     </dt>
 
-                    {delivery === "PERSIONAL" ? (
+                    {delivery === "PERSONAL" ? (
                       <dd className="text-small font-semibold text-default-700">
                         Free
                       </dd>
@@ -586,7 +580,7 @@ const CheckoutComponent = () => {
                             : 0)
                       )}
                     </dd> */}
-                    {delivery === "PERSIONAL" ? (
+                    {delivery === "PERSONAL" ? (
                       <dd className="font-semibold text-primary text-xl">
                         $
                         {orders?.estimationOrders

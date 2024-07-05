@@ -62,7 +62,7 @@ const MyLocation: FC<LocationType> = (props) => {
               className="object-cover w-full h-full"
               shadow="none"
               src={
-                props?.address?.photos.length > 0 ? props?.address?.photos[0] : "/images/shop.png"
+                props?.photos?.length > 0 ? props?.photos[0] : "/images/shop.png"
               }
             />
           </div>

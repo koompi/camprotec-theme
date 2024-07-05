@@ -23,7 +23,6 @@ export const GET_ALL_LOCATIONS = gql`
         houseNo
         floorNo
         addressTypeId
-        photos
         poBoxNo
         streetNo
         streetValue
