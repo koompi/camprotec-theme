@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { Link, Button } from "@nextui-org/react";
+import { Link as MyLink, Button } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import MyLocation from "./components/MyLocation";
 import { useQuery } from "@apollo/client";
 import { LocationType } from "@/types/location";
 import { GET_ALL_LOCATIONS } from "@/graphql/location";
+import Link from "next/link";
 
 export default function Page() {
   const { data, loading } = useQuery(GET_ALL_LOCATIONS);
@@ -27,7 +28,8 @@ export default function Page() {
             />
           );
         })}
-        <Link
+        <MyLink
+          as={Link}
           href="/locations/create"
           className="w-full h-40 border border-dashed rounded-xl items-center justify-center hidden sm:hidden lg:flex"
           underline="hover"
@@ -36,7 +38,7 @@ export default function Page() {
             <Icon icon="solar:map-point-add-linear" fontSize={24} />
             Add Location
           </div>
-        </Link>
+        </MyLink>
       </div>
       <div className="fixed sm:fixed lg:hidden bottom-0 right-0 z-40 flex items-center justify-center bg-background w-full h-16">
         <div className="container mx-auto px-3 ">
