@@ -30,9 +30,11 @@ import { CHECKOUT } from "@/graphql/mutation/checkout";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { PromotionType } from "@/types/promotion";
-import { ESTIMATION_PRICE } from "@/graphql/order";
+import { ESTIMATION_PRICE_ORDER } from "@/graphql/order";
 import { ProductType } from "@/types/product";
 import { GET_ALL_LOCATIONS } from "@/graphql/location";
+import { ESTIMATE_PRICE } from "@/graphql/delivery";
+import { formatToUSD } from "@/utils/usd";
 
 interface OrderCart {
   product: ProductType;
@@ -46,27 +48,34 @@ const CheckoutComponent = () => {
 
   const { cartItems, cleanCartItems, membershipId } = useCart();
   const [loading, setLoading] = useState(false);
+  const [ship, setShip] = useState<number>(0.0);
 
   const [delivery, setDelivery] = useState<"PERSONAL" | "L192" | "CP">(
     "PERSONAL"
   );
   const [location, setLocation] = useState<string>("");
+  const [position, setPosition] = useState<{
+    lat: number;
+    lng: number;
+  }>();
 
   const [storeCreateCheckouts] = useMutation(CHECKOUT);
 
   // estimate price
-  // const { data: es_price, refetch } = useQuery(ESTIMATE_PRICE, {
-  //   variables: {
-  //     adr: {
-  //       lat: toDelivery?.lat,
-  //       lng: toDelivery?.lng,
-  //     },
-  //   },
-  // });
-  const { data: locations, loading: loadingAddress } =
+  const { data: es_delivery_price } = useQuery(ESTIMATE_PRICE, {
+    variables: {
+      items: cartItems,
+      lat: position?.lat,
+      lng: position?.lng,
+      deliveryType: delivery,
+      mainObjectId: "454",
+    },
+  });
+
+  const { data: locations } =
     useQuery(GET_ALL_LOCATIONS);
 
-  const { data: orders } = useQuery(ESTIMATION_PRICE, {
+  const { data: orders } = useQuery(ESTIMATION_PRICE_ORDER, {
     variables: {
       input: [...cartItems],
       membershipId: membershipId,
@@ -78,6 +87,7 @@ const CheckoutComponent = () => {
     const variables = {
       body: {
         carts: [...cartItems],
+        deliveryFee: ship
       },
       membershipId: membershipId,
       deliveryType: delivery,
@@ -128,43 +138,18 @@ const CheckoutComponent = () => {
     }
     setDelivery("L192");
     setLocation(locations?.storeLocations[0].id);
+    setPosition({
+      lat: locations?.storeLocations[0].lat,
+      lng: locations?.storeLocations[0].lng,
+    });
   }, [locations]);
 
-  // useEffect(() => {
-  //   if (!orders) {
-  //     return;
-  //   }
-  //   const subtotal: number[] = [];
-  //   const subtotal_discount: number[] = [];
-  //   // cartItems.map((product: any) =>
-  //   //   subtotal.push(product.quantity * product.product.price)
-  //   // );
-  //   cartItems.map(({ productId, qty }: CartItem) => {
-  //     // const discountPrice = product.promotion ?
-  //     //   product?.promotion?.type == "PERCENTAGE"
-  //     //     ? product?.price -
-  //     //     (product?.price *
-  //     //       (product.promotion?.discount ? product.promotion?.discount : 0)) /
-  //     //     100
-  //     //     : product?.price - (product.promotion?.discount ? product.promotion?.discount : 0) :
-  //     //   product?.price;
-  //     // subtotal_discount.push(discountPrice * quantity);
-  //   });
-
-  //   const Subtotal: number = orders?.estimationOrders
-  //     ?.reduce((accumulator: number, currentObject: OrderCart) => {
-  //       return (
-  //         accumulator +
-  //         currentObject?.promotion?.discount?.totalDiscount * currentObject?.qty
-  //       );
-  //     }, 0)
-  //     .toFixed(2);
-  //   // const PriceDiscount: any = subtotal_discount.reduce((accumulator, value) => {
-  //   //   return accumulator + value;
-  //   // }, 0);
-  //   setPrice(Subtotal);
-  //   // setPriceDiscount(PriceDiscount);
-  // }, [orders]);
+  useEffect(() => {
+    if (!es_delivery_price) {
+      return;
+    }
+    setShip(es_delivery_price?.estimatePriceDelivery?.data.price);
+  }, [es_delivery_price]);
 
   const paginate = (newDirection: number) => {
     if (page + newDirection < 0 || page + newDirection > 2) return;
@@ -231,6 +216,8 @@ const CheckoutComponent = () => {
               setDelivery={setDelivery}
               location={location}
               setLocation={setLocation}
+              setPosition={setPosition}
+              ship={ship}
             />
           </div>
         );
@@ -325,15 +312,7 @@ const CheckoutComponent = () => {
       default:
         return null;
     }
-  }, [page, orders, delivery, location]);
-
-  // if (order_loading) {
-  //   return (
-  //     <section className="grid min-h-dvh place-items-center px-6 py-24 sm:py-32 lg:px-8">
-  //       <Spinner label="Loading..." color="primary" />
-  //     </section>
-  //   );
-  // }
+  }, [page, orders, delivery, location, ship]);
 
   if (!orders) {
     return (
@@ -554,9 +533,7 @@ const CheckoutComponent = () => {
                       </dd>
                     ) : (
                       <dd className="text-small font-semibold text-default-700">
-                        {/* {es_price?.estimatePrice?.data?.price
-                          ? formatToUSD(es_price?.estimatePrice?.data?.price)
-                          : formatToUSD(0)} */}
+                        {formatToUSD(ship)}
                       </dd>
                     )}
                   </div>

@@ -66,7 +66,7 @@ export const ORDER_BY_ID = gql`
   }
 `;
 
-export const ESTIMATION_PRICE = gql`
+export const ESTIMATION_PRICE_ORDER = gql`
   query(
     $input: [InputEstimationOrder!]!
     $membershipId: String

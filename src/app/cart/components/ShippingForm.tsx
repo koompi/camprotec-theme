@@ -16,6 +16,7 @@ import { GET_ALL_LOCATIONS } from "@/graphql/location";
 import { LocationType } from "@/types/location";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import CustomRadio from "./CustomRadio";
+import { formatToUSD } from "@/utils/usd";
 
 export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
   variant?: InputProps["variant"];
@@ -24,10 +25,12 @@ export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
   setDelivery: Function;
   location: string;
   setLocation: Function;
+  setPosition: Function;
+  ship: number
 };
 
 const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
-  ({ delivery, setDelivery, location, setLocation, className }, ref) => {
+  ({ delivery, setDelivery, location, setLocation, ship, setPosition, className }, ref) => {
     const deliveryRadioClasses = {
       wrapper: "group-data-[selected=true]:border-foreground",
       base: "data-[selected=true]:border-foreground",
@@ -154,7 +157,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                           alt=""
                         />
                         <div>
-                          <div className="font-semibold">Delivery: 1.2$</div>
+                          <div className="font-semibold">Delivery: {formatToUSD(ship)}</div>
                           <div>Cambodia POS</div>
                         </div>
                       </>
@@ -163,7 +166,7 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                       <>
                         <Image src="/images/l192.png" className="h-12" alt="" />
                         <div>
-                          <div className="font-semibold">Delivery: 1.2$</div>
+                          <div className="font-semibold">Delivery: {formatToUSD(ship)}</div>
                           <div>L912 Delivery</div>
                         </div>
                       </>
@@ -191,9 +194,9 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                               <div className="font-semibold text-black text-lg">
                                 {delivery}
                               </div>
-                              <div className="font-semibold text-black text-md">
-                                Fee: $1.5
-                              </div>
+                              {/* <div className="font-semibold text-black text-md">
+                                Fee: {formatToUSD(ship)}
+                              </div> */}
                               <div>(Delivery within 2-3 days)</div>
                             </div>
                           }
