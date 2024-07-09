@@ -72,8 +72,7 @@ const CheckoutComponent = () => {
     },
   });
 
-  const { data: locations } =
-    useQuery(GET_ALL_LOCATIONS);
+  const { data: locations } = useQuery(GET_ALL_LOCATIONS);
 
   const { data: orders } = useQuery(ESTIMATION_PRICE_ORDER, {
     variables: {
@@ -87,7 +86,7 @@ const CheckoutComponent = () => {
     const variables = {
       body: {
         carts: [...cartItems],
-        deliveryFee: ship
+        deliveryFee: ship,
       },
       membershipId: membershipId,
       deliveryType: delivery,
@@ -101,16 +100,18 @@ const CheckoutComponent = () => {
         toast.success(
           "Congratulation! you've been order the product(s) successfully!"
         );
-        setLoading(false);
       })
       .then(() => {
         cleanCartItems();
-        router.push("/orders");
       })
       .catch((err) => {
         toast.error("Your transaction order is failed!");
         console.log(err);
       });
+    setTimeout(() => {
+      setLoading(false);
+      router.push("/orders");
+    }, 500);
   };
 
   const [[page, direction], setPage] = React.useState([0, 0]);
@@ -149,6 +150,10 @@ const CheckoutComponent = () => {
       return;
     }
     setShip(es_delivery_price?.estimatePriceDelivery?.data.price);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, [es_delivery_price]);
 
   const paginate = (newDirection: number) => {
@@ -299,12 +304,6 @@ const CheckoutComponent = () => {
                     />
                   </RadioGroup>
                 </AccordionItem>
-                {/* <AccordionItem
-                  key="add_new_payment"
-                  title="Add a new payment method"
-                >
-                  <PaymentForm variant="bordered" />
-                </AccordionItem> */}
               </Accordion>
             </div>
           </div>
@@ -549,14 +548,6 @@ const CheckoutComponent = () => {
                     <dt className="text-small font-semibold text-default-500">
                       Total
                     </dt>
-                    {/* <dd className="font-semibold text-primary text-xl">
-                      {formatToUSD(
-                        price +
-                          (es_price?.estimatePrice?.data?.price
-                            ? es_price?.estimatePrice?.data?.price
-                            : 0)
-                      )}
-                    </dd> */}
                     {delivery === "PERSONAL" ? (
                       <dd className="font-semibold text-primary text-xl">
                         $
@@ -577,8 +568,8 @@ const CheckoutComponent = () => {
                     ) : (
                       <dd className="font-semibold text-primary text-xl">
                         $
-                        {orders?.estimationOrders
-                          ?.reduce(
+                        {(
+                          orders?.estimationOrders?.reduce(
                             (accumulator: number, currentObject: OrderCart) => {
                               return (
                                 accumulator +
@@ -588,8 +579,8 @@ const CheckoutComponent = () => {
                               );
                             },
                             0
-                          )
-                          .toFixed(2)}
+                          ) + ship
+                        ).toFixed(2)}
                       </dd>
                     )}
                   </div>
