@@ -1,6 +1,6 @@
 "use client";
 
-import { user_store_login } from "@/api/sso";
+import { customer_login } from "@/api/sso";
 import { Spinner } from "@nextui-org/react";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect } from "react";
@@ -10,8 +10,9 @@ export default function Token() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("param.token", param.token);
     if (param.token) {
-      user_store_login(param.token).then((_) => {
+      customer_login(param.token).then((_) => {
         localStorage.setItem("access_token", param.token);
         // router.back();
         if (typeof window !== "undefined") {

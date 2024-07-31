@@ -53,10 +53,10 @@ const CheckoutComponent = () => {
   const [delivery, setDelivery] = useState<"PERSONAL" | "L192" | "CP">(
     "PERSONAL"
   );
-  const [location, setLocation] = useState<string>("");
+  const [location, setLocation] = useState<string | null>(null);
   const [position, setPosition] = useState<{
-    lat: number;
-    lng: number;
+    lat: number | null;
+    lng: number | null;
   }>();
 
   const [storeCreateCheckouts] = useMutation(CHECKOUT);
@@ -138,10 +138,10 @@ const CheckoutComponent = () => {
       return;
     }
     setDelivery("L192");
-    setLocation(locations?.storeLocations[0].id);
+    // setLocation("");
     setPosition({
-      lat: locations?.storeLocations[0].lat,
-      lng: locations?.storeLocations[0].lng,
+      lat: 0.0,
+      lng: 0.0,
     });
   }, [locations]);
 

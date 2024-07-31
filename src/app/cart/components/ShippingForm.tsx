@@ -9,6 +9,7 @@ import {
   Card,
   Divider,
   Image,
+  Link,
   RadioGroup,
 } from "@nextui-org/react";
 import { useQuery } from "@apollo/client";
@@ -23,14 +24,25 @@ export type ShippingFormProps = React.HTMLAttributes<HTMLDivElement> & {
   hideTitle?: boolean;
   delivery: "PERSONAL" | "L192" | "CP";
   setDelivery: Function;
-  location: string;
+  location: string | null;
   setLocation: Function;
   setPosition: Function;
-  ship: number
+  ship: number;
 };
 
 const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
-  ({ delivery, setDelivery, location, setLocation, ship, setPosition, className }, ref) => {
+  (
+    {
+      delivery,
+      setDelivery,
+      location,
+      setLocation,
+      ship,
+      setPosition,
+      className,
+    },
+    ref
+  ) => {
     const deliveryRadioClasses = {
       wrapper: "group-data-[selected=true]:border-foreground",
       base: "data-[selected=true]:border-foreground",
@@ -96,40 +108,53 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
               }
             >
               <Divider />
-              <div className="my-4">
-                <RadioGroup
-                  aria-label="Select existing payment method"
-                  classNames={{ wrapper: "gap-3" }}
-                  defaultValue={location}
-                  onValueChange={(value) => {
-                    setDelivery(value);
-                  }}
+              {locations?.storeLocations?.length > 0 ? (
+                <div className="my-4">
+                  <RadioGroup
+                    aria-label="Select existing payment method"
+                    classNames={{ wrapper: "gap-3" }}
+                    defaultValue={location && location}
+                    onValueChange={(value) => {
+                      setLocation(value);
+                    }}
+                  >
+                    {locations?.storeLocations?.map(
+                      (location: LocationType, idx: number) => {
+                        return (
+                          <CustomRadio
+                            key={idx}
+                            classNames={deliveryRadioClasses}
+                            description={
+                              <div className="space-y-0.5">
+                                <div className="font-semibold text-black text-lg">
+                                  {location?.firstName} {location?.lastName}
+                                </div>
+                                <div className="leading-snug">
+                                  <div>{location?.email}</div>
+                                  <div>{location?.phoneNumber}</div>
+                                </div>
+                                <div>{location?.address?.streetValue}</div>
+                              </div>
+                            }
+                            value={location.id}
+                          />
+                        );
+                      }
+                    )}
+                  </RadioGroup>
+                </div>
+              ) : (
+                <Link
+                  href="/locations/create"
+                  className="w-full h-28 border border-dashed rounded-xl items-center justify-center "
+                  underline="hover"
                 >
-                  {locations?.storeLocations?.map(
-                    (location: LocationType, idx: number) => {
-                      return (
-                        <CustomRadio
-                          key={idx}
-                          classNames={deliveryRadioClasses}
-                          description={
-                            <div className="space-y-0.5">
-                              <div className="font-semibold text-black text-lg">
-                                {myLocation?.firstName} {myLocation?.lastName}
-                              </div>
-                              <div className="leading-snug">
-                                <div>{myLocation?.email}</div>
-                                <div>{myLocation?.phoneNumber}</div>
-                              </div>
-                              <div>{location?.address?.streetValue}</div>
-                            </div>
-                          }
-                          value={myLocation.id}
-                        />
-                      );
-                    }
-                  )}
-                </RadioGroup>
-              </div>
+                  <div className="flex gap-3">
+                    <Icon icon="solar:map-point-add-linear" fontSize={24} />
+                    Add Location
+                  </div>
+                </Link>
+              )}
             </AccordionItem>
           </Accordion>
 
@@ -157,7 +182,9 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                           alt=""
                         />
                         <div>
-                          <div className="font-semibold">Delivery: {formatToUSD(ship)}</div>
+                          <div className="font-semibold">
+                            Delivery: {formatToUSD(ship)}
+                          </div>
                           <div>Cambodia POS</div>
                         </div>
                       </>
@@ -166,7 +193,9 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
                       <>
                         <Image src="/images/l192.png" className="h-12" alt="" />
                         <div>
-                          <div className="font-semibold">Delivery: {formatToUSD(ship)}</div>
+                          <div className="font-semibold">
+                            Delivery: {formatToUSD(ship)}
+                          </div>
                           <div>L912 Delivery</div>
                         </div>
                       </>
@@ -355,16 +384,16 @@ const ShippingForm = React.forwardRef<HTMLDivElement, ShippingFormProps>(
       // </RadioGroup>
       //     </AccordionItem>
       //   </Accordion>
-      //   <Link
-      //     href="/locations/create"
-      //     className="w-full h-28 border border-dashed rounded-xl items-center justify-center "
-      //     underline="hover"
-      //   >
-      //     <div className="flex gap-3">
-      //       <Icon icon="solar:map-point-add-linear" fontSize={24} />
-      //       Add Location
-      //     </div>
-      //   </Link>
+      // <Link
+      //   href="/locations/create"
+      //   className="w-full h-28 border border-dashed rounded-xl items-center justify-center "
+      //   underline="hover"
+      // >
+      //   <div className="flex gap-3">
+      //     <Icon icon="solar:map-point-add-linear" fontSize={24} />
+      //     Add Location
+      //   </div>
+      // </Link>
       // </>
     );
   }
